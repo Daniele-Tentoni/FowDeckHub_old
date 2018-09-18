@@ -24,4 +24,3 @@ function load_session($name) {
 function check_session($name) {
 	return isset($_SESSION) && isset($_SESSION[$name]);
 }
-?>
