@@ -1,49 +1,50 @@
-<!-- DOCTYPE html-->
-<html lang="it">
-	<head>
-		<title>Tentoni - Basi di Dati</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="initial-scale=1.0, width=device-width" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-		<link rel="stylesheet" type="text/css" href="assets/css/main.css" media="screen" />
-		<link rel="stylesheet" type="text/css" href="assets/css/style.default.css" media="screen" />
-  		<script src="https://use.fontawesome.com/8c821db5ab.js"></script>
-		<script src="http://code.jquery.com/jquery.js"></script>
-	</head>
-	<body>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-2">
-					<nav class="side-navbar navbar-dark bg-dark">
-						<ul class="navbar-nav flex-column navbar-collapse" id="navbarSupportedContent">
-							<li class="nav-item disabled"><span class="nav-link">Read</span></li>
-							<li class="nav-item"><a class="nav-link" href="#">Famiglie</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">Bilanci</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">Appuntamenti</a></li>
-							<li class="dropdown-divider"></li>
-							<li class="nav-item disabled"><span class="nav-link">Create</span></li>
-							<li class="nav-item"><a class="nav-link" href="#">Parrocchiano</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">Spesa</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">Appuntamento</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">Edizione</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">Gruppo</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">Ricavo</a></li>
-							<li class="nav-item"><a class="nav-link" href="#">Famiglia</a></li>
-						</ul>
-					</nav>
-				</div>
-				<div role="main" class="col-md-10">
-						<div class="row">
-							<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top navbar-toggleable-sm">
-								<a class="navbar-brand" href="#">Tentoni Basi di Dati</a>
-								<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-									<span class="navbar-toggler-icon"></span>
-								</button>
-								<ul class="navbar-nav mr-auto">
-									<li class="nav-item"><span class="nav-link">Titolo della pagina</span></li>
-								</ul>
-							</nav>
-						<!-- 
-						Qui sarà inserito il contenuto della pagina.
-						Sotto sarà quindi necessario aggiungere il footer chiudendo i tags html.
-						-->
+create table `Users`(
+    `Id` int AUTO_INCREMENT unique not null,
+    `Username` varchar(20) unique not null,
+    `Email` varchar(50) unique not null,
+    `Passwd` varchar(50) unique not null,
+    `FirstName` varchar(50) unique not null,
+    `LastName` varchar(50) unique not null,
+    `RegisterDate` varchar(50) unique not null,
+    primary key (Id));
+    
+create table `Events`(
+    `Id` int AUTO_INCREMENT unique not null,
+    `Name` varchar(50) unique not null,
+    `Location` int not null,
+    `Nation` int not null,
+    `Year` int not null,
+    `Attendance` int  not null,
+    primary key (Id));
+    
+create table `Cards`(
+    `Id` int AUTO_INCREMENT unique not null,
+    `Name` varchar(50) unique not null,
+    `Set` int not null,
+    `Number` int not null,
+    `Type` int not null,
+    `Cost` int  not null,
+    `Attribute` int not null,
+    `Rarity` int  not null,
+    primary key (Id));
+    
+create table `Decklists`(
+    `Id` int AUTO_INCREMENT unique not null,
+    `Name` varchar(50) unique not null,
+    `Ruler` int not null,
+    `Player` varchar(50) not null,
+    `Event` int not null,
+    `Type` int  not null,
+    `Style` int not null,
+    primary key (Id),
+	FOREIGN KEY (`Ruler`) REFERENCES `Cards`(`Id`),
+	FOREIGN KEY (`Event`) REFERENCES `Events`(`Id`));
+    
+create table `Composta`(
+    `Card` int not null,
+    `Decklist` int not null,
+    `Deck` int not null,
+    `Quantity` int not null,
+	PRIMARY KEY (`Card`, `Decklist`, `Deck`),
+	FOREIGN KEY (`Card`) REFERENCES `Cards`(`Id`),
+	FOREIGN KEY (`Decklist`) REFERENCES `Decklists`(`Id`));

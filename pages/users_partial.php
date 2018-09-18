@@ -66,7 +66,7 @@
 				</div>
 			</div>
 			<!-- END RESPONSIVE TABLES -->
-			
+			<?php echo $error; ?>
 		<!-- END PAGE CONTENT WRAPPER -->                                    
 		</div>         
 	</div>            
