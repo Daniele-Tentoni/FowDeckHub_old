@@ -32,7 +32,7 @@
                 <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
-                        <a href="index.html">Joli Admin</a>
+                        <a href="index.html">Fow Deck Hub</a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
 					<?php
@@ -101,16 +101,16 @@
 					if(check_session("user_name")){
 						?>
 						<li class="xn-icon-button pull-right">
-							<a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
+							<a href="process_logout.php" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
 						</li> 
 						<?php
 					} else {
 						?>
 						<li class="xn-icon-button pull-right">
-							<a href="login.php" class="mb-control" data-box="#mb-signin"><span class="fa fa-sign-in"></span></a>
+							<a href="login.php" class=""><span class="fa fa-sign-in"></span></a>
 						</li>
 						<li class="xn-icon-button pull-right">
-							<a href="#" class="mb-control" data-box="#mb-signin"><span class="fa fa-plus"></span></a>
+							<a href="register.php" class=""><span class="fa fa-plus"></span></a>
 						</li>
 						<?php
 					}

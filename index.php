@@ -1,4 +1,8 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
+if(login_check($mysqli)) {
+	echo "Sono connesso.";
+}
 session_start();
 $title = "Dashboard - Administrator - Fow Deck Hub";
 $active_page = 0;

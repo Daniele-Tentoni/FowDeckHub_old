@@ -1,4 +1,6 @@
 <?php
+require_once "db_connect.php";
+
 function sec_session_start() {
         $session_name = 'sec_session_id'; // Imposta un nome di sessione
         $secure = false; // Imposta il parametro a true se vuoi usare il protocollo 'https'.
@@ -13,11 +15,11 @@ function sec_session_start() {
 
 function login($email, $password, $mysqli) {
    // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
-   if ($stmt = $mysqli->prepare("SELECT id, username, password, salt FROM members WHERE email = ? LIMIT 1")) { 
+   if ($stmt = $mysqli->prepare("SELECT id, username, password, salt, registerdate FROM users WHERE email = ? LIMIT 1")) { 
       $stmt->bind_param('s', $email); // esegue il bind del parametro '$email'.
       $stmt->execute(); // esegue la query appena creata.
       $stmt->store_result();
-      $stmt->bind_result($user_id, $username, $db_password, $salt); // recupera il risultato della query e lo memorizza nelle relative variabili.
+      $stmt->bind_result($user_id, $username, $db_password, $salt, $registerdate); // recupera il risultato della query e lo memorizza nelle relative variabili.
       $stmt->fetch();
       $password = hash('sha512', $password.$salt); // codifica la password usando una chiave univoca.
       if($stmt->num_rows == 1) { // se l'utente esiste
@@ -42,7 +44,7 @@ function login($email, $password, $mysqli) {
             // Password incorretta.
             // Registriamo il tentativo fallito nel database.
             $now = time();
-            $mysqli->query("INSERT INTO login_attempts (user_id, time) VALUES ('$user_id', '$now')");
+            $mysqli->query("INSERT INTO login_attempts (user_id, dataaccesso	) VALUES ('$user_id', '$now')");
             return false;
          }
       }
@@ -76,8 +78,8 @@ function login_check($mysqli) {
    // Verifica che tutte le variabili di sessione siano impostate correttamente
    if(isset($_SESSION['user_id'], $_SESSION['username'], $_SESSION['login_string'])) {
      $user_id = $_SESSION['user_id'];
-     $login_string = $_SESSION['login_string'];
      $username = $_SESSION['username'];     
+     $login_string = $_SESSION['login_string'];
      $user_browser = $_SERVER['HTTP_USER_AGENT']; // reperisce la stringa 'user-agent' dell'utente.
      if ($stmt = $mysqli->prepare("SELECT password FROM members WHERE id = ? LIMIT 1")) { 
         $stmt->bind_param('i', $user_id); // esegue il bind del parametro '$user_id'.
