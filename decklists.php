@@ -1,5 +1,11 @@
 <?php
-session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
+if(login_check($mysqli) || TEST) {
+	$login_checked = true;
+} else {
+    header("Refresh: 0;URL=login.php");
+}
 $title = "Decklists - Administrator - Fow Deck Hub";
 $active_page = 13;
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';

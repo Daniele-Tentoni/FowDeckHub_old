@@ -36,29 +36,16 @@
                         <a href="#" class="x-navigation-control"></a>
                     </li>
 					<?php
-					if(check_session("user_name")) {
+					if(isset($login_checked) && $login_checked) {
 						?>
 						<li class="xn-profile">
-							<a href="#" class="profile-mini">
-								<img src="<?php load_session("user_avatar_img"); ?>" alt="<?php load_session("user_avatar_img_alt"); ?>"/>
-							</a>
 							<div class="profile">
-								<div class="profile-image">
-									<img src="<?php load_session("user_avatar_img"); ?>" alt="<?php load_session("user_avatar_img_alt"); ?>"/>
-								</div>
 								<div class="profile-data">
-									<div class="profile-data-name"><?php load_session("user_name"); ?></div>
-									<div class="profile-data-title"><?php load_session("user_title"); ?></div>
-								</div>
-								<div class="profile-controls">
-									<a href="pages-profile.html" class="profile-control-left"><span class="fa fa-info"></span></a>
-									<a href="pages-messages.html" class="profile-control-right"><span class="fa fa-envelope"></span></a>
+									<div class="profile-data-name"><?php echo $_SESSION['user_name']; ?></div>
+									<div class="profile-data-title"><?php echo $_SESSION['user_title']; ?></div>
 								</div>
 							</div>                                                                        
 						</li>
-						<?php
-					} else {
-						?>
 						<?php
 					}
 					?>
@@ -98,10 +85,10 @@
                     <!-- END TOGGLE NAVIGATION -->
                     <!-- SIGN IN/OUT -->
                     <?php
-					if(check_session("user_name")){
+					if(isset($login_checked) && $login_checked){
 						?>
 						<li class="xn-icon-button pull-right">
-							<a href="process_logout.php" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
+							<a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
 						</li> 
 						<?php
 					} else {
@@ -118,7 +105,7 @@
                     <!-- END SIGN OUT -->
                     <!-- MESSAGES -->
 					<?php
-					if(check_session("user_name")) {
+					if(isset($login_checked) && $login_checked) {
 						?>
 						<li class="xn-icon-button pull-right">
 							<a href="#"><span class="fa fa-comments"></span></a>

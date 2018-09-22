@@ -48,26 +48,11 @@
 								<!--<a href="#" class="btn btn-link btn-block btn-disabled">Forgot your password?</a>-->
 							</div>
 							<div class="col-md-6">
-								<button type="submit" id="login-button" class="btn btn-info btn-block">Log In</button>
+								<button type="submit" id="login-button" class="btn btn-info btn-block">Register</button>
 							</div>
 						</div>
 						<div id="errors">
-						</div><!--
-						<div class="login-or">OR</div>
-						<div class="form-group">
-							<div class="col-md-4">
-								<button class="btn btn-info btn-block btn-twitter btn-disabled"><span class="fa fa-twitter"></span> Twitterr</button>
-							</div>
-							<div class="col-md-4">
-								<button class="btn btn-info btn-block btn-facebook btn-disabled"><span class="fa fa-facebook"></span> Facebook</button>
-							</div>
-							<div class="col-md-4">                            
-								<button class="btn btn-info btn-block btn-google btn-disabled"><span class="fa fa-google-plus"></span> Google</button>
-							</div>
 						</div>
-						<div class="login-subtitle">
-							Don't have an account yet? <a href="#">Create an account</a>
-						</div>-->
                     </form>
                 </div>
                 <div class="login-footer">
@@ -84,30 +69,37 @@
             
         </div>
         <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="js/plugins/sha512/sha.js"></script>
+        <script type="text/javascript" src="js/plugins/sha512/sha512.js"></script>
 		<script type="text/javascript">
 			$("#register-form").submit(function (e) {
-				console.log(e);
 				e.preventDefault();
 				var password = $("#password").val(), cpassword = $("#confirm-password").val();
 				if(password === cpassword) {
+                    var jsSha = new jsSHA(password);
+                    var hash = jsSha.getHash("SHA-512", "HEX");
+                    console.log(hash);
 					$.ajax({
 						method: "POST",
 						url: "process_register.php",
-						data: "u=" + $("#username").val() + "&p=" + $("#password").val() + "&e=" + $("#mail").val(),
+						data: "u=" + $("#username").val() + "&p=" + hash + "&e=" + $("#mail").val(),
 						datatype: "json",
 						success: function(msg){
-							console.log("Sono successata.");
-							if(msg.result === "done") {
-								window.location = "index.php";
-							} else if(msg.result === "fail" && msg.error === "credentials") {
-								$("#errors").append('<div class="alert alert-warning"> E-mail o password errata. Si prega di riprovare. </div>');
+                            var message = JSON.parse(msg);
+							if(message.result === "done") {
+								window.location = "login.php";
+							} else if(message.result === "fail") {
+                                if(message.number === 1062) {
+								    $("#errors").append('<div class="alert alert-warning"> Il nome utente o la mail inseriti sono già esistenti. Si prega di cambiarli e riprovare.</div>');
+                                } else if(message.error === "error") {
+								    $("#errors").append('<div class="alert alert-warning"> Rilevato errore d\'origine sconosciuta. ' + message.message + '</div>');
+                                }
 							} else {
 								$("#errors").append('<div class="alert alert-warning"> Non è stato possibile collegarsi al database e verificare le credenziali. Si prega di riprovare più tardi. </div>');
 							}
 						},
 						error: function(msg){
-							console.log("Login error:");
-							$("#errors").append('<div class="alert alert-warning"> C\'è stato un gravissimo errore.</div>');
+							$("#errors").append('<div class="alert alert-warning"> Non sono riuscito a contattare il server, riprovare più tardi. </div>');
 						}
 					});
 				} else {

@@ -2,7 +2,7 @@
 <html lang="en" class="body-full-height">
     <head>        
         <!-- META SECTION -->
-        <title>Joli Admin - Responsive Bootstrap Admin Template</title>            
+        <title>Login - FowDeckHub</title>            
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,12 +25,12 @@
                     <form id="login-form" class="form-horizontal">
 						<div class="form-group">
 							<div class="col-md-12">
-								<input type="email" class="form-control" placeholder="E-mail"/>
+								<input id="mail" type="email" class="form-control" placeholder="E-mail"/>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-md-12">
-								<input type="password" class="form-control" placeholder="Password"/>
+								<input id="password" type="password" class="form-control" placeholder="Password"/>
 							</div>
 						</div>
 						<div class="form-group">
@@ -74,24 +74,39 @@
             
         </div>
         <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="js/plugins/sha512/sha.js"></script>
+        <script type="text/javascript" src="js/plugins/sha512/sha512.js"></script>
 		<script type="text/javascript">
 			$("#login-form").submit(function (e) {
-				console.log(e);
 				e.preventDefault();
+                var password = $("#password").val();
+                var jsSha = new jsSHA(password);
+                var hash = jsSha.getHash("SHA-512", "HEX");
+                console.log(hash);
 				$.ajax({
 					method: "POST",
 					url: "process_login.php",
-					data: "u=" + $("#username").val() + "&p=" + $("#password").val(),
+					data: "u=" + $("#mail").val() + "&p=" + hash,
 					datatype: "json",
 					success: function(msg){
-						console.log("Sono successata.");
-						if(msg.result === "done") {
-							window.location = "index.php";
-						} else if(msg.result === "fail" && msg.error === "credentials") {
-							$("#errors").append('<div class="alert alert-warning"> E-mail o password errata. Si prega di riprovare. </div>');
-						} else {
-							$("#errors").append('<div class="alert alert-warning"> Non è stato possibile collegarsi al database e verificare le credenziali. Si prega di riprovare più tardi. </div>');
-						}
+                        console.log(msg);
+                        var message = JSON.parse(msg);
+                        if(message.result === "done") {
+                            $("#errors").append('<div class="alert alert-success"> Login eseguito, reindirizzamento in corso.</div>');
+                            window.location = "index.php";
+                        } else if(message.result === "fail") {
+                            if(message.error === "registrato") {
+                                $("#errors").append('<div class="alert alert-warning"> La password risulta errata, si prega di riprovare.</div>');
+                            } else if(message.error === "inesistente") {
+                                $("#errors").append('<div class="alert alert-warning"> Non è stato trovato nessun utente con il nome inserito, si prega di riprovare    .</div>');
+                            }
+                            console.log(message.u);
+                            console.log(message.p);
+                        } else {
+                            console.log("Altro.");
+                            console.log(msg);
+                            $("#errors").append('<div class="alert alert-warning"> Rilevato errore sconosciuto, si prega di riprovare più tardi o di contattare un amministratore di sistema. </div>');
+                        }
 					},
 					error: function(msg){
 						console.log("Login error:");
