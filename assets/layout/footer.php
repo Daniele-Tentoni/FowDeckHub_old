@@ -42,3 +42,4 @@
     <!-- END SCRIPTS -->         
     </body>
 </html>
+<?php echo "Sono dentro"; ?>

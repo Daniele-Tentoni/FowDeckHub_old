@@ -44,8 +44,10 @@ function login($email, $password, $mysqli) {
                 } else {
                     // Password incorretta.
                     // Registriamo il tentativo fallito nel database.
-                    $now = time();
-                    $mysqli->query("INSERT INTO login_attempts (user_id, dataaccesso) VALUES ('$user_id', '$now')");
+                    $failed = $mysqli->prepare("INSERT INTO login_attempts (userid) VALUES (?)");
+                    $failed->bind_param("i", $idUser); // esegue il bind del parametro '$email'.
+                    $idUser = $user_id;
+                    $failed->execute(); // esegue la query appena creata.
                     return "Pass: $password, Salt: $salt";
                 }
             }
@@ -61,7 +63,7 @@ function checkbrute($user_id, $mysqli) {
    $now = time();
    // Vengono analizzati tutti i tentativi di login a partire dalle ultime due ore.
    $valid_attempts = $now - (2 * 60 * 60); 
-   if ($stmt = $mysqli->prepare("SELECT time FROM login_attempts WHERE user_id = ? AND time > '$valid_attempts'")) { 
+   if ($stmt = $mysqli->prepare("SELECT dataaccesso FROM login_attempts WHERE user_id = ? AND dataaccesso > '$valid_attempts'")) { 
       $stmt->bind_param('i', $user_id); 
       // Eseguo la query creata.
       $stmt->execute();
@@ -76,39 +78,44 @@ function checkbrute($user_id, $mysqli) {
 }
 
 function login_check($mysqli) {
-   // Verifica che tutte le variabili di sessione siano impostate correttamente
-   if(isset($_SESSION['user_id'], $_SESSION['user_name'], $_SESSION['login_string'])) {
-     $user_id = $_SESSION['user_id'];
-     $username = $_SESSION['user_name'];     
-     $login_string = $_SESSION['login_string'];
-     $user_browser = $_SERVER['HTTP_USER_AGENT']; // reperisce la stringa 'user-agent' dell'utente.
-     if ($stmt = $mysqli->prepare("SELECT password FROM users WHERE id = ? LIMIT 1")) { 
-        $stmt->bind_param('i', $user_id); // esegue il bind del parametro '$user_id'.
-        $stmt->execute(); // Esegue la query creata.
-        $stmt->store_result();
- 
-        if($stmt->num_rows == 1) { // se l'utente esiste
-           $stmt->bind_result($password); // recupera le variabili dal risultato ottenuto.
-           $stmt->fetch();
-           $login_check = hash('sha512', $password.$user_browser);
-           if($login_check == $login_string) {
-              // Login eseguito!!!!
-              return true;
-           } else {
-              //  Login non eseguito
-              return false;
-           }
+    // Se sono in test confermo il login.
+    if(TEST) {
+        return true;
+    }
+    
+    // Verifica che tutte le variabili di sessione siano impostate correttamente
+    if(isset($_SESSION['user_id'], $_SESSION['user_name'], $_SESSION['login_string'])) {
+        $user_id = $_SESSION['user_id'];
+        $username = $_SESSION['user_name'];     
+        $login_string = $_SESSION['login_string'];
+        $user_browser = $_SERVER['HTTP_USER_AGENT']; // reperisce la stringa 'user-agent' dell'utente.
+        if ($stmt = $mysqli->prepare("SELECT password FROM users WHERE id = ? LIMIT 1")) { 
+            $stmt->bind_param('i', $user_id); // esegue il bind del parametro '$user_id'.
+            $stmt->execute(); // Esegue la query creata.
+            $stmt->store_result();
+
+            if($stmt->num_rows == 1) { // se l'utente esiste
+                $stmt->bind_result($password); // recupera le variabili dal risultato ottenuto.
+                $stmt->fetch();
+                $login_check = hash('sha512', $password.$user_browser);
+                if($login_check == $login_string) {
+                    // Login eseguito!!!!
+                    return true;
+                } else {
+                    //  Login non eseguito
+                    return false;
+                }
+            } else {
+                // Login non eseguito
+                return false;
+            }
         } else {
             // Login non eseguito
             return false;
         }
-     } else {
+    } else {
         // Login non eseguito
         return false;
-     }
-   } else {
-     // Login non eseguito
-     return false;
-   }
+    }
 }
 ?>

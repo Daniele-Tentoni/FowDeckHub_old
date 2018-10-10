@@ -8,60 +8,60 @@
 <!-- START WIDGETS -->                    
 <div class="row">
 	<div class="col-md-3">
-
 		<!-- START VISITORS WIDGET SLIDER -->
-		<div class="widget widget-default widget-carousel">
-			<div class="owl-carousel" id="owl-example">
-				<div>
-					<div class="widget-title">Total Visitors</div>
-					<div class="widget-subtitle">27/08/2014 15:23</div>
-					<div class="widget-int">3,548</div>
-				</div>
-				<div>
-					<div class="widget-title">Month</div>
-					<div class="widget-subtitle">Visitors</div>
-					<div class="widget-int">1,695</div>
-				</div>
-				<div>                                    
-					<div class="widget-title">Today</div>
-					<div class="widget-subtitle">Visitors</div>
-					<div class="widget-int">1,977</div>
-				</div>
-			</div>                            
-			<div class="widget-controls">                                
-				<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
-			</div>                             
-		</div>         
+        <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/managers/attempts_manager.php'; ?>
+        <div class="widget widget-default widget-carousel">
+            <div class="owl-carousel" id="owl-example">
+                <div>
+                    <div class="widget-title">Total Visitors</div>
+                    <div class="widget-subtitle"><?php echo date("H:i:s"); ?></div>
+                    <div class="widget-int"><?php echo get_total_visitors($mysqli); ?></div>
+                </div>
+                <div>
+                    <div class="widget-title">Month</div>
+                    <div class="widget-subtitle">Visitors</div>
+                    <div class="widget-int"><?php echo get_monthly_visitors($mysqli); ?></div>
+                </div>
+                <div>                                    
+                    <div class="widget-title">Today</div>
+                    <div class="widget-subtitle">Visitors</div>
+                    <div class="widget-int"><?php echo get_today_visitors($mysqli); ?></div>
+                </div>
+            </div>                            
+            <div class="widget-controls">                                
+                <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+            </div>                             
+        </div>  
 		<!-- END WIDGET SLIDER -->
 	</div>
 	<div class="col-md-3">
 		<!-- START NEW USERS WIDGET SLIDER -->
-		<div class="widget widget-default widget-carousel">
-			<div class="owl-carousel" id="owl-example">
-				<div>                                    
-					<div class="widget-title">Total Users</div>                                                                        
-					<div class="widget-subtitle">27/08/2014 15:23</div>
-					<div class="widget-int">3,548</div>
-				</div>
-				<div>                                    
-					<div class="widget-title">New Month</div>
-					<div class="widget-subtitle">Visitors</div>
-					<div class="widget-int">1,695</div>
-				</div>
-				<div>                                    
-					<div class="widget-title">New Today</div>
-					<div class="widget-subtitle">Visitors</div>
-					<div class="widget-int">1,977</div>
-				</div>
-			</div>                            
-			<div class="widget-controls">                                
-				<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
-			</div>                             
-		</div>         
+		<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/managers/users_manager.php'; ?>
+        <div class="widget widget-default widget-carousel">
+            <div class="owl-carousel" id="owl-example">
+                <div>                                    
+                    <div class="widget-title">Total Users</div>
+                    <div class="widget-subtitle"><?php echo date("H:i:s"); ?></div>
+                    <div class="widget-int"><?php echo get_total_users_number($mysqli); ?></div>
+                </div>
+                <div>                                    
+                    <div class="widget-title">New Month</div>
+                    <div class="widget-subtitle">Visitors</div>
+                    <div class="widget-int"><?php echo get_monthly_registerd_users($mysqli); ?></div>
+                </div>
+                <div>                                    
+                    <div class="widget-title">New Today</div>
+                    <div class="widget-subtitle">Visitors</div>
+                    <div class="widget-int"><?php echo get_new_users_number($mysqli); ?></div>
+                </div>
+            </div>                            
+            <div class="widget-controls">                                
+                <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+            </div>                             
+        </div>        
 		<!-- END WIDGET SLIDER -->
-
-</div>
-<!-- END WIDGETS -->  
+    </div>
+    <!-- END WIDGETS -->  
 
 	<div class="col-md-4">
 

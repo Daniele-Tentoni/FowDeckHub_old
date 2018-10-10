@@ -32,21 +32,19 @@
                 <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
-                        <a href="index.html">Fow Deck Hub</a>
+                        <a href="index.php">Fow Deck Hub</a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
 					<?php
 					if(isset($login_checked) && $login_checked) {
-						?>
-						<li class="xn-profile">
-							<div class="profile">
-								<div class="profile-data">
-									<div class="profile-data-name"><?php echo $_SESSION['user_name']; ?></div>
-									<div class="profile-data-title"><?php echo $_SESSION['user_title']; ?></div>
-								</div>
-							</div>                                                                        
-						</li>
-						<?php
+						echo "<li class=\"xn-profile\">";
+						echo "	<div class=\"profile\">";
+						echo "		<div class=\"profile-data\">";
+						echo "			<div class=\"profile-data-name\">" . $_SESSION['user_name'] . "</div>";
+						echo "			<div class=\"profile-data-title\">" . $_SESSION['user_title'] . "</div>";
+						echo "		</div>";
+						echo "	</div>";                                                                        
+						echo "</li>";
 					}
 					?>
                     <li class="xn-title">Navigation</li>

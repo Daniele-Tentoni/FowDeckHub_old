@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
+sec_session_start();
 if(login_check($mysqli) || TEST) {
 	$login_checked = true;
 } else {
