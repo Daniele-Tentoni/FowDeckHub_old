@@ -32,34 +32,19 @@
                 <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
-                        <a href="index.html">Joli Admin</a>
+                        <a href="index.php">Fow Deck Hub</a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
 					<?php
-					if(check_session("user_name")) {
-						?>
-						<li class="xn-profile">
-							<a href="#" class="profile-mini">
-								<img src="<?php load_session("user_avatar_img"); ?>" alt="<?php load_session("user_avatar_img_alt"); ?>"/>
-							</a>
-							<div class="profile">
-								<div class="profile-image">
-									<img src="<?php load_session("user_avatar_img"); ?>" alt="<?php load_session("user_avatar_img_alt"); ?>"/>
-								</div>
-								<div class="profile-data">
-									<div class="profile-data-name"><?php load_session("user_name"); ?></div>
-									<div class="profile-data-title"><?php load_session("user_title"); ?></div>
-								</div>
-								<div class="profile-controls">
-									<a href="pages-profile.html" class="profile-control-left"><span class="fa fa-info"></span></a>
-									<a href="pages-messages.html" class="profile-control-right"><span class="fa fa-envelope"></span></a>
-								</div>
-							</div>                                                                        
-						</li>
-						<?php
-					} else {
-						?>
-						<?php
+					if(isset($login_checked) && $login_checked) {
+						echo "<li class=\"xn-profile\">";
+						echo "	<div class=\"profile\">";
+						echo "		<div class=\"profile-data\">";
+						echo "			<div class=\"profile-data-name\">" . $_SESSION['user_name'] . "</div>";
+						echo "			<div class=\"profile-data-title\">" . $_SESSION['user_title'] . "</div>";
+						echo "		</div>";
+						echo "	</div>";                                                                        
+						echo "</li>";
 					}
 					?>
                     <li class="xn-title">Navigation</li>
@@ -98,7 +83,7 @@
                     <!-- END TOGGLE NAVIGATION -->
                     <!-- SIGN IN/OUT -->
                     <?php
-					if(check_session("user_name")){
+					if(isset($login_checked) && $login_checked){
 						?>
 						<li class="xn-icon-button pull-right">
 							<a href="#" class="mb-control" data-box="#mb-signout"><span class="fa fa-sign-out"></span></a>
@@ -107,10 +92,10 @@
 					} else {
 						?>
 						<li class="xn-icon-button pull-right">
-							<a href="login.php" class="mb-control" data-box="#mb-signin"><span class="fa fa-sign-in"></span></a>
+							<a href="login.php" class=""><span class="fa fa-sign-in"></span></a>
 						</li>
 						<li class="xn-icon-button pull-right">
-							<a href="#" class="mb-control" data-box="#mb-signin"><span class="fa fa-plus"></span></a>
+							<a href="register.php" class=""><span class="fa fa-plus"></span></a>
 						</li>
 						<?php
 					}
@@ -118,7 +103,7 @@
                     <!-- END SIGN OUT -->
                     <!-- MESSAGES -->
 					<?php
-					if(check_session("user_name")) {
+					if(isset($login_checked) && $login_checked) {
 						?>
 						<li class="xn-icon-button pull-right">
 							<a href="#"><span class="fa fa-comments"></span></a>
