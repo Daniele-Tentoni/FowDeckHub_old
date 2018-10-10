@@ -78,11 +78,18 @@ function checkbrute($user_id, $mysqli) {
 }
 
 function login_check($mysqli) {
-    // Se sono in test confermo il login.
+    // Se sono in test lo eseguo.
     if(TEST) {
-        return true;
+        if(isset($_SESSION['user_id'], $_SESSION['user_name'], $_SESSION['login_string'])) {
+            return true;
+        } else {
+            if(login("a@a.com", TEST_PWD, $mysqli) == "eseguito") {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
-    
     // Verifica che tutte le variabili di sessione siano impostate correttamente
     if(isset($_SESSION['user_id'], $_SESSION['user_name'], $_SESSION['login_string'])) {
         $user_id = $_SESSION['user_id'];
@@ -102,7 +109,7 @@ function login_check($mysqli) {
                     // Login eseguito!!!!
                     return true;
                 } else {
-                    //  Login non eseguito
+                    //  Login non eseguito.
                     return false;
                 }
             } else {
@@ -115,6 +122,7 @@ function login_check($mysqli) {
         }
     } else {
         // Login non eseguito
+        echo TEST;
         return false;
     }
 }
