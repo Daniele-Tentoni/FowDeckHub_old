@@ -30,9 +30,9 @@
 											<th>User Name</th>
 											<th>First Name</th>
 											<th>Last Name</th>
+											<th width="90">Register Date</th>
 											<th width="90">Status</th>
-											<th width="90">Decklists</th>
-											<th width="90">Last Access</th>
+											<th width="90">Role</th>
 											<th width="150">Actions</th>
 										</tr>
 									</thead>
@@ -79,35 +79,4 @@
 <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
 
 <script type="text/javascript" src="js/demo_tables.js"></script>
-<script type="text/javascript">
-	$.ajax({
-		type: "GET",
-		url: "loaders/load_users.php",
-		dataType: "json",
-		data: "",
-		success:function(result){
-			if(result["result"] === true) {
-				result["content"].forEach(function (item) {
-					console.log(item);
-					var riga = "<tr>";
-					riga += "<td>" + item["Id"] + "</td>";
-					riga += "<td>" + item["Username"] + "</td>";
-					riga += "<td>" + item["FirstName"] + "</td>";
-					riga += "<td>" + item["LastName"] + "</td>";
-					riga += "<td>" + item["RegisterDate"] + "</td>";
-					riga += "<td>" + item["Role"] + "</td>";
-					riga += "</tr>";
-					$("#users_table_body").append(riga);
-				});
-			} else if(result["result"] === false) {
-				console.log("Fallimento");
-				$("#users_panel_body").append(result["Errore"]);
-			}
-		},
-		error:function(result){
-			console.log(result);
-			$(result).appendTo($("#users_panel_body"));
-		}
-	});
-</script>
 <!-- END THIS PAGE PLUGINS-->  
