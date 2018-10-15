@@ -30,7 +30,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-md-12">
-								<input id="password" type="password" class="form-control" placeholder="Password"/>
+								<input id="password" type="password" class="form-control" placeholder="Password" autocomplete="false" />
 							</div>
 						</div>
 						<div class="form-group">
