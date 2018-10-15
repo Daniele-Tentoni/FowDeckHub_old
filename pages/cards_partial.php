@@ -23,7 +23,7 @@
 
 						<div class="panel-heading">
 							<h3 class="panel-title">Cards</h3>
-							<button type="button" class="btn btn-primary btn-rounded pull-right" onClick="new_row();"><i class="fa fa-plus"></i>New</button>
+							<button type="button" class="btn btn-primary btn-rounded pull-right" data-toggle="modal" data-target="#modal_new_card"><i class="fa fa-plus"></i>New</button>
 						</div>
 
 						<div class="panel-body panel-body-table">
@@ -33,7 +33,7 @@
 									<thead>
 										<tr>
 											<th>Card Name</th>
-											<th width="120">Number</th>
+											<th width="120">Code</th>
 											<th width="90">Type</th>
 											<th width="80">Cost</th>
 											<th width="90">Attribute</th>
@@ -123,173 +123,193 @@
 <!-- END MESSAGE BOX-->
 
 <!-- NEW MESSAGE BOX-->
-<div class="message-box animated fadeIn" data-sound="alert" id="mb-new-row">
-	<div class="mb-container">
-		<div class="mb-middle">
-			<div class="mb-title"><span class="fa fa-plus"></span> New <strong>Card</strong> ?</div>
-			<div class="mb-content">
-				<form id="new-item" action="adders/add_card.php" method="post" autocomplete="false">
-					<div class="form-group">
+<div class="modal" data-sound="alert" id="modal_new_card">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+				<h4 class="modal-title" id="defModalHead">Add new card</h4></div>
+			<div class="modal-body">
+				<form class="form-horizontal" id="new-item" action="adders/add_card.php" method="post" autocomplete="false" role="form"><!--
+					Id (for future images)
+					--><div class="form-group">
+						<div class="col-md-12">
+							<input id="Number" type="number" class="form-control add-item" placeholder="Id"/>
+						</div>
+					</div><!--
+					CardName
+					--><div class="form-group">
 						<div class="col-md-12">
 							<input id="CardName" type="text" class="form-control add-item" placeholder="Card Name"/>
 						</div>
-					</div>
-					<div class="form-group">
+					</div><!--
+					Set
+					--><div class="form-group">
+						<label for="Set" class="col-md-12 control-label">Set</label>
 						<div class="col-md-12">
 							<select class="form-control add-item" id="Set" name="Set" placeholder="Set">
 								<option value="0" selected>-- Set --</option>
 							</select>
 						</div>
-					</div>
 					
-					<script type="text/javascript">
-						$(document).ready(function (){
-							$.ajax({
-								/*
-								 * Carico i set disponibili nel sito.
-								 */
-								type: "GET",
-								url: "loaders/load_sets.php",
-								dataType: "json",
-								data: "",
-								success:function(result){
-									if(result["result"] === true) {
-										result["content"].forEach(function (item) {
-											var riga = "<option value=\"" + item["Code"] + "\">" + item["Code"] + " - " + item["Name"] + "</option>";
-											$(riga).appendTo($("#Set"));
-										});
-									} else if(result["result"] === false) {
-										console.log("Fallimento");
+						<script type="text/javascript">
+							$(document).ready(function (){
+								$.ajax({
+									/*
+									 * Carico i set disponibili nel sito.
+									 */
+									type: "GET",
+									url: "loaders/load_sets.php",
+									dataType: "json",
+									data: "",
+									success:function(result){
+										if(result["result"] === true) {
+											result["content"].forEach(function (item) {
+												var riga = "<option value=\"" + item["Code"] + "\">" + item["Code"] + " - " + item["Name"] + "</option>";
+												$(riga).appendTo($("#Set"));
+											});
+										} else if(result["result"] === false) {
+											console.log("Fallimento");
+										}
+									},
+									error:function(result){
+										console.log("Errore set.");
+										console.log(result);
 									}
-								},
-								error:function(result){
-									console.log("Errore set.");
-									console.log(result);
-								}
+								});
 							});
-						});
-					</script>
-					<div class="form-group">
+						</script>
+					</div><!--
+					Number
+					--><div class="form-group">
 						<div class="col-md-12">
-							<input id="Number" type="text" class="form-control add-item" placeholder="Number"/>
+							<input id="Number" type="number" class="form-control add-item" placeholder="Number"/>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-md-12 control-label">Type</label>
-						<div class="col-md-9">
-							<select multiple id="Type" class="form-control select add-item" data-style="btn-success">
+					</div><!--
+					Type
+					--><div class="form-group">
+						<label for="Type" class="col-md-12 control-label">Type</label>
+						<div class="col-md-12">
+							<select multiple id="Type" name="Type" class="form-control select add-item" data-style="btn-success">
 								<option value="0">-- Type --</option>
 							</select>
 						</div>
-					</div>  
 					
-					<script type="text/javascript">
-						$(document).ready(function (){
-							$.ajax({
-								/*
-								 * Carico i tipi disponibili nel sito.
-								 */
-								type: "GET",
-								url: "loaders/load_types.php",
-								dataType: "json",
-								data: "",
-								success:function(result){
-									if(result["result"] === true) {
-										result["content"].forEach(function (item) {
-											var riga = "<option value=\"" + item["Id"] + "\">" + item["Name"] + "</option>";
-											$(riga).appendTo($("#Type"));
-										});
-									} else if(result["result"] === false) {
-										console.log("Fallimento");
+						<script type="text/javascript">
+							$(document).ready(function (){
+								$.ajax({
+									/*
+									 * Carico i tipi disponibili nel sito.
+									 */
+									type: "GET",
+									url: "loaders/load_types.php",
+									dataType: "json",
+									data: "",
+									success:function(result){
+										if(result["result"] === true) {
+											debugger;
+											result["content"].forEach(function (item) {
+												var riga = "<option value=\"" + item["Id"] + "\">" + item["Name"] + "</option>";
+												$(riga).appendTo($("#Type"));
+											});
+										} else if(result["result"] === false) {
+											console.log("Fallimento");
+										}
+									},
+									error:function(result){
+										console.log("Errore tipi.");
+										console.log(result);
 									}
-								},
-								error:function(result){
-									console.log("Errore tipi.");
-									console.log(result);
-								}
+								});
 							});
-						});
-					</script>
-					<div class="form-group">
+						</script>
+					</div><!--
+					Cost
+					--><div class="form-group">
 						<div class="col-md-12">
 							<input id="Cost" type="text" class="form-control add-item" placeholder="Cost"/>
 						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-md-12 control-label">Attribute</label>
+					</div><!--
+					Attributes
+					--><div class="form-group">
+						<label class="col-md-12 control-label">Attributes</label>
 						<div class="col-md-9">
-							<select multiple id="Attribute" class="form-control select add-item" data-style="btn-success">
-								<option value="0">-- Attribute --</option>
+							<select multiple id="Attributes" class="form-control select add-item" data-style="btn-success">
+								<option value="0">-- Attributes --</option>
 							</select>
 						</div>
-					</div> 
 					
-					<script type="text/javascript">
-						$(document).ready(function (){
-							$.ajax({
-								/*
-								 * Carico gli attributi disponibili nel sito.
-								 */
-								type: "GET",
-								url: "loaders/load_attributes.php",
-								dataType: "json",
-								data: "",
-								success:function(result){
-									if(result["result"] === true) {
-										result["content"].forEach(function (item) {
-											var riga = "<option value=\"" + item["Id"] + "\">" + item["Name"] + "</option>";
-											$(riga).appendTo($("#Attribute"));
-										});
-									} else if(result["result"] === false) {
-										console.log("Fallimento");
+						<script type="text/javascript">
+							$(document).ready(function (){
+								$.ajax({
+									/*
+									 * Carico gli attributi disponibili nel sito.
+									 */
+									type: "GET",
+									url: "loaders/load_attributes.php",
+									dataType: "json",
+									data: "",
+									success:function(result){
+										if(result["result"] === true) {
+											result["content"].forEach(function (item) {
+												var riga = "<option value=\"" + item["Id"] + "\">" + item["Name"] + "</option>";
+												$(riga).appendTo($("#Attributes"));
+											});
+										} else if(result["result"] === false) {
+											console.log("Fallimento");
+										}
+									},
+									error:function(result){
+										console.log("Errore attributi.");
+										console.log(result);
 									}
-								},
-								error:function(result){
-									console.log("Errore attributi.");
-									console.log(result);
-								}
+								});
 							});
-						});
-					</script>
-					<div class="form-group">
+						</script>
+					</div><!--
+					Rarity
+					--><div class="form-group">
 						<label class="col-md-12 control-label">Rarity</label>
 						<div class="col-md-9">
 							<select multiple id="Rarity" class="form-control select add-item" data-style="btn-success">
 								<option value="0">-- Rarity --</option>
 							</select>
 						</div>
-					</div>
 					
-					<script type="text/javascript">
-						$(document).ready(function (){
-							$.ajax({
-								/*
-								 * Carico i tipi disponibili nel sito.
-								 */
-								type: "GET",
-								url: "loaders/load_rarity.php",
-								dataType: "json",
-								data: "",
-								success:function(result){
-									if(result["result"] === true) {
-										result["content"].forEach(function (item) {
-											var riga = "<option value=\"" + item["Id"] + "\">" + item["Name"] + "</option>";
-											$(riga).appendTo($("#Rarity"));
-										});
-									} else if(result["result"] === false) {
-										console.log("Fallimento");
+						<script type="text/javascript">
+							$(document).ready(function (){
+								$.ajax({
+									/*
+									 * Carico i tipi disponibili nel sito.
+									 */
+									type: "GET",
+									url: "loaders/load_rarity.php",
+									dataType: "json",
+									data: "",
+									success:function(result){
+										if(result["result"] === true) {
+											result["content"].forEach(function (item) {
+												var riga = "<option value=\"" + item["Id"] + "\">" + item["Symbol"] + " - " + item["Name"] + "</option>";
+												$(riga).appendTo($("#Rarity"));
+											});
+										} else if(result["result"] === false) {
+											console.log("Fallimento");
+										}
+									},
+									error:function(result){
+										console.log("Errore rarità.");
+										console.log(result);
 									}
-								},
-								error:function(result){
-									console.log("Errore rarità.");
-									console.log(result);
-								}
+								});
 							});
-						});
-					</script>
+						</script>
+					</div>
 				</form>
 			</div>
-			<div class="mb-footer">
+			<div class="modal-footer">
 				<div class="pull-right">
 					<button class="btn btn-success btn-lg mb-control-yes">Add</button>
 					<button class="btn btn-default btn-lg mb-control-close">Exit</button>
