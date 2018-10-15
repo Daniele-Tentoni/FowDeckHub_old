@@ -23,7 +23,7 @@
 
 						<div class="panel-heading">
 							<h3 class="panel-title">Cards</h3>
-							<button type="button" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i>New</button>
+							<button type="button" class="btn btn-primary btn-rounded pull-right" onClick="new_row();"><i class="fa fa-plus"></i>New</button>
 						</div>
 
 						<div class="panel-body panel-body-table">
@@ -43,7 +43,7 @@
 											<th width="150">Actions</th>
 										</tr>
 									</thead>
-									<tbody>                                            
+									<tbody id="cards-table-body">                                            
 										<tr id="trow_1">
 											<td class="text-center">1</td>
 											<td><strong>Alleato della Luna Nera / Mikage Sejuro, l'Eterno Vampiro</strong></td>
@@ -59,6 +59,49 @@
 											</td>
 										</tr>
 									</tbody>
+									<script type="text/javascript">
+									$(document).ready(function () {
+										var actionText = "<button class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></button> <button class=\"btn btn-danger btn-rounded btn-sm\" onClick=\"delete_row('trow_1');\"><span class=\"fa fa-times\"></span> </button>";
+										$.ajax({
+											type: "GET",
+											url: "loaders/load_cards.php",
+											dataType: "json",
+											data: "",
+											success:function(result){
+												if(result["result"] === true) {
+													result["content"].forEach(function (item) {
+														console.log(item);
+														var riga = "<tr>";
+														riga += "<td>" + item["Id"] + "</td>";
+														riga += "<td>" + item["Name"] + "</td>";
+														riga += "<td>" + item["Set"] + "</td>";
+														riga += "<td>" + item["Number"] + "</td>";
+														riga += "<td>" + item["Type"] + "</td>";
+														riga += "<td>" + item["Cost"] + "</td>";
+														var classToAdd = "";
+														if(item["Attribute"] === "1") {
+															classToAdd = "label label-warning";
+														} else {
+															classToAdd = "label label-success";
+														}
+														riga += "<td><span class=\"" + classToAdd + "\">" + item["Attribute"] + "</span></td>";
+														riga += "<td>" + item["Rarity"] + "</td>";
+														riga += "<td>" + actionText + "</td>";
+														riga += "</tr>";
+														$("#cards-table-body").append(riga);
+													});
+												} else if(result["result"] === false) {
+													console.log("Fallimento");
+													$("#cards-table-body").append(result["Errore"]);
+												}
+											},
+											error:function(result){
+												console.log(result);
+												$(result).appendTo($("#cards-table-body"));
+											}
+										});
+									});
+									</script>
 								</table>
 							</div>                                
 
@@ -76,7 +119,7 @@
 </div>
 <!-- END PAGE CONTAINER -->    
 
-<!-- MESSAGE BOX-->
+<!-- REMOVE MESSAGE BOX-->
 <div class="message-box animated fadeIn" data-sound="alert" id="mb-remove-row">
 	<div class="mb-container">
 		<div class="mb-middle">
@@ -89,6 +132,61 @@
 				<div class="pull-right">
 					<button class="btn btn-success btn-lg mb-control-yes">Yes</button>
 					<button class="btn btn-default btn-lg mb-control-close">No</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END MESSAGE BOX-->
+
+<!-- NEW MESSAGE BOX-->
+<div class="message-box animated fadeIn" data-sound="alert" id="mb-new-row">
+	<div class="mb-container">
+		<div class="mb-middle">
+			<div class="mb-title"><span class="fa fa-plus"></span> New <strong>Card</strong> ?</div>
+			<div class="mb-content">
+				<form id="new-item" action="loaders/new_card.php" method="post" autocomplete="false">
+					<div class="form-group">
+						<div class="col-md-12">
+							<input id="CardName" type="text" class="form-control add-item" placeholder="Card Name"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12">
+							<input id="Set" type="text" class="form-control add-item" placeholder="Set"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12">
+							<input id="Number" type="text" class="form-control add-item" placeholder="Number"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12">
+							<input id="Type" type="text" class="form-control add-item" placeholder="Type"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12">
+							<input id="Cost" type="text" class="form-control add-item" placeholder="Cost"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12">
+							<input id="Attribute" type="text" class="form-control add-item" placeholder="Attribute"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-12">
+							<input id="Rarity" type="text" class="form-control add-item" placeholder="Rarity"/>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="mb-footer">
+				<div class="pull-right">
+					<button class="btn btn-success btn-lg mb-control-yes">Add</button>
+					<button class="btn btn-default btn-lg mb-control-close">Exit</button>
 				</div>
 			</div>
 		</div>

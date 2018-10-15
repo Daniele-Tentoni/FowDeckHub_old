@@ -6,7 +6,7 @@ if($conn->connect_error){
 	$msg["error"] = "Connect Error";
 	$msg["result"] = false;
 } else {
-	$query = "SELECT u.Id, u.Username, u.FirstName, u.LastName, u.RegisterDate, r.Name as Role, MAX(dataaccesso) as LastAccess FROM users u, roles r, login_attempts a WHERE u.Role = r.Id AND a.userid = u.Id AND a.risultato GROUP BY u.Id";
+	$query = "SELECT c.Id, c.Name, c.Set, c.Number, c.Type, c.Cost, c.Attribute, c.Rarity FROM cards c, card_sets s WHERE c.Set = s.Code";
 	$stmt = $conn->prepare($query);
 	$stmt->execute();
 	$result = $stmt->get_result();
@@ -14,12 +14,13 @@ if($conn->connect_error){
 		$msg["content"] = array();
 		while($row = $result->fetch_assoc()) {
 			$stringa["Id"] = $row["Id"];
-			$stringa["Username"] = $row["Username"];
-			$stringa["FirstName"] = $row["FirstName"];
-			$stringa["LastName"] = $row["LastName"];
-			$stringa["RegisterDate"] = $row["RegisterDate"];
-			$stringa["LastAccess"] = $row["LastAccess"];
-			$stringa["Role"] = $row["Role"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Set"] = $row["Set"];
+			$stringa["Number"] = $row["Number"];
+			$stringa["Type"] = $row["Type"];
+			$stringa["Cost"] = $row["Cost"];
+			$stringa["Attribute"] = $row["Attribute"];
+			$stringa["Rarity"] = $row["Rarity"];
 			array_push($msg["content"], $stringa);
 		}
 	}
