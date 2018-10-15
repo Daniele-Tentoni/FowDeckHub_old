@@ -32,13 +32,13 @@ function new_row() {
 			type: method,
 			url: action,
 			dataType: "json",
-			data: values,
-			success:function(result) {
-				console.log(result);
+			data: "data=" + values,
+			success:function(msg) {
+				console.log(msg);
 				console.log("success");
 			},
-			error:function(result) {
-				console.log(result);
+			error:function(msg) {
+				console.log(msg);
 				console.log("error");
 			}
 		});
