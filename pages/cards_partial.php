@@ -133,7 +133,7 @@
 				</button>
 				<h4 class="modal-title" id="defModalHead">Add new card</h4></div>
 			<div class="modal-body">
-				<form class="form-horizontal" id="new-item" action="adders/add_card.php" method="post" autocomplete="false" role="form"><!--
+				<form class="form-horizontal" id="new-item" action="adders/add_card.php" method="POST" autocomplete=false role="form"><!--
 					Id (for future images)
 					--><div class="form-group">
 						<div class="col-md-12">
@@ -142,6 +142,7 @@
 					</div><!--
 					CardName
 					--><div class="form-group">
+						<label for="CardName" class="col-md-12 control-label">Card Name</label>
 						<div class="col-md-12">
 							<input id="CardName" type="text" class="form-control add-item" placeholder="Card Name"/>
 						</div>
@@ -151,37 +152,28 @@
 						<label for="Set" class="col-md-12 control-label">Set</label>
 						<div class="col-md-12">
 							<select class="form-control add-item" id="Set" name="Set" placeholder="Set">
-								<option value="0" selected>-- Set --</option>
+								<?php
+								// Essendo la prima query apro la connessione.
+								$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+								if($conn->connect_error){
+									echo "<option value=\"0\">-- Connection Error --</option>";
+								} else {
+									$query = "SELECT s.Code, s.Name
+											FROM card_sets s";
+									$stmt = $conn->prepare($query);
+									$stmt->execute();
+									$result = $stmt->get_result();
+									if($result->num_rows > 0) {
+										while($row = $result->fetch_assoc()) {
+											echo "<option value=\"" . $row["Code"] . "\">" . $row["Name"] . "</option>";
+										}
+									} else {
+										echo "<option value=\"0\">-- No Result --</option>";
+									}
+								}
+								?>
 							</select>
 						</div>
-					
-						<script type="text/javascript">
-							$(document).ready(function (){
-								$.ajax({
-									/*
-									 * Carico i set disponibili nel sito.
-									 */
-									type: "GET",
-									url: "loaders/load_sets.php",
-									dataType: "json",
-									data: "",
-									success:function(result){
-										if(result["result"] === true) {
-											result["content"].forEach(function (item) {
-												var riga = "<option value=\"" + item["Code"] + "\">" + item["Code"] + " - " + item["Name"] + "</option>";
-												$(riga).appendTo($("#Set"));
-											});
-										} else if(result["result"] === false) {
-											console.log("Fallimento");
-										}
-									},
-									error:function(result){
-										console.log("Errore set.");
-										console.log(result);
-									}
-								});
-							});
-						</script>
 					</div><!--
 					Number
 					--><div class="form-group">
@@ -193,42 +185,34 @@
 					--><div class="form-group">
 						<label for="Type" class="col-md-12 control-label">Type</label>
 						<div class="col-md-12">
-							<select multiple id="Type" name="Type" class="form-control select add-item" data-style="btn-success">
-								<option value="0">-- Type --</option>
+							<select multiple id="Type" name="Type" class="form-control add-item" data-style="btn-success">
+								<?php
+								$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+								$msg = array();
+								$msg["result"] = true;
+								if($conn->connect_error){
+									echo "<option value=\"0\">-- Connection Error --</option>";
+								} else {
+									$query = "SELECT t.Id, t.Name
+												FROM types t";
+									$stmt = $conn->prepare($query);
+									$stmt->execute();
+									$result = $stmt->get_result();
+									if($result->num_rows > 0) {
+										while($row = $result->fetch_assoc()) {
+											echo "<option value=\"" . $row["Id"] . "\">" . $row["Name"] . "</option>";
+										}
+									} else {
+										echo "<option value=\"0\">-- No Result --</option>";
+									}
+								}
+								?>
 							</select>
 						</div>
-					
-						<script type="text/javascript">
-							$(document).ready(function (){
-								$.ajax({
-									/*
-									 * Carico i tipi disponibili nel sito.
-									 */
-									type: "GET",
-									url: "loaders/load_types.php",
-									dataType: "json",
-									data: "",
-									success:function(result){
-										if(result["result"] === true) {
-											debugger;
-											result["content"].forEach(function (item) {
-												var riga = "<option value=\"" + item["Id"] + "\">" + item["Name"] + "</option>";
-												$(riga).appendTo($("#Type"));
-											});
-										} else if(result["result"] === false) {
-											console.log("Fallimento");
-										}
-									},
-									error:function(result){
-										console.log("Errore tipi.");
-										console.log(result);
-									}
-								});
-							});
-						</script>
 					</div><!--
 					Cost
 					--><div class="form-group">
+						<label for="Cost" class="col-md-12 control-label">Cost</label>
 						<div class="col-md-12">
 							<input id="Cost" type="text" class="form-control add-item" placeholder="Cost"/>
 						</div>
@@ -237,82 +221,65 @@
 					--><div class="form-group">
 						<label class="col-md-12 control-label">Attributes</label>
 						<div class="col-md-9">
-							<select multiple id="Attributes" class="form-control select add-item" data-style="btn-success">
-								<option value="0">-- Attributes --</option>
+							<select multiple id="Attributes" class="form-control add-item" data-style="btn-success">
+								<?php
+								if($conn->connect_error){
+									echo "<option value=\"0\">-- Connection Error --</option>";
+								} else {
+									$query = "SELECT a.Id, a.Name
+												FROM attributes a";
+									$stmt = $conn->prepare($query);
+									$stmt->execute();
+									$result = $stmt->get_result();
+									if($result->num_rows > 0) {
+										$msg["content"] = array();
+										while($row = $result->fetch_assoc()) {
+											echo "<option value=\"" . $row["Id"] . "\">" . $row["Name"] . "</option>";
+										}
+									} else {
+										echo "<option value=\"0\">-- No Result --</option>";
+									}
+								}
+								?>
 							</select>
 						</div>
-					
-						<script type="text/javascript">
-							$(document).ready(function (){
-								$.ajax({
-									/*
-									 * Carico gli attributi disponibili nel sito.
-									 */
-									type: "GET",
-									url: "loaders/load_attributes.php",
-									dataType: "json",
-									data: "",
-									success:function(result){
-										if(result["result"] === true) {
-											result["content"].forEach(function (item) {
-												var riga = "<option value=\"" + item["Id"] + "\">" + item["Name"] + "</option>";
-												$(riga).appendTo($("#Attributes"));
-											});
-										} else if(result["result"] === false) {
-											console.log("Fallimento");
-										}
-									},
-									error:function(result){
-										console.log("Errore attributi.");
-										console.log(result);
-									}
-								});
-							});
-						</script>
 					</div><!--
 					Rarity
 					--><div class="form-group">
 						<label class="col-md-12 control-label">Rarity</label>
 						<div class="col-md-9">
-							<select multiple id="Rarity" class="form-control select add-item" data-style="btn-success">
-								<option value="0">-- Rarity --</option>
+							<select id="Rarity" class="form-control add-item" data-style="btn-success">
+								<?php
+								if($conn->connect_error){
+									echo "<option value=\"0\">-- Connection Error --</option>";
+								} else {
+									$query ="SELECT r.Id, r.Name, r.Symbol
+												FROM rarity r";
+									$stmt = $conn->prepare($query);
+									$stmt->execute();
+									$result = $stmt->get_result();
+									if($result->num_rows > 0) {
+										while($row = $result->fetch_assoc()) {
+											echo "<option value=\"" . $row["Id"] . "\">" . $row["Symbol"] . " - " . $row["Name"] . "</option>";
+										}
+									} else {
+										echo "<option value=\"0\">-- No Result --</option>";
+									}
+								}
+								// Essendo l'ultima query chiudo questa connessione.
+								if(isset($conn)){
+									$conn->close();
+								}
+								?>
 							</select>
 						</div>
-					
-						<script type="text/javascript">
-							$(document).ready(function (){
-								$.ajax({
-									/*
-									 * Carico i tipi disponibili nel sito.
-									 */
-									type: "GET",
-									url: "loaders/load_rarity.php",
-									dataType: "json",
-									data: "",
-									success:function(result){
-										if(result["result"] === true) {
-											result["content"].forEach(function (item) {
-												var riga = "<option value=\"" + item["Id"] + "\">" + item["Symbol"] + " - " + item["Name"] + "</option>";
-												$(riga).appendTo($("#Rarity"));
-											});
-										} else if(result["result"] === false) {
-											console.log("Fallimento");
-										}
-									},
-									error:function(result){
-										console.log("Errore rarità.");
-										console.log(result);
-									}
-								});
-							});
-						</script>
 					</div>
 				</form>
 			</div>
 			<div class="modal-footer">
 				<div class="pull-right">
-					<button class="btn btn-success btn-lg mb-control-yes">Add</button>
-					<button class="btn btn-default btn-lg mb-control-close">Exit</button>
+					<button class="btn btn-success btn-lg" onclick="new_row('true')">Add</button>
+					<button class="btn btn-default btn-lg" data-dismiss="modal">Exit</button>
 				</div>
 			</div>
 		</div>
