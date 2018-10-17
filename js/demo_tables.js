@@ -10,39 +10,37 @@ function delete_row(row) {
 	});
 }
 
-function new_row() {
-	var box = $("#mb-new-row");
-	box.addClass("open");
-
-	box.find(".mb-control-yes").on("click",function(){
-		box.removeClass("open");
-		// Recupero i valori dal form.
-		var values = [];
-		$(".add-item").each(function(e) {
-			values.push($(this).val());
-			console.log($(this).val());
-		});
-		console.log(values);
-		
-		var form = $("#new-item");
-		var action = form.attr("action");
-		var method = form.attr("method");
-		
-		$.ajax({
-			type: method,
-			url: action,
-			dataType: "json",
-			data: "data=" + values,
-			success:function(msg) {
-				console.log(msg);
-				console.log("success");
-			},
-			error:function(msg) {
-				console.log(msg);
-				console.log("error");
-			}
-		});
+function new_row(clear) {
+	// Recupero i valori dal form.
+	var values = [];
+	$(".add-item").each(function(e) {
+		values.push($(this).val());
+		console.log($(this).val());
 	});
+	console.log(values);
+
+	var form = $("#new-item");
+	var action = form.attr("action");
+	var method = form.attr("method");
+
+	$.ajax({
+		type: method,
+		url: action,
+		dataType: "json",
+		data: "data=" + values,
+		success:function(msg) {
+			console.log(msg);
+			console.log("success");
+		},
+		error:function(msg) {
+			console.log(msg);
+			console.log("error");
+		}
+	});
+
+	if(clear == true) {
+		$(".add-item").val("");
+	}
 }
 
 $(document).ready(function () {
