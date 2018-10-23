@@ -10,7 +10,7 @@
                 $now = time();
                 // Recupero il numero di tutti i login effettuari nell'ultimo giorno.
                 $valid_attempts = $now - (24 * 60 * 60); 
-                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM login_attempts WHERE dataaccesso > '$valid_attempts'")) {
+                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM login_attempts WHERE dataaccesso > '$valid_attempts' AND Risultato = 1")) {
                     // Eseguo la query creata.
                     $stmt->execute();
                     $stmt->store_result();
@@ -32,7 +32,7 @@
                 $now = time();
                 // Recupero il numero di tutti i login effettuari nell'ultimo mese.
                 $valid_attempts = $now - (30 * 24 * 60 * 60); 
-                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM login_attempts WHERE dataaccesso > '$valid_attempts'")) {
+                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM login_attempts WHERE dataaccesso > '$valid_attempts' AND Risultato = 1")) {
                     // Eseguo la query creata.
                     $stmt->execute();
                     $stmt->store_result();
@@ -51,7 +51,7 @@
             <div class="widget-int">
                 <?php
                 // Recupero il numero totale di tutti i visitatori.
-                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM login_attempts")) { 
+                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM login_attempts WHERE Risultato = 1")) { 
                     // Eseguo la query creata.
                     $stmt->execute();
                     $stmt->store_result();

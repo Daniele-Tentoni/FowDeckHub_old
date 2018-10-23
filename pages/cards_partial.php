@@ -36,22 +36,11 @@
 											<th width="120">Code</th>
 											<th width="90">Type</th>
 											<th width="80">Cost</th>
-											<th width="90">Attribute</th>
+											<th width="90">Attributes</th>
 											<th width="150">Actions</th>
 										</tr>
 									</thead>
-									<tbody id="cards-table-body">                                            
-										<tr id="trow_0">
-											<td><strong>Carta di prova</strong></td>
-											<td>ASAP-002 R</td>
-											<td><span class="label label-success">Ruler / J-Ruler</span></td>
-											<td>1BB</td>
-											<td>Darkness</td>
-											<td>
-												<button class="btn btn-default btn-rounded btn-sm"><span class="fa fa-pencil"></span></button>
-												<button class="btn btn-danger btn-rounded btn-sm" onClick="delete_row('trow_0');"><span class="fa fa-times"></span></button>
-											</td>
-										</tr>
+									<tbody id="cards-table-body">
 									</tbody>
 									<script type="text/javascript">
 									$(document).ready(function () {
@@ -136,15 +125,16 @@
 				<form class="form-horizontal" id="new-item" action="adders/add_card.php" method="POST" autocomplete=false role="form"><!--
 					Id (for future images)
 					--><div class="form-group">
+						<label for="CardName" class="col-md-12 control-label">Id</label>
 						<div class="col-md-12">
-							<input id="Number" type="number" class="form-control add-item" placeholder="Id"/>
+							<input id="Id" name="Id" type="number" class="form-control add-item" placeholder="Id"/>
 						</div>
 					</div><!--
 					CardName
 					--><div class="form-group">
 						<label for="CardName" class="col-md-12 control-label">Card Name</label>
 						<div class="col-md-12">
-							<input id="CardName" type="text" class="form-control add-item" placeholder="Card Name"/>
+							<input id="CardName" name="cardname" type="text" class="form-control add-item" placeholder="Card Name"/>
 						</div>
 					</div><!--
 					Set
@@ -181,35 +171,6 @@
 							<input id="Number" type="number" class="form-control add-item" placeholder="Number"/>
 						</div>
 					</div><!--
-					Type
-					--><div class="form-group">
-						<label for="Type" class="col-md-12 control-label">Type</label>
-						<div class="col-md-12">
-							<select multiple id="Type" name="Type" class="form-control add-item" data-style="btn-success">
-								<?php
-								$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-								$msg = array();
-								$msg["result"] = true;
-								if($conn->connect_error){
-									echo "<option value=\"0\">-- Connection Error --</option>";
-								} else {
-									$query = "SELECT t.Id, t.Name
-												FROM types t";
-									$stmt = $conn->prepare($query);
-									$stmt->execute();
-									$result = $stmt->get_result();
-									if($result->num_rows > 0) {
-										while($row = $result->fetch_assoc()) {
-											echo "<option value=\"" . $row["Id"] . "\">" . $row["Name"] . "</option>";
-										}
-									} else {
-										echo "<option value=\"0\">-- No Result --</option>";
-									}
-								}
-								?>
-							</select>
-						</div>
-					</div><!--
 					Cost
 					--><div class="form-group">
 						<label for="Cost" class="col-md-12 control-label">Cost</label>
@@ -217,37 +178,10 @@
 							<input id="Cost" type="text" class="form-control add-item" placeholder="Cost"/>
 						</div>
 					</div><!--
-					Attributes
-					--><div class="form-group">
-						<label class="col-md-12 control-label">Attributes</label>
-						<div class="col-md-9">
-							<select multiple id="Attributes" class="form-control add-item" data-style="btn-success">
-								<?php
-								if($conn->connect_error){
-									echo "<option value=\"0\">-- Connection Error --</option>";
-								} else {
-									$query = "SELECT a.Id, a.Name
-												FROM attributes a";
-									$stmt = $conn->prepare($query);
-									$stmt->execute();
-									$result = $stmt->get_result();
-									if($result->num_rows > 0) {
-										$msg["content"] = array();
-										while($row = $result->fetch_assoc()) {
-											echo "<option value=\"" . $row["Id"] . "\">" . $row["Name"] . "</option>";
-										}
-									} else {
-										echo "<option value=\"0\">-- No Result --</option>";
-									}
-								}
-								?>
-							</select>
-						</div>
-					</div><!--
 					Rarity
 					--><div class="form-group">
 						<label class="col-md-12 control-label">Rarity</label>
-						<div class="col-md-9">
+						<div class="col-md-12">
 							<select id="Rarity" class="form-control add-item" data-style="btn-success">
 								<?php
 								if($conn->connect_error){
@@ -275,6 +209,10 @@
 						</div>
 					</div>
 				</form>
+			</div>
+			<div class="e-panel panel" style="display:none">
+				<div class="e-body panel-body">
+				</div>
 			</div>
 			<div class="modal-footer">
 				<div class="pull-right">

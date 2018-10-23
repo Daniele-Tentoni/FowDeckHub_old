@@ -32,7 +32,7 @@
                 <!-- START X-NAVIGATION -->
                 <ul class="x-navigation">
                     <li class="xn-logo">
-                        <a href="index.php">Fow Deck Hub</a>
+                        <a href="index.php">Fow Deck Hub<?php if(TEST) echo "*"; ?></a>
                         <a href="#" class="x-navigation-control"></a>
                     </li>
 					<?php

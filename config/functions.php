@@ -30,7 +30,12 @@ function login($email, $password, $mysqli) {
                 return false;
             } else {
                 if($db_password == $password) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
-                    // Password corretta!            
+                    // Password corretta!       
+                    $successed = $mysqli->prepare("INSERT INTO login_attempts (UserId, Risultato) VALUES (?, 1)");
+                    $successed->bind_param("i", $idUser); // esegue il bind del parametro '$email'.
+                    $idUser = $user_id;     
+                    $successed->execute(); // esegue la query appena creata.
+					
                     $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
 
                     $user_id = preg_replace("/[^0-9]+/", "", $user_id); // ci proteggiamo da un attacco XSS
@@ -44,7 +49,7 @@ function login($email, $password, $mysqli) {
                 } else {
                     // Password incorretta.
                     // Registriamo il tentativo fallito nel database.
-                    $failed = $mysqli->prepare("INSERT INTO login_attempts (userid) VALUES (?)");
+                    $failed = $mysqli->prepare("INSERT INTO login_attempts (UserId) VALUES (?)");
                     $failed->bind_param("i", $idUser); // esegue il bind del parametro '$email'.
                     $idUser = $user_id;
                     $failed->execute(); // esegue la query appena creata.
@@ -63,7 +68,7 @@ function checkbrute($user_id, $mysqli) {
    $now = time();
    // Vengono analizzati tutti i tentativi di login a partire dalle ultime due ore.
    $valid_attempts = $now - (2 * 60 * 60); 
-   if ($stmt = $mysqli->prepare("SELECT dataaccesso FROM login_attempts WHERE user_id = ? AND dataaccesso > '$valid_attempts'")) { 
+   if ($stmt = $mysqli->prepare("SELECT DataAccesso FROM login_attempts WHERE UserId = ? AND DataAccesso > '$valid_attempts' AND Risultato = 0")) { 
       $stmt->bind_param('i', $user_id); 
       // Eseguo la query creata.
       $stmt->execute();
