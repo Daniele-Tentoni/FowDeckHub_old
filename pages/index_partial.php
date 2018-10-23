@@ -13,15 +13,17 @@
 	<div class="col-md-3">
 		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/users_widget.php'; ?>
     </div>
-    <!-- END WIDGETS -->  
+</div>
+<!-- END WIDGETS -->  
+<!-- START BLOCKS -->  
+<div class="row">
+	<div class="col-md-6">
 
-	<div class="col-md-4">
-
-		<!-- START PROJECTS BLOCK -->
+		<!-- START EVENTS BLOCK -->
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<div class="panel-title-box">
-					<h3>Events & Decklists</h3>
+					<h3>Events Filling</h3>
 					<span>Decklists Loading Activity</span>
 				</div>                                    
 				<ul class="panel-controls" style="margin-top: 2px;">
@@ -42,8 +44,8 @@
 					<table class="table table-bordered table-striped">
 						<thead>
 							<tr>
-								<th width="50%">Event</th>
-								<th width="20%">Status</th>
+								<th width="40%">Event</th>
+								<th width="30%">Status</th>
 								<th width="30%">Progress</th>
 							</tr>
 						</thead>
@@ -91,12 +93,93 @@
 
 			</div>
 		</div>
-		<!-- END PROJECTS BLOCK -->
+		<!-- END EVENTS BLOCK -->
+
+	</div>
+	
+	<div class="col-md-6">
+
+		<!-- START DECKLISTS BLOCK -->
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="panel-title-box">
+					<h3>Sets Filling</h3>
+					<span>Sets Loading Activity</span>
+				</div>                                    
+				<ul class="panel-controls" style="margin-top: 2px;">
+					<li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+					<li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
+						<ul class="dropdown-menu">
+							<li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+							<li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+						</ul>                                        
+					</li>                                        
+				</ul>
+			</div>
+			<div class="panel-body panel-body-table">
+
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th width="40%">Set</th>
+								<th width="30%">Status</th>
+								<th width="30%">Progress</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong>GP Venezia</strong></td>
+								<td><span class="label label-danger">Developing</span></td>
+								<td>
+									<div class="progress progress-small progress-striped active">
+										<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">0%</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td><strong>GP Padova</strong></td>
+								<td><span class="label label-danger">Developing</span></td>
+								<td>
+									<div class="progress progress-small progress-striped active">
+										<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">0%</div>
+									</div>
+								</td>
+							</tr>                                                
+							<tr>
+								<td><strong>GP Roma</strong></td>
+								<td><span class="label label-danger">Developing</span></td>
+								<td>
+									<div class="progress progress-small progress-striped active">
+										<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">0%</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td><strong>Gp Bologna</strong></td>
+								<td><span class="label label-danger">Developing</span></td>
+								<td>
+									<div class="progress progress-small progress-striped active">
+										<div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">0%</div>
+									</div>
+								</td>
+							</tr>                                              
+
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+		<!-- END DECKLISTS BLOCK -->
 
 	</div>
 </div>
+<!-- END BLOCKS -->  
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-12">
 
 		<!-- START SALES BLOCK -->
 		<div class="panel panel-default">
