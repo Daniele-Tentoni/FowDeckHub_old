@@ -1,7 +1,7 @@
 <!-- START BREADCRUMB -->
 <ul class="breadcrumb">
-	<li><a href="#">Home</a></li>
-	<li><a href="#">Events</a></li>
+	<li><a href="index.php">Home</a></li>
+	<li class="active">Decklists</li>
 </ul>
 <!-- END BREADCRUMB -->
 
@@ -23,7 +23,7 @@
 
 						<div class="panel-heading">
 							<h3 class="panel-title">Decklists</h3>
-							<button type="button" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i>New</button>
+							<a href="decklists.php?newDecklist" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i>New</a>
 						</div>
 
 						<div class="panel-body panel-body-table">
