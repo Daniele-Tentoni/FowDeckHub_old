@@ -23,7 +23,7 @@
 
 						<div class="panel-heading">
 							<h3 class="panel-title">Cards</h3>
-							<button type="button" class="btn btn-primary btn-rounded pull-right" data-toggle="modal" data-target="#modal_new_card"><i class="fa fa-plus"></i>New</button>
+							<button type="button" class="btn btn-primary btn-rounded pull-right" data-toggle="modal" data-target="#add_card_modal"><i class="fa fa-plus"></i>New</button>
 						</div>
 
 						<div class="panel-body panel-body-table">
@@ -53,7 +53,7 @@
 												if(result["result"] === true) {
 													result["content"].forEach(function (item) {
 														var riga = "<tr id=\"trow_" + item["Id"] + "\">";
-														riga += "<td>" + item["Name"] + "</td>";
+														riga += "<td><span onclick=\"modal_filler(" + item["Id"] + ")\" data-toggle=\"modal\" data-target=\"#single_card_modal\" ><i class=\"fa fa-search\"></i>New</span> " + item["Name"] + "</td>";
 														riga += "<td>" + item["Set"] + "-" + item["Number"] + " " + item["Rarity"] + "</td>";
 														riga += "<td><span class=\"label label-warning\">" + item["Type"] + "</td>";
 														riga += "<td>" + item["Cost"] + "</td>";
@@ -113,7 +113,11 @@
 
 <!-- START ADD CARD MODAL -->
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/modals/add_card_modal.php'; ?>
-<!-- END  ADD CARD MODAL -->
+<!-- END ADD CARD MODAL -->
+
+<!-- START SINGLE CARD MODAL -->
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/modals/single_card_modal.php'; ?>
+<!-- END SINGLE CARD MODAL -->
 
 <!-- START THIS PAGE PLUGINS-->        
 <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>

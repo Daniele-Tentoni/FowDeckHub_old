@@ -1,4 +1,4 @@
-<div class="modal" data-sound="alert" id="modal_new_card">
+<div class="modal" data-sound="alert" id="add_card_modal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
