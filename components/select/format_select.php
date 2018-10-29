@@ -1,7 +1,6 @@
 <div class="input-group">
 	<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-	<select class="form-control select" id="format" onchange="format_change(event);">
-		<option value="-1">-- Select a format --</option>
+	<select class="form-control select" id="format" onchange="format_change(event);" z-index="2">
 		<?php
 		// Essendo la prima query apro la connessione.
 		$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");

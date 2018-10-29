@@ -1,9 +1,10 @@
 <!-- START BREADCRUMB -->
 <ul class="breadcrumb">
-	<li><a href="#">Home</a></li>
-	<li><a href="#">Users</a></li>
+	<li><a href="index.php">Home</a></li>
+	<li class="active">Users</li>
 </ul>
 <!-- END BREADCRUMB -->
+
 <!-- PAGE TITLE -->
 <div class="page-title">                    
 	<h2><span class="fa fa-arrow-circle-o-left"></span> Users Tables</h2>
@@ -22,25 +23,22 @@
 							<button type="button" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i>New</button>
 						</div>
 						<div class="panel-body panel-body-table" id="users_panel_body">
-							<div class="table-responsive">
-								<table class="table table-bordered table-striped table-actions">
-									<thead>
-										<tr>
-											<th width="50">Id</th>
-											<th>User Name</th>
-											<th>First Name</th>
-											<th>Last Name</th>
-											<th width="90">Register Date</th>
-											<th width="90">Status</th>
-											<th width="90">Role</th>
-											<th width="150">Actions</th>
-										</tr>
-									</thead>
-									<tbody id="users_table_body">
-									</tbody>
-								</table>
-							</div>                                
-
+							<table class="table datatable">
+								<thead>
+									<tr>
+										<th width="50">Id</th>
+										<th>User Name</th>
+										<th>First Name</th>
+										<th>Last Name</th>
+										<th width="90">Register Date</th>
+										<th width="90">Status</th>
+										<th width="90">Role</th>
+										<th width="150">Actions</th>
+									</tr>
+								</thead>
+								<tbody id="users_table_body">
+								</tbody>
+							</table>
 						</div>
 					</div>                                                
 
@@ -77,6 +75,7 @@
 <!-- START THIS PAGE PLUGINS-->        
 <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
 <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+<script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>    
 
 <script type="text/javascript" src="js/demo_tables.js"></script>
 <!-- END THIS PAGE PLUGINS-->  

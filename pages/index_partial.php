@@ -188,4 +188,6 @@ echo try_config();
 
 <script type="text/javascript" src="js/plugins/moment.min.js"></script>
 <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
+        
+<script type="text/javascript" src="js/demo_dashboard.js"></script>
 <!-- END THIS PAGE PLUGINS--> 

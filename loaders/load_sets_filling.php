@@ -22,7 +22,6 @@ if($conn->connect_error){
 	}
 	// Recupero i dati relativi al riempimento dei sets.
 	$query .= " group by s.Code;";
-	$msg["query"] = $query;
 	$stmt = $conn->prepare($query);
 	$stmt->execute();
 	$result = $stmt->get_result();

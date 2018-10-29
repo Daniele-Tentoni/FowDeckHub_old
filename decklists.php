@@ -16,9 +16,9 @@ if($log_result) {
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/header.php';
 	if(isset($_GET["newDecklist"])) {
-		require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/new_decklist_partial.php';
+		require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/decklist/new_decklist_partial.php';
 	} else {
-		require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/decklists_partial.php';
+		require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/decklist/decklists_partial.php';
 	}
 	require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/footer.php';
 } else {

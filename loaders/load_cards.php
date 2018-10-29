@@ -62,7 +62,11 @@ if($conn->connect_error){
 		
 		// Aggiungo finalmente la stringa al risultato.
 		$msg["content"] = $stringa;
-	} else {
+	} 
+	else if(isset($_POST["format"]) && $_POST["format"] != "") {
+		echo "Questo problema.";
+	}
+	else {
 		$query = "SELECT c.Id,
 					c.Name, 
 					c.Set, 

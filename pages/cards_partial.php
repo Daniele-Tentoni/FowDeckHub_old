@@ -28,8 +28,8 @@
 
 						<div class="panel-body panel-body-table">
 
-							<div class="table-responsive">
-								<table class="table table-bordered table-striped table-actions">
+							<div class="">
+								<table class="table datatables">
 									<thead>
 										<tr>
 											<th>Card Name</th>
@@ -53,7 +53,7 @@
 												if(result["result"] === true) {
 													result["content"].forEach(function (item) {
 														var riga = "<tr id=\"trow_" + item["Id"] + "\">";
-														riga += "<td><span onclick=\"modal_filler(" + item["Id"] + ")\" data-toggle=\"modal\" data-target=\"#single_card_modal\" ><i class=\"fa fa-search\"></i>New</span> " + item["Name"] + "</td>";
+														riga += "<td><span onclick=\"modal_filler(" + item["Id"] + ")\" data-toggle=\"modal\" data-target=\"#single_card_modal\" ><i class=\"fa fa-search\"> </i> </span> " + item["Name"] + "</td>";
 														riga += "<td>" + item["Set"] + "-" + item["Number"] + " " + item["Rarity"] + "</td>";
 														riga += "<td><span class=\"label label-warning\">" + item["Type"] + "</td>";
 														riga += "<td>" + item["Cost"] + "</td>";
@@ -125,4 +125,5 @@
 
 <script type="text/javascript" src="js/demo_tables.js"></script>
 <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-select.js"></script>
+<script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>    
 <!-- END THIS PAGE PLUGINS-->  
