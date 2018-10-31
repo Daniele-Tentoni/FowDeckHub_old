@@ -19,13 +19,15 @@ function new_row(clear) {
 	$(".add-item").each(function(e) {
 		values.push($(this).val());
 		entities.push($(this).attr('id'));
-		console.log($(this).val());
 	});
-	console.log(values);
 
 	var form = $("#new-item");
 	var action = form.attr("action");
 	var method = form.attr("method");
+    if(!clear) {
+	   console.log(action);
+	   console.log(method);
+    }
 	
 	var string_data = "";
 	for(var i = 0; i < entities.length; i++) {
@@ -43,6 +45,7 @@ function new_row(clear) {
 				$(".e-body").html("<span class=\"alert alert-success\">" + msg["content"] + "</span>");
 			} else {
 				$(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
+                console.log(msg["data"]);
 			}
 		},
 		error:function(msg) {

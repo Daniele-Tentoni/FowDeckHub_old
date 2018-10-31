@@ -53,7 +53,6 @@ try {
 	}
 } catch (Exception $e) {
 	// Posso effettuare un rollback di tutte le query fatte finora sul db.
-	$conn->rollBack();
 	$msg["result"] = false;
 	$msg["error"] = "Eccezione";
 	$msg["msg"] = $e;

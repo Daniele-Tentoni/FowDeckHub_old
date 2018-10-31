@@ -16,7 +16,7 @@
 
 	<div class="row">
 		<div class="col-md-12">
-			<form class="form-horizontal">
+			<form class="form-horizontal" action="adders/add_deck.php" method="post" id="new-item">
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<p>Crea in questa pagina la tua decklist.</p>
@@ -27,36 +27,48 @@
 							
 							<div class="col-md-6">
 
-								<!-- Visibility -->
+								<!-- visibility -->
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="visibility">Visibility</label>
 									<div class="col-md-9 col-xs-12">
 										<label class="switch">
-											<input type="checkbox" id="visibility" value="0"/>
+											<input type="checkbox" id="visibility" class="add-item" value="0"/>
 											<span></span>
 										</label>
 									</div>
 								</div>
 							
-								<!-- Name -->
+								<!-- deckname -->
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="deckname">Decklist Name</label>
 									<div class="col-md-9 col-xs-12">                                            
 										<div class="input-group">
 											<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-											<input type="text" id="deckname" onchange="name_change(event);" class="form-control"/>
+											<input type="text" id="deckname" class="form-control add-item"/>
 										</div>                                            
 										<span class="help-block">Name of the decklist.</span>
 									</div>
 								</div>
 							
-								<!-- Gachalog Code -->
+								<!-- player -->
+								<div class="form-group">
+									<label class="col-md-3 control-label" for="player">Player Name</label>
+									<div class="col-md-9 col-xs-12">                                            
+										<div class="input-group">
+											<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+											<input type="text" id="player" class="form-control add-item"/>
+										</div>                                            
+										<span class="help-block">Name of the player.</span>
+									</div>
+								</div>
+							
+								<!-- gachaCode Code -->
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="gachaCode">Gachalog Decklist Code</label>
 									<div class="col-md-9 col-xs-12">                                            
 										<div class="input-group">
 											<span class="input-group-addon"><span class="fa fa-pencil"></span></span>
-											<input type="text" id="gachaCode" onchange="gachaCode_change(event);" class="form-control"/>
+											<input type="text" id="gachaCode" class="form-control add-item"/>
 										</div>                                            
 										<span class="help-block">Gachalog Decklist Code to implement the decklist image.</span>
 									</div>
@@ -66,11 +78,11 @@
 							
 							<div class="col-md-6">
 							
-								<!-- Format -->
+								<!-- format -->
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="format">Format select</label>
 									<div class="col-md-9 col-xs-12">
-										<select class="form-control select" id="format" onchange="format_change(event);">
+										<select class="form-control select add-item" id="format" >
 											<?php
 											// Essendo la prima query apro la connessione.
 											$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
@@ -98,24 +110,24 @@
 									</div>
 								</div>
 								
-								<!-- Deck Style -->
+								<!-- type -->
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="style">Style select</label>
+									<label class="col-md-3 control-label" for="type">Type select</label>
 									<div class="col-md-9 col-xs-12">
-										<select class="form-control select" id="style" onchange="style_change(event);">
+										<select class="form-control select add-item" id="type" >
 											<?php
 											// Essendo la prima query apro la connessione.
 											$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
 											if($format_conn->connect_error){
 												echo "<option value=\"0\">-- Connection Error --</option>";
 											} else {
-												$query = "SELECT Code, Name FROM formats WHERE Tournament = 1 AND Visibility = 1";
+												$query = "SELECT d.Id, d.Name, p.Name as Style FROM decktypes d JOIN playstyles p ON d.Style = p.Id";
 												$stmt = $format_conn->prepare($query);
 												$stmt->execute();
 												$result = $stmt->get_result();
 												if($result->num_rows > 0) {
 													while($row = $result->fetch_assoc()) {
-														echo "<option value=\"" . $row["Code"] . "\">" . $row["Name"] . "</option>";
+														echo "<option value=\"" . $row["Id"] . "\">" . $row["Name"] . " / " . $row["Style"] . "</option>";
 													}
 												} else {
 													echo "<option value=\"0\">-- No Result --</option>";
@@ -130,24 +142,29 @@
 									</div>
 								</div>
 								
-								<!-- Ruler -->
+								<!-- ruler -->
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="ruler">Style select</label>
+									<label class="col-md-3 control-label" for="ruler">Ruler select</label>
 									<div class="col-md-9 col-xs-12">
-										<select class="form-control select" id="ruler" onchange="style_change(event);">
+										<select class="form-control select add-item" id="ruler" >
 											<?php
 											// Essendo la prima query apro la connessione.
 											$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
 											if($format_conn->connect_error){
 												echo "<option value=\"0\">-- Connection Error --</option>";
 											} else {
-												$query = "SELECT Code, Name FROM formats WHERE Tournament = 1 AND Visibility = 1";
+												$query = "SELECT c.Id,
+                                                                c.Name
+                                                            FROM cards c
+                                                            left join card_types ct on ct.Card = c.Id
+                                                            left join types t on ct.Type = t.Id
+                                                            where t.Id = 6";
 												$stmt = $format_conn->prepare($query);
 												$stmt->execute();
 												$result = $stmt->get_result();
 												if($result->num_rows > 0) {
 													while($row = $result->fetch_assoc()) {
-														echo "<option value=\"" . $row["Code"] . "\">" . $row["Name"] . "</option>";
+														echo "<option value=\"" . $row["Id"] . "\">" . $row["Name"] . "</option>";
 													}
 												} else {
 													echo "<option value=\"0\">-- No Result --</option>";
@@ -162,24 +179,24 @@
 									</div>
 								</div>
 								
-								<!-- Event -->
+								<!-- event -->
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="event">Event select</label>
 									<div class="col-md-9 col-xs-12">
-										<select class="form-control select" id="event" onchange="style_change(event);">
+										<select class="form-control select add-item" id="event" onchange="style_change(event);">
 											<?php
 											// Essendo la prima query apro la connessione.
 											$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
 											if($format_conn->connect_error){
 												echo "<option value=\"0\">-- Connection Error --</option>";
 											} else {
-												$query = "SELECT Code, Name FROM formats WHERE Tournament = 1 AND Visibility = 1";
+												$query = "SELECT Id, Name FROM events";
 												$stmt = $format_conn->prepare($query);
 												$stmt->execute();
 												$result = $stmt->get_result();
 												if($result->num_rows > 0) {
 													while($row = $result->fetch_assoc()) {
-														echo "<option value=\"" . $row["Code"] . "\">" . $row["Name"] . "</option>";
+														echo "<option value=\"" . $row["Id"] . "\">" . $row["Name"] . "</option>";
 													}
 												} else {
 													echo "<option value=\"0\">-- No Result --</option>";
@@ -193,18 +210,22 @@
 										<span class="help-block">Select play style.</span>
 									</div>
 								</div>
+								</div>
 								
-							</div>
+                        </div>
 
-						</div>
+                    </div>
 						
-					</div>
-					<div class="panel-footer">
-						<button class="btn btn-default">Clear </button>
-						<button class="btn btn-primary pull-right">Create</button>
-					</div>
 				</div>
-			</form>
+                <div class="panel-footer">
+                    <div class="e-panel">
+                        <div class="e-body">
+                        </div>
+                    </div>
+                    <button class="btn btn-default">Clear </button>
+                    <button class="btn btn-primary pull-right">Create</button>
+                </div>
+            </form>
 		<!-- END PAGE CONTENT WRAPPER -->
 		</div>
 	</div>
@@ -220,5 +241,11 @@
 <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-select.js"></script>
 <script type="text/javascript" src="js/plugins/tagsinput/jquery.tagsinput.min.js"></script>
 <script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src='js/new_decklist.js'></script>
+<script type="text/javascript" src='js/demo_tables.js'></script>
+<script type="text/javascript">
+    $("#new-item").submit(function(e){
+        e.preventDefault();
+        new_row(false);
+    });
+</script>
 <!-- END THIS PAGE PLUGINS-->
