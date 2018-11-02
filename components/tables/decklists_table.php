@@ -17,7 +17,6 @@
         $decklists = getDecks(0);
         if(isset($decklists) && $decklists["result"] == true) {
             foreach ($decklists["content"] as $value) {
-
                 echo "<tr id=\"trow_" . $value["Id"] . "\">";
                 echo "    <td class=\"text-center\"><a href=\"https://www.gachalog.com/list/" . $value["GachaCode"] . "\" target=\"_blank\">" . $value["Name"] . "</a></td>";
                 echo "    <td><strong>" . $value["Ruler"] . "</strong></td>";

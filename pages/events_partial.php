@@ -23,39 +23,13 @@
 
 						<div class="panel-heading">
 							<h3 class="panel-title">Events</h3>
-							<button type="button" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i>New</button>
+							<button type="button" class="btn btn-primary btn-rounded pull-right"  data-toggle="modal" data-target="#add_event_modal"><i class="fa fa-plus"></i>New</button>
 						</div>
 
 						<div class="panel-body panel-body-table">
 
 							<div class="table-responsive">
-								<table class="table table-bordered table-striped table-actions">
-									<thead>
-										<tr>
-											<th width="50">Id</th>
-											<th>Event Name</th>
-											<th width="150">Location</th>
-											<th width="80">Nation</th>
-											<th width="80">Year</th>
-											<th width="80">Attendance</th>
-											<th width="150">Actions</th>
-										</tr>
-									</thead>
-									<tbody>                                            
-										<tr id="trow_1">
-											<td class="text-center">1</td>
-											<td><strong>GP Padova 2018</strong></td>
-											<td>Hotel a Padova Centro</td>
-											<td>Italy</td>
-											<td><span class="label label-success">2018</span></td>
-											<td>134</td>
-											<td>
-												<button class="btn btn-default btn-rounded btn-sm"><span class="fa fa-pencil"></span></button>
-												<button class="btn btn-danger btn-rounded btn-sm" onClick="delete_row('trow_1');"><span class="fa fa-times"></span></button>
-											</td>
-										</tr>
-									</tbody>
-								</table>
+								<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/events_table.php'; ?>
 							</div>
 						</div>
 					</div>
@@ -89,6 +63,10 @@
 	</div>
 </div>
 <!-- END MESSAGE BOX-->
+
+<!-- ADD EVENT MODAL -->
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/add_event_modal.php'; ?>
+<!-- END ADD EVENT MODAL -->
 
 <!-- START THIS PAGE PLUGINS-->        
 <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>

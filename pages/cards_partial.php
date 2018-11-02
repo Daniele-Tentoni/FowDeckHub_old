@@ -65,11 +65,11 @@
 <!-- END MESSAGE BOX-->
 
 <!-- START ADD CARD MODAL -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/modals/add_card_modal.php'; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/add_card_modal.php'; ?>
 <!-- END ADD CARD MODAL -->
 
 <!-- START SINGLE CARD MODAL -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/modals/single_card_modal.php'; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/single_card_modal.php'; ?>
 <!-- END SINGLE CARD MODAL -->
 
 <!-- START THIS PAGE PLUGINS-->        
