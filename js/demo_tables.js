@@ -17,7 +17,13 @@ function new_row(clear) {
 	var entities = [];
 	var values = [];
 	$(".add-item").each(function(e) {
-		values.push($(this).val());
+        var val = 0;
+        if($(this).attr("type") == "checkbox") {
+            val = $(this).prop("checked") == true ? 1 : 0;
+        } else {
+            val = $(this).val();
+        }
+		values.push(val);
 		entities.push($(this).attr('id'));
 	});
 

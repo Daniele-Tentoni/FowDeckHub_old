@@ -27,7 +27,6 @@
 						</div>
 
 						<div class="panel-body panel-body-table">
-
 							<div class="table-responsive">
 								<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/decklists_table.php'; ?>
 							</div>

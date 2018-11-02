@@ -29,7 +29,7 @@
 						<div class="panel-body panel-body-table">
 
 							<div class="">
-								<table class="table datatable">
+								<table class="table mydatatable">
 									<thead>
 										<tr>
 											<th>Card Name</th>
@@ -64,9 +64,9 @@
 													});
 				
                                                     // Finito il loading procedo alla generazione della datatable.
-                                                    if($(".datatable").length > 0){
-                                                        $(".datatable").dataTable();
-                                                        $(".datatable").on('page.dt',function () {
+                                                    if($(".mydatatable").length > 0){
+                                                        $(".mydatatable").dataTable();
+                                                        $(".mydatatable").on('page.dt',function () {
                                                             onresize(100);
                                                         });
                                                     }

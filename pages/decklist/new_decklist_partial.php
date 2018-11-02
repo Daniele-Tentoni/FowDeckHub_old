@@ -26,17 +26,34 @@
 						<div class="row">
 							
 							<div class="col-md-6">
-
-								<!-- visibility -->
-								<div class="form-group">
-									<label class="col-md-3 control-label" for="visibility">Visibility</label>
-									<div class="col-md-9 col-xs-12">
-										<label class="switch">
-											<input type="checkbox" id="visibility" class="add-item" value="0"/>
-											<span></span>
-										</label>
-									</div>
-								</div>
+                                
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <!-- visibility -->
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label" for="visibility">Visibility</label>
+                                            <div class="col-md-9 col-xs-12">
+                                                <label class="switch">
+                                                    <input type="checkbox" id="visibility" class="add-item" value="0"/>
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- position -->
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label" for="position">Position</label>
+                                            <div class="col-md-9 col-xs-12">                                            
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
+                                                    <input type="number" id="position" class="form-control add-item"/>
+                                                </div>                                            
+                                                <span class="help-block">Position reached.</span>
+                                            </div>
+                                        </div>                                    
+                                    </div>
+                                </div>
 							
 								<!-- deckname -->
 								<div class="form-group">
@@ -62,7 +79,7 @@
 									</div>
 								</div>
 							
-								<!-- gachaCode Code -->
+								<!-- gachaCode -->
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="gachaCode">Gachalog Decklist Code</label>
 									<div class="col-md-9 col-xs-12">                                            

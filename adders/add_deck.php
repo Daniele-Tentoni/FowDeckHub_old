@@ -31,14 +31,14 @@ try {
 		$msg["result"] = false;
 	} else {
 		// Inserisco la carta.
-		$stmt = $conn->prepare("INSERT INTO `decklists`(`Name`, `Ruler`, `Player`, `Event`, `Type`, `Visibility`, `GachaCode`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+		$stmt = $conn->prepare("INSERT INTO `decklists`(`Name`, `Ruler`, `Player`, `Event`, `Type`, `Visibility`, `GachaCode`, `Position`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		if(!$stmt) {
 			$msg["result"] = false;
 			$msg["data"] = $conn->error_list;
 			$msg["error"] = "Boolean value in \$stmt";
 			echo json_encode($msg);
 		} else {
-            $stmt->bind_param("sisiiis", $deckname, $ruler, $player, $event, $type, $visibility, $gachaCode);
+            $stmt->bind_param("sisiiisi", $deckname, $ruler, $player, $event, $type, $visibility, $gachaCode, $position);
             $deckname = mysql_real_escape_string($_POST["deckname"]);
             $ruler = mysql_real_escape_string($_POST["ruler"]);
             $player = mysql_real_escape_string($_POST["player"]);
@@ -46,6 +46,7 @@ try {
             $type = mysql_real_escape_string($_POST["type"]);
             $visibility = mysql_real_escape_string($_POST["visibility"]);
             $gachaCode = mysql_real_escape_string($_POST["gachaCode"]);
+            $position = mysql_real_escape_string($_POST["position"]);
             if($stmt->execute()) {
                 $content .= "Inserimento della carta $deckname effettuato con successo.";
             } else {
