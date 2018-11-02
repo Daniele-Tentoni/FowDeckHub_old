@@ -168,9 +168,6 @@
 
 	</div>
 </div>
-<?php
-echo try_config();
-?>
 
 <!-- START THIS PAGE PLUGINS-->        
 <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>        

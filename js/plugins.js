@@ -421,7 +421,7 @@ $(function() {
        
         return {
             init: function(){
-                //uiDatatable();
+                uiDatatable();
                 uiRangeSlider();
                 uiKnob();
                 uiSmartWizard();

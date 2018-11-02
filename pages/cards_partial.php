@@ -29,7 +29,7 @@
 						<div class="panel-body panel-body-table">
 
 							<div class="">
-								<table class="table datatables">
+								<table class="table datatable">
 									<thead>
 										<tr>
 											<th>Card Name</th>
@@ -62,6 +62,14 @@
 														riga += "</tr>";
 														$("#cards-table-body").append(riga);
 													});
+				
+                                                    // Finito il loading procedo alla generazione della datatable.
+                                                    if($(".datatable").length > 0){
+                                                        $(".datatable").dataTable();
+                                                        $(".datatable").on('page.dt',function () {
+                                                            onresize(100);
+                                                        });
+                                                    }
 												} else if(result["result"] === false) {
 													console.log("Fallimento");
 													$("#cards-table-body").append(result["Errore"]);
@@ -122,8 +130,8 @@
 <!-- START THIS PAGE PLUGINS-->        
 <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
 <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+<script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>    
+<script type="text/javascript" src="js/plugins/bootstrap/bootstrap-select.js"></script>
 
 <script type="text/javascript" src="js/demo_tables.js"></script>
-<script type="text/javascript" src="js/plugins/bootstrap/bootstrap-select.js"></script>
-<script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>    
 <!-- END THIS PAGE PLUGINS-->  
