@@ -1,18 +1,16 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
-
     function getDecks($id){
         $res = array();
         $res["result"] = false;
-        $mysqli = new mysqli("localhost", "root", "", "my_fowdeckhub");
+        $dlconn = new mysqli("localhost", "root", "", "my_fowdeckhub");
         
         // Controllo che la connessione sia impostata.
-        if(!isset($mysqli)) {
+        if(!isset($dlconn)) {
             $res["msg"] = "Problemi di connessione al server, contact the support.";
             return $res;
         }
         
-        if(isset($mysqli) && $mysqli->connect_error) {
+        if(isset($dlconn) && $dlconn->connect_error) {
             $res["msg"] = "Problema di connessione instaurata al server, contact the support.";
             return $res;
         } 
@@ -33,7 +31,7 @@
             $query .= " and d.Id = " . $id;
         }
 
-        $stmt = $mysqli->prepare($query);
+        $stmt = $dlconn->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();
         if($result->num_rows > 0) {
@@ -57,6 +55,9 @@
         }
         
         $res["result"] = true;
+        if(isset($dlconn)) {
+            $dlconn->close();
+        }
         return $res;
     }
 ?>

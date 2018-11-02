@@ -27,66 +27,11 @@
 						</div>
 
 						<div class="panel-body panel-body-table">
-
-							<div class="">
-								<table class="table mydatatable">
-									<thead>
-										<tr>
-											<th>Card Name</th>
-											<th width="120">Code</th>
-											<th width="90">Type</th>
-											<th width="80">Cost</th>
-											<th width="90">Attributes</th>
-											<th width="150">Actions</th>
-										</tr>
-									</thead>
-									<tbody id="cards-table-body">
-									</tbody>
-									<script type="text/javascript">
-									$(document).ready(function () {
-										$.ajax({
-											type: "GET",
-											url: "loaders/load_cards.php",
-											dataType: "json",
-											data: "",
-											success:function(result){
-												if(result["result"] === true) {
-													result["content"].forEach(function (item) {
-														var riga = "<tr id=\"trow_" + item["Id"] + "\">";
-														riga += "<td><span onclick=\"modal_filler(" + item["Id"] + ")\" data-toggle=\"modal\" data-target=\"#single_card_modal\" ><i class=\"fa fa-search\"> </i> </span> " + item["Name"] + "</td>";
-														riga += "<td>" + item["Set"] + "-" + item["Number"] + " " + item["Rarity"] + "</td>";
-														riga += "<td><span class=\"label label-warning\">" + item["Type"] + "</td>";
-														riga += "<td>" + item["Cost"] + "</td>";
-														riga += "<td><span class=\"label label-success\">" + item["Attribute"] + "</span></td>";
-														riga += "<td><button class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></button> <button class=\"btn btn-danger btn-rounded btn-sm\" onClick=\"delete_row('trow_" + item["Id"] + "');\"><span class=\"fa fa-times\"></span> </button></td>";
-														riga += "</tr>";
-														$("#cards-table-body").append(riga);
-													});
-				
-                                                    // Finito il loading procedo alla generazione della datatable.
-                                                    if($(".mydatatable").length > 0){
-                                                        $(".mydatatable").dataTable();
-                                                        $(".mydatatable").on('page.dt',function () {
-                                                            onresize(100);
-                                                        });
-                                                    }
-												} else if(result["result"] === false) {
-													console.log("Fallimento");
-													$("#cards-table-body").append(result["Errore"]);
-												}
-											},
-											error:function(result){
-												console.log(result);
-												$(result).appendTo($("#cards-table-body"));
-											}
-										});
-									});
-									</script>
-								</table>
-							</div>                                
-
+							<div class="table-responsive">
+								<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/cards_table.php'; ?>
+							</div>
 						</div>
-					</div>                                                
+					</div>
 
 				</div>
 			</div>

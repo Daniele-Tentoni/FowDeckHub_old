@@ -31,7 +31,7 @@ try {
 		$msg["result"] = false;
 	} else {
 		// Inserisco la carta.
-		$stmt = $conn->prepare("INSERT INTO `cards`(`Id`, `Name`, `Set`, `Number`, `Cost`, `Rarity`) VALUES (?, ?, ?, ?, ?, ?)");
+		$stmt = $conn->prepare("INSERT INTO `cards`(`Id`, `Name`, `Set`, `Number`, `Cost`, `Rarity`, `Visibility`) VALUES (?, ?, ?, ?, ?, ?, 1)");
 		if(!$stmt) {
 			$msg["result"] = false;
 			$msg["data"] = $conn->error_list;
