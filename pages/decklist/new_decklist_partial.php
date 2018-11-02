@@ -227,7 +227,7 @@
 										<span class="help-block">Select play style.</span>
 									</div>
 								</div>
-								</div>
+				            </div>
 								
                         </div>
 

@@ -6,9 +6,9 @@
             <th width="150">Player</th>
             <th width="100">Type</th>
             <th width="80">Style</th>
-            <th width="80">Event</th>
-            <th width="80">Position</th>
-            <th width="150">Actions</th>
+            <th width="120">Event</th>
+            <th width="40">Rank</th>
+            <th width="140">Actions</th>
         </tr>
     </thead>
     <tbody>

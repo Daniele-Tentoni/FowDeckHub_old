@@ -23,7 +23,35 @@
 
 						<div class="panel-heading">
 							<h3 class="panel-title">Decklists</h3>
-							<a href="decklists.php?newDecklist" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i>New</a>
+                            <!-- event -->
+                            <div class="col-md-3 col-xs-9 pull-right">
+                                <select class="form-control select add-item" id="event">
+                                    <option value="0">-- Filter by event --</option>
+                                    <?php
+                                    // Essendo la prima query apro la connessione.
+                                    $format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+                                    if($format_conn->connect_error){
+                                        echo "<option value=\"0\">-- Connection Error --</option>";
+                                    } else {
+                                        $query = "SELECT Id, Name FROM events";
+                                        $stmt = $format_conn->prepare($query);
+                                        $stmt->execute();
+                                        $result = $stmt->get_result();
+                                        if($result->num_rows > 0) {
+                                            while($row = $result->fetch_assoc()) {
+                                                echo "<option value=\"" . $row["Id"] . "\">" . $row["Name"] . "</option>";
+                                            }
+                                        } else {
+                                            echo "<option value=\"0\">-- No Result --</option>";
+                                        }
+                                        if(isset($format_conn)) {
+                                            $format_conn->close();
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+							<a href="decklists.php?newDecklist" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i>New List</a>
 						</div>
 
 						<div class="panel-body panel-body-table">
@@ -66,5 +94,12 @@
 <!-- START THIS PAGE PLUGINS-->        
 <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
 <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
-<script type="text/javascript" src="js/demo_tables.js"></script>     
+<script type="text/javascript" src="js/demo_tables.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#event").on('change', function (){
+            console.log($(this));
+        });
+    });
+</script>
 <!-- END THIS PAGE PLUGINS-->  
