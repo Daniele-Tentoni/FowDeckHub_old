@@ -31,7 +31,7 @@ try {
 		$msg["result"] = false;
 	} else {
 		// Inserisco la carta.
-		$stmt = $conn->prepare("INSERT INTO `cards`(`Id`, `Name`, `Set`, `Number`, `Cost`, `Rarity`) VALUES (?, ?, ?, ?, ?, ?)");
+		$stmt = $conn->prepare("INSERT INTO `cards`(`Id`, `Name`, `Set`, `Number`, `Cost`, `Rarity`, `Visibility`) VALUES (?, ?, ?, ?, ?, ?, 1)");
 		if(!$stmt) {
 			$msg["result"] = false;
 			$msg["data"] = $conn->error_list;
@@ -53,7 +53,6 @@ try {
 	}
 } catch (Exception $e) {
 	// Posso effettuare un rollback di tutte le query fatte finora sul db.
-	$conn->rollBack();
 	$msg["result"] = false;
 	$msg["error"] = "Eccezione";
 	$msg["msg"] = $e;

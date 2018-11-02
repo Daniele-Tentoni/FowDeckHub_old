@@ -70,7 +70,6 @@
 							dataType: "json",
 							data: ajax_data,
 							success:function(result){
-								console.log(result);
 								if(result["result"] === true) {
 									result["content"].forEach(function (item) {
 										var riga = "<tr id=\"" + item['code'] + "\">";
