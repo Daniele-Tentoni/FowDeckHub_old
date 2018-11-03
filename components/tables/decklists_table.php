@@ -1,4 +1,4 @@
-<table class="table datatable_simple">
+<table class="table datatable_search">
     <thead>
         <tr>
             <th>Decklist Name</th>
@@ -6,15 +6,17 @@
             <th width="150">Player</th>
             <th width="100">Type</th>
             <th width="80">Style</th>
-            <th width="120">Event</th>
+			<?php
+			if(!isset($event_hide)) {
+				echo "<th width=\"120\">Event</th>";
+			}
+			?>
             <th width="40">Rank</th>
             <th width="140">Actions</th>
         </tr>
     </thead>
     <tbody>
         <?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_decklists.php';
-        $decklists = getDecks(0);
         if(isset($decklists) && $decklists["result"] == true) {
             foreach ($decklists["content"] as $value) {
                 echo "<tr id=\"trow_" . $value["Id"] . "\">";
@@ -23,7 +25,9 @@
                 echo "    <td>" . $value["Player"] . "</td>";
                 echo "    <td>" . $value["Type"] . "</td>";
                 echo "    <td>" . $value["Style"] . "</td>";
-                echo "    <td>" . $value["Event"] . "</td>";
+				if(!isset($event_hide)) {
+                	echo "    <td>" . $value["Event"] . "</td>";
+				}
                 $classToAdd = "";
                 switch($value["Position"]) {
                     case 1:

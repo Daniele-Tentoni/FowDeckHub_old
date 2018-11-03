@@ -9,8 +9,13 @@ if(login_check($mysqli) || TEST) {
 }
 $title = "Events - Administrator - Fow Deck Hub";
 $active_page = 12;
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/header.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/events_partial.php';
+// Se è stato richiesto un evento in particolare ne carico l'id.
+if(isset($_GET) && isset($_GET["eventId"]) && $_GET["eventId"] > 0) {
+	$eventId = $_GET["eventId"];
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/event/events_details.php';
+} else {
+	require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/event/events_partial.php';
+}
 require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/footer.php';
 ?>

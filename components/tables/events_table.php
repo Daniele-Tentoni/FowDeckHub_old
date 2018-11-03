@@ -1,4 +1,4 @@
-<table class="table datatable_simple">
+<table class="table datatable_search">
 	<thead>
 		<tr>
 			<th>Event Name</th>
@@ -11,16 +11,10 @@
 	</thead>
 	<tbody> 
 		<?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_events.php';
-		$year = date("Y");
-		if(isset($_GET) && isset($_GET["year"]) && $_GET["year"] < $year) {
-			$year = $_GET["year"];
-		}
-        $events = getEvents($year, 0);
         if(isset($events) && $events["result"] == true) {
             foreach ($events["content"] as $value) {
                 echo "<tr id=\"trow_" . $value["Id"] . "\">";
-				echo "	<td><strong>" . $value["Name"] . "</strong></td>";
+				echo "	<td><a href=\"events.php?eventId=" . $value["Id"] . "\"><strong>" . $value["Name"] . "</strong></a></td>";
 				echo "	<td>" . $value["Nation"] . "</td>";
 				$pieces = explode(" ", $value["Date"]);
 				echo "	<td>" . $pieces[0] . "</td>";

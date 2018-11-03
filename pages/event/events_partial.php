@@ -1,6 +1,6 @@
 <!-- START BREADCRUMB -->
 <ul class="breadcrumb">
-	<li><a href="#">Home</a></li>
+	<li><a href="index.php">Home</a></li>
 	<li><a href="#">Events</a></li>
 </ul>
 <!-- END BREADCRUMB -->
@@ -26,10 +26,18 @@
 							<button type="button" class="btn btn-primary btn-rounded pull-right"  data-toggle="modal" data-target="#add_event_modal"><i class="fa fa-plus"></i>New</button>
 						</div>
 
-						<div class="panel-body panel-body-table">
+						<div class="panel-body">
 
 							<div class="table-responsive">
-								<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/events_table.php'; ?>
+								<?php 
+								require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_events.php';
+								$year = date("Y");
+								if(isset($_GET) && isset($_GET["year"]) && $_GET["year"] < $year) {
+									$year = $_GET["year"];
+								}
+								$events = getEvents($year, 0);
+								require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/events_table.php'; 
+								?>
 							</div>
 						</div>
 					</div>

@@ -1,4 +1,4 @@
-<table class="table datatable_simple">
+<table class="table datatable_search">
     <thead>
         <tr>
             <th>Card Name</th>
@@ -11,8 +11,6 @@
     </thead>
     <tbody id="cards-table-body">
     <?php
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_cards.php';
-        $cards = getCards(0);
         if(isset($cards) && $cards["result"] == true) {
             foreach ($cards["content"] as $value) {
                 echo "<tr id=\"trow_" . $value["Id"] . "\">";

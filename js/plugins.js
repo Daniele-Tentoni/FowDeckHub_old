@@ -178,6 +178,13 @@ $(function() {
                 $(".datatable_simple").on('page.dt',function () {
                     onresize(100);
                 });                
+            } 
+			
+            if($(".datatable_search").length > 0){                
+                $(".datatable_search").dataTable({"ordering": false, "info": true, "lengthChange": true,"searching": true});
+                $(".datatable_search").on('page.dt',function () {
+                    onresize(100);
+                });                
             }            
         }//END Datatable        
         
