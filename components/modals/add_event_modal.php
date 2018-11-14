@@ -8,7 +8,7 @@
 				</button>
 				<h4 class="modal-title" id="defModalHead">Add new event</h4></div>
 			<div class="modal-body">
-				<form class="form-horizontal" id="new-item" action="adders/add_event.php" method="POST" autocomplete=false role="form"><!--
+				<form class="form-horizontal" id="new-item" action="adders/add_event.php" method="POST" data-return="events.php" data-function="?edit=" autocomplete=false role="form"><!--
 					Name
 					--><div class="form-group">
 						<label for="Name" class="col-md-3 control-label">Name</label>
@@ -62,7 +62,7 @@
 					--><div class="form-group">
 						<label for="Date" class="col-md-3 control-label">Date</label>
 						<div class="col-md-9">
-							<input id="Date" type="date" class="form-control add-item" placeholder="Date"/>
+							<input id="Date" class="form-control datepicker add-item" data-date-format="dd-mm-yyyy" data-date-viewmode="years" type="text" placeholder="Date"/>
 						</div>
 					</div>
 				</form>

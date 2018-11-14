@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th>Decklist Name</th>
-            <th width="150">Ruler</th>
+            <th>Ruler</th>
             <th width="150">Player</th>
             <th width="100">Type</th>
             <th width="80">Style</th>
@@ -12,7 +12,11 @@
 			}
 			?>
             <th width="40">Rank</th>
-            <th width="140">Actions</th>
+			<?php
+			if(!isset($action_hide)) {
+				echo "<th width=\"140\">Actions</th>";
+			}
+			?>
         </tr>
     </thead>
     <tbody>
@@ -44,10 +48,12 @@
                         break;
                 }
                 echo "    <td><span class=\"label label-" . $classToAdd . "\">" . $value["Position"] . "</span></td>";
-                echo "    <td>";
-                echo "        <button class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></button>";
-                echo "        <button class=\"btn btn-danger btn-rounded btn-sm\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span></button>";
-                echo "    </td>";
+				if(!isset($action_hide)) {
+					echo "    <td>";
+					echo "        <button class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></button>";
+					echo "        <button class=\"btn btn-danger btn-rounded btn-sm\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span></button>";
+					echo "    </td>";
+				}
                 echo "</tr>";
             }
         } else {

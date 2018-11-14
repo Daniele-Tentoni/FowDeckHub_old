@@ -30,6 +30,8 @@ function new_row(clear) {
 	var form = $("#new-item");
 	var action = form.attr("action");
 	var method = form.attr("method");
+	var ret = form.attr("data-return");
+	var func = form.attr("data-function");
     if(!clear) {
 	   console.log(action);
 	   console.log(method);
@@ -49,6 +51,9 @@ function new_row(clear) {
 			$(".e-panel").show();
 			if(msg["result"] === true) {
 				$(".e-body").html("<span class=\"alert alert-success\">" + msg["content"] + "</span>");
+				if(ret != null) {
+					window.location = ret + "?" + func + "=" + msg["id"];
+				}
 			} else {
 				$(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
                 console.log(msg["data"]);

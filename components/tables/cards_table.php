@@ -1,7 +1,8 @@
 <table class="table datatable_search">
     <thead>
         <tr>
-            <th>Card Name</th>
+			<th width="60">Id</th>
+            <th>Name</th>
             <th width="120">Code</th>
             <th width="90">Type</th>
             <th width="100">Cost</th>
@@ -14,6 +15,7 @@
         if(isset($cards) && $cards["result"] == true) {
             foreach ($cards["content"] as $value) {
                 echo "<tr id=\"trow_" . $value["Id"] . "\">";
+				echo "<td>" . $value["Id"] . "</td>";
                 echo "<td><span onclick=\"modal_filler(" . $value["Id"] . ")\" data-toggle=\"modal\" data-target=\"#single_card_modal\" ><i class=\"fa fa-search\"> </i> </span> " . $value["Name"] . "</td>";
                 echo "<td>" . $value["Set"] . "-" . $value["Number"] . " " . $value["Rarity"] . "</td>";
                 echo "<td><span class=\"label label-warning\">" . $value["Type"] . "</td>";

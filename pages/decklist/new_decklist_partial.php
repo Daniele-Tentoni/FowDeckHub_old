@@ -7,7 +7,7 @@
 
 <!-- PAGE TITLE -->
 <div class="page-title">                    
-	<h2><span class="fa fa-arrow-circle-o-left"></span> New Decklist!!!</h2>
+	<h2><a href="decklists.php" class="link"><span class="fa fa-arrow-circle-o-left"></span></a> New Decklist!!!</h2>
 </div>
 <!-- END PAGE TITLE -->
 
@@ -19,10 +19,7 @@
 			<form class="form-horizontal" action="adders/add_deck.php" method="post" id="new-item">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<p>Crea in questa pagina la tua decklist.</p>
-					</div>
-					<div class="panel-body">
-
+						<p>Aggiungi da questa pagina la tua decklist.</p>
 						<div class="row">
 							
 							<div class="col-md-6">
@@ -44,7 +41,7 @@
                                         <!-- position -->
                                         <div class="form-group">
                                             <label class="col-md-3 control-label" for="position">Position</label>
-                                            <div class="col-md-9 col-xs-12">                                            
+                                            <div class="col-md-9 col-xs-12">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><span class="fa fa-pencil"></span></span>
                                                     <input type="number" id="position" class="form-control add-item"/>
@@ -240,11 +237,11 @@
                         </div>
                     </div>
                     <button class="btn btn-default">Clear </button>
-                    <button class="btn btn-primary pull-right">Create</button>
+                    <button class="btn btn-primary pull-right">Create </button>
                 </div>
             </form>
-		<!-- END PAGE CONTENT WRAPPER -->
 		</div>
+		<!-- END PAGE CONTENT WRAPPER -->
 	</div>
 	<!-- END PAGE CONTENT -->
 </div>

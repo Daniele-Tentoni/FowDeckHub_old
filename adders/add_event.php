@@ -45,10 +45,12 @@ try {
             if($stmt->execute()) {
                 $msg["result"] = true;
                 $content .= "Inserimento della carta $name effettuato con successo.";
+				$msg["id"] = $conn->insert_id;
             } else {
                 $msg["result"] = false;
                 $msg["data"] = $conn->error_list;
                 $content .= "Riscontrato problema nell'inserimento della carta $name, contattare il supporto.";
+				echo json_encode($msg);
             }
         }
 	}
@@ -60,5 +62,4 @@ try {
 }
 $msg["content"] = $content;
 echo json_encode($msg);
-
 ?>

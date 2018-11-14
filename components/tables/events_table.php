@@ -14,7 +14,7 @@
         if(isset($events) && $events["result"] == true) {
             foreach ($events["content"] as $value) {
                 echo "<tr id=\"trow_" . $value["Id"] . "\">";
-				echo "	<td><a href=\"events.php?eventId=" . $value["Id"] . "\"><strong>" . $value["Name"] . "</strong></a></td>";
+				echo "	<td><a href=\"events.php?event_id=" . $value["Id"] . "\"><strong>" . $value["Name"] . "</strong></a></td>";
 				echo "	<td>" . $value["Nation"] . "</td>";
 				$pieces = explode(" ", $value["Date"]);
 				echo "	<td>" . $pieces[0] . "</td>";

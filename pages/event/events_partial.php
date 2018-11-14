@@ -23,20 +23,13 @@
 
 						<div class="panel-heading">
 							<h3 class="panel-title">Events</h3>
-							<button type="button" class="btn btn-primary btn-rounded pull-right"  data-toggle="modal" data-target="#add_event_modal"><i class="fa fa-plus"></i>New</button>
+							<button type="button" class="btn btn-primary btn-rounded pull-right" data-toggle="modal" data-target="#add_event_modal"><i class="fa fa-plus"></i>New</button>
 						</div>
 
 						<div class="panel-body">
-
 							<div class="table-responsive">
 								<?php 
-								require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_events.php';
-								$year = date("Y");
-								if(isset($_GET) && isset($_GET["year"]) && $_GET["year"] < $year) {
-									$year = $_GET["year"];
-								}
-								$events = getEvents($year, 0);
-								require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/events_table.php'; 
+									require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/events_table.php'; 
 								?>
 							</div>
 						</div>
@@ -79,6 +72,6 @@
 <!-- START THIS PAGE PLUGINS-->        
 <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
 <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
-
+<script type="text/javascript" src="js/plugins/bootstrap/bootstrap-datepicker.js"></script>     
 <script type="text/javascript" src="js/demo_tables.js"></script>     
 <!-- END THIS PAGE PLUGINS-->  
