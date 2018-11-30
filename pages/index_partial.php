@@ -7,19 +7,17 @@
 
 <!-- START WIDGETS -->                    
 <div class="row">
+    <!-- UTILITY WIDGETS -->
 	<div class="col-md-3">
 		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/visitors_widget.php'; ?>
 	</div>
 	<div class="col-md-3">
 		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/users_widget.php'; ?>
     </div>
-</div>
-<!-- END WIDGETS -->  
-<!-- START BLOCKS -->  
-<div class="row">
+    <!-- END UTILITY WIDGETS -->
+    
+    <!-- START EVENTS BLOCK -->
 	<div class="col-md-6">
-
-		<!-- START EVENTS BLOCK -->
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<div class="panel-title-box">
@@ -93,19 +91,15 @@
 
 			</div>
 		</div>
-		<!-- END EVENTS BLOCK -->
-
 	</div>
+    <!-- END EVENTS BLOCK -->
 	
+    <!-- START SETS BLOCK -->
 	<div class="col-md-6">
-		<!-- START SETS BLOCK -->
 		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/sets_filling_widget.php'; ?>
-		<!-- END SETS BLOCK -->
-
 	</div>
-</div>
-<!-- END BLOCKS -->  
-<div class="row">
+    <!-- END SETS BLOCK -->
+    
 	<div class="col-md-12">
 
 		<!-- START SALES BLOCK -->
@@ -115,9 +109,9 @@
 					<h3>Decklists around the world</h3>
 					<span>Show decklists around the world.</span>
 				</div>                                     
-				<ul class="panel-controls panel-controls-title">                                        
+				<ul class="panel-controls panel-controls-title">
 					<li>
-						<div id="reportrange" class="dtrange">                                            
+						<div id="reportrange" class="dtrange">
 							<span></span><b class="caret"></b>
 						</div>                                     
 					</li>                                
@@ -125,33 +119,33 @@
 				</ul>                                    
 
 			</div>
-			<div class="panel-body">                                    
+			<div class="panel-body">
 				<div class="row stacked">
-					<div class="col-md-4">                                            
-						<div class="progress-list">                                               
+					<div class="col-md-4">
+						<div class="progress-list">
 							<div class="pull-left"><strong>In Queue</strong></div>
-							<div class="pull-right">75%</div>                                                
+							<div class="pull-right">75%</div>
 							<div class="progress progress-small progress-striped active">
 								<div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 75%;">75%</div>
 							</div>
 						</div>
-						<div class="progress-list">                                               
+						<div class="progress-list">
 							<div class="pull-left"><strong>Shipped Products</strong></div>
-							<div class="pull-right">450/500</div>                                                
+							<div class="pull-right">450/500</div>
 							<div class="progress progress-small progress-striped active">
 								<div class="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">90%</div>
 							</div>
 						</div>
-						<div class="progress-list">                                               
+						<div class="progress-list">
 							<div class="pull-left"><strong class="text-danger">Returned Products</strong></div>
-							<div class="pull-right">25/500</div>                                                
+							<div class="pull-right">25/500</div>
 							<div class="progress progress-small progress-striped active">
 								<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 5%;">5%</div>
 							</div>
 						</div>
-						<div class="progress-list">                                               
+						<div class="progress-list">
 							<div class="pull-left"><strong class="text-warning">Progress Today</strong></div>
-							<div class="pull-right">75/150</div>                                                
+							<div class="pull-right">75/150</div>
 							<div class="progress progress-small progress-striped active">
 								<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">50%</div>
 							</div>
