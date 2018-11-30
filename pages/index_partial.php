@@ -14,6 +14,38 @@
 	<div class="col-md-3">
 		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/users_widget.php'; ?>
     </div>
+    <div class="col-md-3">
+        <!-- START NEW USERS WIDGET SLIDER -->
+        <div class="widget widget-default widget-carousel">
+            <div class="owl-carousel" id="owl-example">
+                <div>                                    
+                    <div class="widget-title">Ticket Aperti</div>
+                    <div class="widget-subtitle">Da visionare</div>
+                    <div class="widget-int">
+                        0
+                    </div>
+                </div>
+                <div>                                    
+                    <div class="widget-title">Ticket Chiusi</div>
+                    <div class="widget-subtitle">Risolti</div>
+                    <div class="widget-int">
+                        0
+                    </div>
+                </div>
+                <div>                                    
+                    <div class="widget-title">Ticket Sospesi</div>
+                    <div class="widget-subtitle">In Sviluppo o in pausa</div>
+                    <div class="widget-int">
+                        0
+                    </div>
+                </div>
+            </div>                            
+            <div class="widget-controls">                                
+                <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
+            </div>                             
+        </div>        
+        <!-- END WIDGET SLIDER -->
+    </div>
     <!-- END UTILITY WIDGETS -->
     
     <!-- START EVENTS BLOCK -->
@@ -164,18 +196,18 @@
 </div>
 
 <!-- START THIS PAGE PLUGINS-->        
-<script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>        
+<script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
 <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
 <script type="text/javascript" src="js/plugins/scrolltotop/scrolltopcontrol.js"></script>
 
 <script type="text/javascript" src="js/plugins/morris/raphael-min.js"></script>
-<script type="text/javascript" src="js/plugins/morris/morris.min.js"></script>       
+<script type="text/javascript" src="js/plugins/morris/morris.min.js"></script>
 <script type="text/javascript" src="js/plugins/rickshaw/d3.v3.js"></script>
 <script type="text/javascript" src="js/plugins/rickshaw/rickshaw.min.js"></script>
 <script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js'></script>
-<script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'></script>                
-<script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>                
-<script type="text/javascript" src="js/plugins/owl/owl.carousel.min.js"></script>                 
+<script type='text/javascript' src='js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'></script>
+<script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>
+<script type="text/javascript" src="js/plugins/owl/owl.carousel.min.js"></script>
 
 <script type="text/javascript" src="js/plugins/moment.min.js"></script>
 <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>

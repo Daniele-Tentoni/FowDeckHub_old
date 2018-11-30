@@ -30,7 +30,9 @@
 						<div class="panel-body">                            
 							<div class="tocify-content">
 								
-								<h2>Top 8 Rulers and Decks.</h2>
+								<h2><?php echo $event["Name"]; ?></h2>
+                                <h3><?php echo $event["Date"]; ?> in <?php echo $event["Nation"]; ?></h3>
+                                <p><?php echo $event["Attendance"]; ?> players</p>
 								<p>
 									<?php
 									$event_hide = true;
@@ -39,33 +41,18 @@
 									?>
 								</p>
 								
-								<div class="row">
-									<div class="col-md-6">
-										<h2>Some information data.</h2>
-										<p>
-											<ul>
-												<li><?php echo $event["Name"]; ?></li>
-												<li><?php echo $event["Nation"]; ?></li>
-												<li><?php echo $event["Year"]; ?></li>
-												<li><?php echo $event["Attendance"]; ?></li>
-												<li><?php echo $event["Date"]; ?></li>
-											</ul>
-										</p>
-									</div><!--
-									RulerBreakdown
-									--><div class="col-md-6">
-										<h2>Rulers Breakdown</h2>
-										<!-- START DOUNT CHART -->
-										<div class="panel panel-default">
-											<div class="panel-body">
-												<div id="ruler_breakdown" style="height: 300px;"><svg></svg></div>
-											</div>
-										</div>
-										<!-- END DOUNT CHART -->
-									</div>
-								</div>
-								
-								<div class="row">
+                                <!--
+                                RulerBreakdown
+                                --><div class="col-md-6">
+                                    <h2>Rulers Breakdown</h2>
+                                    <!-- START DOUNT CHART -->
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div id="ruler_breakdown" style="height: 300px;"><svg></svg></div>
+                                        </div>
+                                    </div>
+                                    <!-- END DOUNT CHART -->
+                                </div>
 									<div class="col-md-6">
 										<h2>Card Percentage in top 8</h2>                                    
 										<p>I'm working on it. It's really hard to implement.</p>
@@ -74,9 +61,6 @@
 										<h2>Rune deck Percentage in top 8</h2>
 										<p>I'm working on it. It's really hard to implement.</p>
 									</div>
-								</div>
-
-								<div class="row">
 									<div class="col-md-12">
 										<h2>Tournament reports from comunity</h2>
 										<p><?php echo $event["CommunityReports"]; ?></p>
@@ -91,8 +75,7 @@
 								</div>
 								
 								
-								
-							</div> 
+							</div>
 						</div>
 					</div>
 				</div>
@@ -100,10 +83,10 @@
 					<div id="tocify"></div>
 				</div>
 			</div>
-			
+
 		<!-- END PAGE CONTENT WRAPPER -->                                    
-		</div>         
-	</div>            
+		</div>
+	</div>
 	<!-- END PAGE CONTENT -->
 </div>
 <!-- END PAGE CONTAINER -->    
@@ -142,12 +125,23 @@
 	$(function() {
 		/*
 		 * Da reinserire quando troverò come sistemare il bug.
-		 * var toc = $("#tocify").tocify({
+        */
+         var toc = $("#tocify").tocify({
 			context: ".tocify-content", 
 			showEffect: "fadeIn",
 			extendPage:false,
 			selectors: "h2" 
-		});*/
+		});
+        
+        var arrev = <?php
+                    if(TEST && isset($chart)) {
+                        echo $chart;
+                    } else {
+                        echo "Nessun grafico.";
+                    }
+                    ?>;
+        console.log(arrev);
+        
 	});
 
 	var startChart9 = function() {
@@ -167,7 +161,7 @@
 			;;
 
 			d3.select("#ruler_breakdown svg").datum(exampleData()).transition().duration(350).call(chart);
-
+            console.log(exampleData());
 			return chart;
 		});
 
@@ -175,13 +169,7 @@
 		 * Pie chart example data. Note how there is only a single array of key-value pairs.
 		 */
 		function exampleData() {
-			return [{
-				label: "Hanzo",
-				value: 150
-			},{
-				label: "Lucifer",
-				value: 100
-			}];
+			return <?php echo $chart; ?>;
 		}
 	};
 

@@ -27,9 +27,12 @@
             <?php
         }
         ?>
-        <!-- END LOGOUT MESSAGE BOX-->                
+        <!-- END LOGOUT MESSAGE BOX-->
         
-    <!-- START SCRIPTS -->       
+    <!-- START SCRIPTS -->
+
+        <script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>
+        <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
 
         <!-- START TEMPLATE -->
 		<script type="text/javascript" src="js/plugins.js"></script>        

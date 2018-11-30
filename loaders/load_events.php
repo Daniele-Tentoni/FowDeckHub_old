@@ -130,6 +130,9 @@ function getEvents($id, $year){
 	return $res;
 }
 
+/*
+ * Get all decklists from an event.
+ */
 function get_event_decks($event) {
 	$res = array();
 	$res["result"] = false;
@@ -189,5 +192,29 @@ function get_event_decks($event) {
 		$dlconn->close();
 	}
 	return $res;
+}
+
+/*
+ * Fill an array of chart data from an decklists array.
+ */
+function get_chart_data_by_decks($decklists){
+    $data = array();
+    foreach($decklists as $deck){
+        if(isset($data) && isset($data[$deck["Ruler"]])) {
+            $data[$deck["Ruler"]]++;
+        } else {
+            $data[$deck["Ruler"]] = 1;
+        }
+    }
+    
+    $chart = array();
+    foreach($data as $key => $value){
+        $row = array();
+        $row["label"] = $key;
+        $row["value"] = $value;
+        array_push($chart, $row);
+    }
+    
+    return json_encode($chart);
 }
 ?>
