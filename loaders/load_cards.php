@@ -31,7 +31,7 @@
 				left join card_attributes ca on ca.Card = c.Id
 				left join attributes a on ca.Attribute = a.Id 
 				left join card_types ct on ct.Card = c.Id
-				left join types t on ct.Type = t.Name
+				left join types t on ct.Type = t.Id
 				left join rarity r on c.Rarity = r.Id
                 where c.Visibility = 1
                 order by c.Id";

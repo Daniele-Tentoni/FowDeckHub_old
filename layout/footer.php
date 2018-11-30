@@ -27,16 +27,17 @@
             <?php
         }
         ?>
-        <!-- END LOGOUT MESSAGE BOX-->                
+        <!-- END LOGOUT MESSAGE BOX-->
         
-    <!-- START SCRIPTS -->       
+    <!-- START SCRIPTS -->
+
+        <script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>
+        <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
 
         <!-- START TEMPLATE -->
+		<script type="text/javascript" src="js/plugins.js"></script>        
+		<script type="text/javascript" src="js/actions.js"></script>
         <script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>
-        <script type="text/javascript" src="js/settings.js"></script>
-        
-        <script type="text/javascript" src="js/plugins.js"></script>        
-        <script type="text/javascript" src="js/actions.js"></script>
         <!-- END TEMPLATE -->
     <!-- END SCRIPTS -->         
     </body>

@@ -29,12 +29,14 @@ function login($email, $password, $mysqli) {
                 // Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
                 return false;
             } else {
-                if($db_password == $password) { // Verifica che la password memorizzata nel database corrisponda alla password fornita dall'utente.
-                    // Password corretta!       
+                /*
+                 * Verifico la password inserita e segno in login_attemps il risultato.
+                 */
+                if($db_password == $password) {
                     $successed = $mysqli->prepare("INSERT INTO login_attempts (UserId, Risultato) VALUES (?, 1)");
-                    $successed->bind_param("i", $idUser); // esegue il bind del parametro '$email'.
+                    $successed->bind_param("i", $idUser);
                     $idUser = $user_id;     
-                    $successed->execute(); // esegue la query appena creata.
+                    $successed->execute();
 					
                     $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
 
@@ -44,15 +46,14 @@ function login($email, $password, $mysqli) {
                     $_SESSION['user_name'] = $user_name;
                     $_SESSION['user_title'] = $user_title;
                     $_SESSION['login_string'] = hash('sha512', $password.$user_browser);
-                    // Login eseguito con successo.
+                    
                     return "eseguito";    
                 } else {
-                    // Password incorretta.
                     // Registriamo il tentativo fallito nel database.
                     $failed = $mysqli->prepare("INSERT INTO login_attempts (UserId) VALUES (?)");
-                    $failed->bind_param("i", $idUser); // esegue il bind del parametro '$email'.
+                    $failed->bind_param("i", $idUser);
                     $idUser = $user_id;
-                    $failed->execute(); // esegue la query appena creata.
+                    $failed->execute();
                     return "Pass: $password, Salt: $salt";
                 }
             }

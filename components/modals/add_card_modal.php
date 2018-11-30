@@ -11,7 +11,7 @@
 				<form class="form-horizontal" id="new-item" action="adders/add_card.php" method="POST" autocomplete=false role="form"><!--
 					Id (for future images)
 					--><div class="form-group">
-						<label for="CardName" class="col-md-3 control-label">Id</label>
+						<label for="Id" class="col-md-3 control-label">Id</label>
 						<div class="col-md-9">
 							<input id="Id" name="Id" type="number" class="form-control add-item" placeholder="Id"/>
 						</div>

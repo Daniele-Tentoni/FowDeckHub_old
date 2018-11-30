@@ -26,9 +26,13 @@
 							<button type="button" class="btn btn-primary btn-rounded pull-right" data-toggle="modal" data-target="#add_card_modal"><i class="fa fa-plus"></i>New</button>
 						</div>
 
-						<div class="panel-body panel-body-table">
+						<div class="panel-body">
 							<div class="table-responsive">
-								<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/cards_table.php'; ?>
+								<?php
+								require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_cards.php';
+								$cards = getCards(0);
+								require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/cards_table.php'; 
+								?>
 							</div>
 						</div>
 					</div>
@@ -65,11 +69,11 @@
 <!-- END MESSAGE BOX-->
 
 <!-- START ADD CARD MODAL -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/modals/add_card_modal.php'; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/add_card_modal.php'; ?>
 <!-- END ADD CARD MODAL -->
 
 <!-- START SINGLE CARD MODAL -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/modals/single_card_modal.php'; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/single_card_modal.php'; ?>
 <!-- END SINGLE CARD MODAL -->
 
 <!-- START THIS PAGE PLUGINS-->        
