@@ -2,8 +2,8 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-3">
                         <ul>
-                            <li>Help us to improve!</li>
-                            <li><a href="#" target="_blank">Report a bug!</a></li>
+                            <li><a href="#"><i class="fa fa-question" aria-hidden="true"></i> F.A.Q. (Frequently Answered Questions)</a></li>
+                            <li><a href="#" class="mb-control" data-box="#mb-bugreport"><i class="fa fa-info" aria-hidden="true"></i> Report a bug!</a></li>
                         </ul>
                         
                     </div>
@@ -45,11 +45,17 @@
         }
         ?>
         <!-- END LOGOUT MESSAGE BOX-->
+        <!-- BUG REPORT MESSAGE BOX-->
+        
+        <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/bug_report_modal.php'; ?>
+            
+        <!-- BUG REPORT MESSAGE BOX-->
         
     <!-- START SCRIPTS -->
 
         <script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>
         <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
+        <script type="text/javascript" src="js/bug_report.js"></script>
 
         <!-- START TEMPLATE -->
 		<script type="text/javascript" src="js/plugins.js"></script>        

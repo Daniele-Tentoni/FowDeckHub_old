@@ -34,7 +34,7 @@
                         ?>
 						<div class="panel-body">                            
 							<div class="tocify-content">
-								<h2><?php echo $event["Name"]; ?></h2>
+								<h2><?php echo $event["Name"]; ?>&nbsp; <?php echo $event["Year"]; ?></h2>
                                 <h3><?php echo $event["Date"]; ?> in <?php echo $event["Nation"]; ?></h3>
                                 <p><?php echo $event["Attendance"]; ?> players</p>
 								<p>
