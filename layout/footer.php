@@ -1,4 +1,21 @@
-
+                <div class="row" style="padding: 1em 0;">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3">
+                        <ul>
+                            <li>Help us to improve!</li>
+                            <li><a href="#" target="_blank">Report a bug!</a></li>
+                        </ul>
+                        
+                    </div>
+                    <div class="col-md-3">
+                        <ul>
+                            <li>Thank for templates to <a href="https://github.com/sbilly" target="_blank">Sbilly</a></li>
+                            <li>Fow Deck Hub: <span class="copyright">@ Daniele Tentoni, 2019 </span></li>
+                        </ul>
+                        
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
 			</div>           
             <!-- END PAGE CONTENT -->
 		</div>

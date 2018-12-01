@@ -15,11 +15,11 @@ function sec_session_start() {
 
 function login($email, $password, $mysqli) {
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
-    if ($stmt = $mysqli->prepare("SELECT u.id as user_id, username as user_name, password, salt, r.Name as user_title FROM users u, roles r WHERE u.role = r.Id and email = ? LIMIT 1")) { 
+    if ($stmt = $mysqli->prepare("SELECT u.id as user_id, username as user_name, password, salt, r.Name as user_title, r.CanEditEvents as CanEditEvents FROM users u, roles r WHERE u.role = r.Id and email = ? LIMIT 1")) {
         $stmt->bind_param('s', $email); // esegue il bind del parametro '$email'.
         $stmt->execute(); // esegue la query appena creata.
         $stmt->store_result();
-        $stmt->bind_result($user_id, $user_name, $db_password, $salt, $user_title); // recupera il risultato della query e lo memorizza nelle relative variabili.
+        $stmt->bind_result($user_id, $user_name, $db_password, $salt, $user_title, $can_edit_events); // recupera il risultato della query e lo memorizza nelle relative variabili.
         $stmt->fetch();
         $password = hash('sha512', $password.$salt); // codifica la password usando una chiave univoca.
         if($stmt->num_rows == 1) { // se l'utente esiste
@@ -45,6 +45,7 @@ function login($email, $password, $mysqli) {
                     $user_name = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $user_name); // ci proteggiamo da un attacco XSS
                     $_SESSION['user_name'] = $user_name;
                     $_SESSION['user_title'] = $user_title;
+                    $_SESSION['can_edit_events'] = $can_edit_events;
                     $_SESSION['login_string'] = hash('sha512', $password.$user_browser);
                     
                     return "eseguito";    
