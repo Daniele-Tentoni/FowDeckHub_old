@@ -39,9 +39,9 @@
 				echo "<td>" . $status . "</td>";
                 echo "<td>";
 				if($value["Status"] != "Resolved") {
-					echo "<button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:orange;\" onClick=\"change_status('" . $value["Id"] . "');\"><i class=\"fa fa-wrench\"></i> To Resolved</button>
-						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:yellow;\" onClick=\"change_status('" . $value["Id"] . "');\"><i class=\"fa fa-question\"></i> To Open</button>
-						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:green;\"  onClick=\"change_status('" . $value["Id"] . "');\"><i class=\"fa fa-phone\"></i> To New</button>";
+					echo "<button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:orange;\" onClick=\"change_status('" . $value["Id"] . "');\"><i class=\"fa fa-check\"></i> To Resolved</button>
+						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:yellow;\" onClick=\"change_status('" . $value["Id"] . "');\"><i class=\"fa fa-wrench\"></i> To Assigned</button>
+						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:green;\"  onClick=\"change_status('" . $value["Id"] . "');\"><i class=\"fa fa-question\"></i> To Open</button>";
 				} else {
 					echo "The bug is resolved.";
 				}
