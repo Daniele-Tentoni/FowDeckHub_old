@@ -54,16 +54,17 @@
                     <li class="xn-openable <?php if(isset($active_page) && $active_page >= 10 && $active_page < 20) { echo "active"; } ?>">
                         <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Administration</span></a>
                         <ul>
-                            <li class="<?php if(isset($active_page) && $active_page == 10) { echo "active"; } ?>"><a href="users.php"><span class="fa fa-image"></span> Users</a></li>
-                            <li class="<?php if(isset($active_page) && $active_page == 11) { echo "active"; } ?>"><a href="cards.php"><span class="fa fa-user"></span> Cards</a></li>
-                            <li class="<?php if(isset($active_page) && $active_page == 12) { echo "active"; } ?>"><a href="events.php"><span class="fa fa-users"></span> Events</a></li>
-                            <li class="<?php if(isset($active_page) && $active_page == 13) { echo "active"; } ?>"><a href="decklists.php"><span class="fa fa-comments"></span> Decklists</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 10) { echo "active"; } ?>"><a href="users.php"><i class="fa fa-image"></i> Users</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 11) { echo "active"; } ?>"><a href="cards.php"><i class="fa fa-user"></i> Cards</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 12) { echo "active"; } ?>"><a href="events.php"><i class="fa fa-users"></i> Events</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 13) { echo "active"; } ?>"><a href="decklists.php"><i class="fa fa-comments"></i> Decklists</a></li>
+							<li class="<?php if(isset($active_page) && $active_page == 14) { echo "active"; } ?>"><a href="bug_report.php"><i class="fa fa-cross"></i> Bug Reports</a></li>
                         </ul>
                     </li>
                     <li class="xn-openable <?php if(isset($active_page) && $active_page >= 20 && $active_page < 30) { echo "active"; } ?>">
                         <a href="#"><span class="fa fa-file-text-o"></span> <span class="xn-text">Users</span></a>
                         <ul>
-                            <li class="<?php if(isset($active_page) && $active_page == 20) { echo "active"; } ?>"><a href="decklists.php"><span class="fa fa-comments"></span> Decklists</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 20) { echo "active"; } ?>"><a href="decklists.php"><i class="fa fa-comments"></i> Decklists</a></li>
                         </ul>
                     </li>
                 </ul>

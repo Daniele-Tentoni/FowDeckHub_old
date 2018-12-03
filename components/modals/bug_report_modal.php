@@ -31,7 +31,8 @@
                 <script type="text/javascript">
                     $("#new-bug").submit(function (e) {
                         e.preventDefault();
-                        new_row(false);
+						var string_data = "name=" + $("#Name").val() + "&email=" + $("#Email").val() + "&bug=" + $("#BugExplation").val();
+                        new_bug(string_data);
                     });
                 </script>
             </div>

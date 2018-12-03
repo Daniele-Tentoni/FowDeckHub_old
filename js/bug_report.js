@@ -1,4 +1,4 @@
-function new_bug(){
+function new_bug(string_data){
     var success = new function() {
         $(".e-panel").show();
 			if(msg["result"] === true) {
@@ -17,9 +17,14 @@ function new_bug(){
 			$(".e-panel").show();
 			$(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
     };
+	
+	var action = "bug_report.php?new_bug";
+	
+	// Eseguo una chiamata ajax al bug report.
+	ajax_call(method, action, string_data, success, error);
 }
 
-function(method, action, string_data, success, error){
+function ajax_call(method, action, string_data, success, error){
     $.ajax({
 		type: method,
 		url: action,
