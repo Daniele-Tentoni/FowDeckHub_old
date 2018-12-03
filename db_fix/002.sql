@@ -9,6 +9,8 @@ create table if not exists bug_reports(
 	Email varchar(100) not null,
 	Bug varchar(5000) not null,
 	BugState int(11) not null,
+	CreationDate date not null default now(),
+	LastOperation date not null default now(),
 	foreign key BugState references bug_report_states(Id)
 );
 

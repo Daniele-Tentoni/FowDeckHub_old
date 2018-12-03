@@ -40,6 +40,7 @@
 		return $msg;
 	}
 	
+	// Funzione per cambiare state ad un bug report.
 	function change_state_bug($id, $state) {
 		$msg = array();
 		$msg["result"] = false;
@@ -84,7 +85,62 @@
 	}
 	
 	function get_bug_list() {
-		return "This bug list.";
+		$msg = array();
+		$msg["result"] = false;
+		$msg["error"] = "nothing";
+		$content = "";
+		$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+        
+        // Controllo che la connessione sia impostata.
+        if(!isset($conn)) {
+            $msg["error"] = "Server connection error. Please, contact the support.";
+            return $msg;
+        }
+        
+        if(isset($conn) && $conn->connect_error) {
+            $msg["error"] = "Database server connection error. Please, contact the support.";
+            return $msg;
+        } 
+        
+        // Effettuo finalmente il caricamento della decklist.
+        // Carico tutte le decklists.
+        $query = "select b.Id as Id,
+							b.Name as Name,
+							b.EMail as EMail,
+							b.Bug as Bug,
+							b.CreationDate as CreationDate,
+							b.LastOperation as LastOperation,
+							s.Name as State
+				from bug_reports b
+				join bug_report_states s on b.State = s.Id
+				order by b.Id";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            $msg["content"] = array();
+            $msg["error"] = "There's some data to view";
+            while($row = $result->fetch_assoc()) {
+                $stringa["Id"] = $row["Id"];
+                $stringa["Name"] = $row["Name"];
+                $stringa["EMail"] = $row["EMail"];
+                $stringa["Bug"] = $row["Bug"];
+                $stringa["CreationDate"] = $row["CreationDate"];
+                $stringa["LastOperation"] = $row["LastOperation"];
+                $stringa["State"] = $row["State"];
+                array_push($msg["content"], $stringa);
+            }
+        } else {
+            $msg["error"] = "No data to view.";
+            return $msg;
+        }
+        
+        $msg["result"] = true;
+        if(isset($conn)) {
+            $conn->close();
+        }
+        return $msg;
 	}
 	
 	function get_bug_state_list(){

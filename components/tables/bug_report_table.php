@@ -1,11 +1,13 @@
-<table class="table datatable_search">
+<table class="table datatable">
     <thead>
         <tr>
 			<th width="60">Id</th>
             <th width="150">Name</th>
             <th width="150">Mail</th>
             <th>Bug</th>
-            <th width="100">Status</th>
+			<th width="90">Creation Date</th>
+			<th width="90">Last Operation</th>
+            <th width="100">State</th>
             <th width="150">Actions</th>
         </tr>
     </thead>
@@ -18,6 +20,8 @@
 				echo "<td>" . $value["Name"] . "</td>";
 				echo "<td>" . $value["Mail"] . "</td>";
 				echo "<td>" . $value["Bug"] . "</td>";
+				echo "<td>" . $value["CreationDate"] . "</td>";
+				echo "<td>" . $value["LastOperation"] . "</td>";
                 $status = "";
 				switch($value["Status"]) {
 					case 'Resolved':
@@ -36,12 +40,12 @@
 						$status .= "<span class=\"label label-primary\" style=\"background-color:grey;\">" . $value["Status"] . "</span> ";
 						break;
 				}
-				echo "<td>" . $status . "</td>";
+				echo "<td class=\"status\">" . $status . "</td>";
                 echo "<td>";
 				if($value["Status"] != "Resolved") {
-					echo "<button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:orange;\" onClick=\"change_status('" . $value["Id"] . "');\"><i class=\"fa fa-check\"></i> To Resolved</button>
-						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:yellow;\" onClick=\"change_status('" . $value["Id"] . "');\"><i class=\"fa fa-wrench\"></i> To Assigned</button>
-						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:green;\"  onClick=\"change_status('" . $value["Id"] . "');\"><i class=\"fa fa-question\"></i> To Open</button>";
+					echo "<button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:orange;\" onClick=\"change_status(" . $value["Id"] . ", 4);\"><i class=\"fa fa-check\"></i> To Resolved</button>
+						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:yellow;\" onClick=\"change_status(" . $value["Id"] . ", 3);\"><i class=\"fa fa-wrench\"></i> To Assigned</button>
+						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:green;\"  onClick=\"change_status(" . $value["Id"] . ", 2);\"><i class=\"fa fa-question\"></i> To Open</button>";
 				} else {
 					echo "The bug is resolved.";
 				}
