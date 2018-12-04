@@ -41,7 +41,7 @@ if($log_result) {
 		if(isset($_GET) && isset($_GET["year"]) && $_GET["year"] < $year) {
 			$year = $_GET["year"];
 		}
-		$events = getEvents(0, $year);
+		$events = get_events(0, $year);
 	}
 	
 	/*

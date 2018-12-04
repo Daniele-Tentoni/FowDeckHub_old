@@ -1,12 +1,9 @@
 <?php
 // Connessione al database.
 $dbaddress = "localhost";
-$dbname = "my_tentonibasididati";
+$dbname = "id8124414_my_fowdeckhub";
+$dbuser = "id8124414_antoniofow";
 define("USER_AVATAR_IMAGE", "assets/images/users/avatar.jpg");
-
-// Variabili di test.
-define("TEST", true);
-define("TEST_PWD", "c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec");
 
 function try_config() {
 	echo "Config file correctly configured.";

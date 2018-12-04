@@ -21,7 +21,7 @@ insert into bug_report_states(Id, Name) values (
 4, "Resolved");
 
 insert into bug_reports(Name, Email, Bug, BugState) values (
-"Daniele Tentoni", "d.tentoni@wedoit.io", "Questo bug deve essere New", 1,
-"Daniele Tentoni", "d.tentoni@wedoit.io", "Questo bug deve essere Open", 2,
-"Daniele Tentoni", "d.tentoni@wedoit.io", "Questo bug deve essere Assigned", 3,
+"Daniele Tentoni", "d.tentoni@wedoit.io", "Questo bug deve essere New", 1),(
+"Daniele Tentoni", "d.tentoni@wedoit.io", "Questo bug deve essere Open", 2),(
+"Daniele Tentoni", "d.tentoni@wedoit.io", "Questo bug deve essere Assigned", 3),(
 "Daniele Tentoni", "d.tentoni@wedoit.io", "Questo bug deve essere Resolved", 4)

@@ -5,6 +5,7 @@
             <div class="mb-content">
                 <p>We can improve only with cooperation!</p>                    
                 <p>Press Send when you are ready to send a bug report. We'll notificate with an email when the bug will be resolved.</p>
+                <p></p>
                 <form class="form-horizontal" id="new-bug" action="adders/bug_report.php?new_report" method="POST" data-success="The report has been sent!" data-error="There was an error. Retry later." autocomplete=false role="form"><!--
                     Name
                     --><div class="form-group">

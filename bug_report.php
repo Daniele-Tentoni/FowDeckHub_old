@@ -24,7 +24,7 @@ if($log_result) {
 	} else {
 		$title = "Bug Reports - Administrator - Fow Deck Hub";
 		$page = "/pages/bug_report/bug_report_list.php";
-		$bugs = get_bug_list();
+		$bugs = get_bug_list($mysqli);
 	}
 	
 	/*

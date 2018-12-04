@@ -22,7 +22,7 @@
 					<div class="panel panel-default">
 
 						<div class="panel-heading">
-							<h3 class="panel-title">Events</h3>
+							<h3 class="panel-title">Events questo</h3>
 							<button type="button" class="btn btn-primary btn-rounded pull-right" data-toggle="modal" data-target="#add_event_modal"><i class="fa fa-plus"></i>New</button>
 						</div>
 

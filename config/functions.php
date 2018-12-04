@@ -1,5 +1,5 @@
 <?php
-require_once "db_connect.php";
+require_once "definings.php";
 
 function sec_session_start() {
     $session_name = 'sec_session_id'; // Imposta un nome di sessione

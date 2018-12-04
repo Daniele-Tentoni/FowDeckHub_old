@@ -1,4 +1,4 @@
-<table class="table datatable_search">
+<table class="table datatable">
     <thead>
         <tr>
             <th>Decklist Name</th>

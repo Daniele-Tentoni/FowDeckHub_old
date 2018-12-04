@@ -2,15 +2,16 @@
 function get_event($id) {
 	$res = array();
 	$res["result"] = false;
-	$econn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+	// Occorre ridichiarare la connessione al database.
+    $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 
 	// Controllo che la connessione sia impostata.
-	if(!isset($econn)) {
+	if(!isset($mysqli)) {
 		$res["msg"] = "Problemi di connessione al server, contact the support.";
 		return $res;
 	}
 
-	if(isset($econn) && $econn->connect_error) {
+	if(isset($mysqli) && $mysqli->connect_error) {
 		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
 		return $res;
 	} 
@@ -27,7 +28,7 @@ function get_event($id) {
 			join nations n on e.Nation = n.Id
 			where e.Id = ? order by e.Date";
 
-	$stmt = $econn->prepare($query);
+	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $id_param);
 	$id_param = mysql_real_escape_string($id);
 	$stmt->execute();
@@ -51,24 +52,24 @@ function get_event($id) {
 	}
 
 	$res["result"] = true;
-	if(isset($econn)) {
-		$econn->close();
-	}
 	return $res;
 }
 
-function getEvents($id, $year){
-	$res = array();
+/*
+ * Get the lists of all events.
+ */
+function get_events($id, $year){
+    $res = array();
 	$res["result"] = false;
-	$econn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-
+	// Occorre ridichiarare la connessione al database.
+    $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+    
 	// Controllo che la connessione sia impostata.
-	if(!isset($econn)) {
-		$res["msg"] = "Problemi di connessione al server, contact the support.";
+	if(!isset($mysqli)) {
+		$res["msg"] = "Problemi di connessione al server, contact the support1.";
 		return $res;
 	}
-
-	if(isset($econn) && $econn->connect_error) {
+	if(isset($mysqli) && $mysqli->connect_error) {
 		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
 		return $res;
 	} 
@@ -94,7 +95,7 @@ function getEvents($id, $year){
 	
 	$query .= " order by e.Date";
 
-	$stmt = $econn->prepare($query);
+	$stmt = $mysqli->prepare($query);
 	
 	/*
 	// Codice poco pulito.
@@ -124,9 +125,6 @@ function getEvents($id, $year){
 	}
 
 	$res["result"] = true;
-	if(isset($econn)) {
-		$econn->close();
-	}
 	return $res;
 }
 
@@ -136,15 +134,16 @@ function getEvents($id, $year){
 function get_event_decks($event) {
 	$res = array();
 	$res["result"] = false;
-	$dlconn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+	// Occorre ridichiarare la connessione al database.
+    $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 
 	// Controllo che la connessione sia impostata.
-	if(!isset($dlconn)) {
+	if(!isset($mysqli)) {
 		$res["msg"] = "Problemi di connessione al server, contact the support.";
 		return $res;
 	}
 
-	if(isset($dlconn) && $dlconn->connect_error) {
+	if(isset($mysqli) && $mysqli->connect_error) {
 		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
 		return $res;
 	} 
@@ -165,7 +164,7 @@ function get_event_decks($event) {
 
 	$query .= " order by Event, Position";
 
-	$stmt = $dlconn->prepare($query);
+	$stmt = $mysqli->prepare($query);
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
@@ -188,9 +187,6 @@ function get_event_decks($event) {
 	}
 
 	$res["result"] = true;
-	if(isset($dlconn)) {
-		$dlconn->close();
-	}
 	return $res;
 }
 
