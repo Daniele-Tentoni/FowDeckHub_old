@@ -146,4 +146,52 @@
 	function get_bug_state_list(){
 		return "Ahah";
 	}
+	
+	// Funzione apposita per il widget dei bug.
+	function get_bug_numbers() {
+		$msg = array();
+		$msg["result"] = false;
+		$msg["error"] = "nothing";
+		$content = "";
+		$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+        
+        // Controllo che la connessione sia impostata.
+        if(!isset($conn)) {
+            $msg["error"] = "Server connection error. Please, contact the support.";
+            return $msg;
+        }
+        
+        if(isset($conn) && $conn->connect_error) {
+            $msg["error"] = "Database server connection error. Please, contact the support.";
+            return $msg;
+        } 
+        
+        // Effettuo finalmente il caricamento della decklist.
+        // Carico tutte le decklists.
+        $query = "select b.State as Stato, count(*) as Numero
+				from bug_reports b
+				group by b.State";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows > 0) {
+            $msg["content"] = array();
+            $msg["error"] = "There's some data to view";
+            while($row = $result->fetch_assoc()) {
+                $stringa["Stato"] = $row["Stato"];
+                $stringa["Numero"] = $row["Numero"];
+                array_push($msg["content"], $stringa);
+            }
+        } else {
+            $msg["error"] = "No data to view.";
+            return $msg;
+        }
+        
+        $msg["result"] = true;
+        if(isset($conn)) {
+            $conn->close();
+        }
+        return $msg;
+	}
 ?>

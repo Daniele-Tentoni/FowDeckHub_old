@@ -36,7 +36,11 @@
 		$state = mysql_real_escape_string($_POST["state"]);
 		$result = change_state_bug($id, $state);
 		echo json_encode($result);
-	} else {
+	} else if(issest($_GET["numbers"])) {
+		// Chiamata che arriva dal widget che vuole sapere il numero dei vari bug.
+		$result = get_bug_numbers();
+		echo json_encode($result);
+	} else {}
 		// Comunico che non ho capito quale operazione mi è richiesta.
 		$result["error"] = "Operazione non riconosciuta.";
 		echo json_encode($result);
