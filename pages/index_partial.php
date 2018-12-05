@@ -15,36 +15,7 @@
 		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/users_widget.php'; ?>
     </div>
     <div class="col-md-3">
-        <!-- START NEW USERS WIDGET SLIDER -->
-        <div class="widget widget-default widget-carousel">
-            <div class="owl-carousel" id="owl-example">
-                <div>                                    
-                    <div class="widget-title">Ticket Aperti</div>
-                    <div class="widget-subtitle">Da visionare</div>
-                    <div class="widget-int">
-                        0
-                    </div>
-                </div>
-                <div>                                    
-                    <div class="widget-title">Ticket Chiusi</div>
-                    <div class="widget-subtitle">Risolti</div>
-                    <div class="widget-int">
-                        0
-                    </div>
-                </div>
-                <div>                                    
-                    <div class="widget-title">Ticket Sospesi</div>
-                    <div class="widget-subtitle">In Sviluppo o in pausa</div>
-                    <div class="widget-int">
-                        0
-                    </div>
-                </div>
-            </div>                            
-            <div class="widget-controls">                                
-                <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
-            </div>                             
-        </div>        
-        <!-- END WIDGET SLIDER -->
+        <?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/bug_reports_widget.php'; ?>
     </div>
     <!-- END UTILITY WIDGETS -->
     

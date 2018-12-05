@@ -40,7 +40,7 @@ function new_bug($name, $email, $bug){
 }
 
 // Funzione per cambiare state ad un bug report.
-function change_state_bug($id, $state) {
+function change_state_bug($mysqli, $id, $state) {
     $msg = array();
     $msg["result"] = false;
     $msg["error"] = "nothing";
@@ -49,21 +49,22 @@ function change_state_bug($id, $state) {
         if($mysqli->connect_error){
             $msg["error"] = "Connection Error";
         } else {
-            $query = "update bug_reports set State = ? where Id = ?";
+            $query = "update bug_reports set BugState = ? where Id = ?";
             $stmt = $mysqli->prepare($query);
             if(!$stmt) {
                 $msg["data"] = $mysqli->error_list;
                 $msg["error"] = "Boolean value in \$stmt";
             } else {
-                $stmt->bind_param("ii", $id_sql, $state_sql);
+                $stmt->bind_param("ii", $state_sql, $id_sql);
                 $id_sql = mysql_real_escape_string($id);
                 $state_sql = mysql_real_escape_string($state);
                 if($stmt->execute()) {
                     $msg["result"] = true;
                     $content .= "Cambiamento del bug $id effettuato con successo.";
-                    $msg["id"] = $conn->insert_id;
+                    $msg["update_id"] = $id_sql;
+                    $msg["update_state"] = $state_sql;
                 } else {
-                    $msg["data"] = $conn->error_list;
+                    $msg["data"] = $mysqli->error_list;
                     $content .= "Riscontrato problema nel cambiamento del bug $id, contattare il supporto.";
                 }
             }

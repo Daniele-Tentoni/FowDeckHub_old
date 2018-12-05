@@ -32,14 +32,9 @@ function ajax_call(method, action, string_data, success, error){
 		url: action,
 		dataType: "json",
 		data: string_data,
-		success: succes,
+		success: success,
 		error: error
 	});
-}
-
-// Prova di una funzione.
-function ajax_try(number){
-    console.log(11);
 }
 
 // Creo la chiamata ajax per cambiare lo stato al bug.
@@ -47,13 +42,36 @@ function change_state(id, state) {
 	var method = "POST";
 	var action = "adders/add_bug_report.php?change_state";
 	var string_data = "id=" + id + "&state=" + state;
-	var success = new function() {
+	var success = function(result) {
+        $("#trow_" + id + " span").removeClass();
+        var classToAdd = "";
+        var htmlToAdd = "";
 		// Qui ci andrà per bene il codice per cambiare lo stato anche nella view.
-		console.log("Cambiato correttamente lo stato.");
+        switch(result["update_state"]) {
+            case "4":
+                classToAdd = "lb_red";
+                htmlToAdd = "Resolved";
+                break;
+            case "3":
+                classToAdd = "lb_orange";
+                htmlToAdd = "Assigned";
+                break;
+            case "2":
+                classToAdd = "lb_yellow";
+                htmlToAdd = "Open";
+                break;
+            default:
+                classToAdd = "lb_default";
+                htmlToAdd = "Default";
+                break;
+        }
+        $("#trow_" + id + " span").addClass("label").addClass(classToAdd).html(htmlToAdd);
+        console.log(result);
 	};
-	var error = new function() {
+	var error = function(error) {
 		// Qui ci andrà per bene il codice per capire dov'è l'errore.
 		console.log("Un errore è stato riscontrato nel sistema.");
+        console.log(error);
 	}
 	
 	ajax_call(method, action, string_data, success, error);

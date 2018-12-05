@@ -23,24 +23,24 @@
 	}
 	
 	// Qui controllo quale operazione devo eseguire arrivato dalla chiamata ajax.
-	if(isset($_GET["new_bug"]) {
+	if(isset($_GET["new_bug"])) {
 		// Creo il nuovo bug.
 		$name = mysql_real_escape_string($_POST["name"]);
 		$email = mysql_real_escape_string($_POST["email"]);
 		$bug = mysql_real_escape_string($_POST["bug"]);
 		$result = new_bug($name, $email, $bug);
 		echo json_encode($result);
-	} else if(isset($_GET["change_state_bug"]) && isset($_POST["id"]) && $_POST["id"] > 0 && isset($_POST["state"]) && $_GET["state"] > 1 && $_GET["state"] < 5) {
+	} else if(isset($_GET["change_state"]) && isset($_POST["id"]) && $_POST["id"] > 0 && isset($_POST["state"]) && $_POST["state"] > 1 && $_POST["state"] < 5) {
 		// Non deve essere possibile cambiare lo status di un bug_report  in new, quindi maggiore di 1 deve essere.
 		$id = mysql_real_escape_string($_POST["id"]);
 		$state = mysql_real_escape_string($_POST["state"]);
-		$result = change_state_bug($id, $state);
+		$result = change_state_bug($mysqli, $id, $state);
 		echo json_encode($result);
-	} else if(issest($_GET["numbers"])) {
+	} else if(isset($_GET["numbers"])) {
 		// Chiamata che arriva dal widget che vuole sapere il numero dei vari bug.
 		$result = get_bug_numbers();
 		echo json_encode($result);
-	} else {}
+	} else {
 		// Comunico che non ho capito quale operazione mi è richiesta.
 		$result["error"] = "Operazione non riconosciuta.";
 		echo json_encode($result);

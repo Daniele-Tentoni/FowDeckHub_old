@@ -25,27 +25,27 @@
                 $state = "";
 				switch($value["State"]) {
 					case 'Resolved':
-						$state .= "<span class=\"label label-success\" style=\"background-color:red;\"><i class='fa fa-check'></i> " . $value["State"] . "</span> ";
+						$state .= "<span class=\"label lb_red\"><i class='fa fa-check'></i> " . $value["State"] . "</span> ";
 						break;
 					case 'Assigned':
-						$state .= "<span class=\"label label-success\" style=\"background-color:orange;\"><i class='fa fa-wrench'></i> " . $value["State"] . "</span> ";
+						$state .= "<span class=\"label lb_orange\"><i class='fa fa-wrench'></i> " . $value["State"] . "</span> ";
 						break;
 					case 'Open':
-						$state .= "<span class=\"label label-success\" style=\"background-color:yellow;\"><i class='fa fa-question'></i> " . $value["State"] . "</span> ";
+						$state .= "<span class=\"label lb_yellow\"><i class='fa fa-question'></i> " . $value["State"] . "</span> ";
 						break;
 					case 'New':
-						$state .= "<span class=\"label label-success\" style=\"background-color:green;\"><i class='fa fa-phone'></i> " . $value["State"] . "</span> ";
+						$state .= "<span class=\"label lb_green\"><i class='fa fa-phone'></i> " . $value["State"] . "</span> ";
 						break;
 					default:
-						$state .= "<span class=\"label label-primary\" style=\"background-color:grey;\">" . $value["State"] . "</span> ";
+						$state .= "<span class=\"label lb_default\" style=\"\">" . $value["State"] . "</span> ";
 						break;
 				}
 				echo "<td class=\"status\">" . $state . "</td>";
                 echo "<td>";
 				if($value["State"] != "Resolved") {
-					echo "<button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:orange;\" onClick=\"change_status(" . $value["Id"] . ", 4);\"><i class=\"fa fa-check\"></i></button>
-						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:yellow;\" onClick=\"change_status(" . $value["Id"] . ", 3);\"><i class=\"fa fa-wrench\"></i></button>
-						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:green;\"  onClick=\"change_status(" . $value["Id"] . ", 2);\"><i class=\"fa fa-question\"></i></button>";
+					echo "<button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:red;\" onClick=\"change_state(" . $value["Id"] . ", 4);\"><i class=\"fa fa-check\"></i></button>
+						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:orange;\" onClick=\"change_state(" . $value["Id"] . ", 3);\"><i class=\"fa fa-wrench\"></i></button>
+						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:yellow;\"  onClick=\"change_state(" . $value["Id"] . ", 2);\"><i class=\"fa fa-question\"></i></button>";
 				} else {
 					echo "The bug is resolved.";
 				}
