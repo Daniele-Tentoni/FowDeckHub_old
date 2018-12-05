@@ -22,31 +22,15 @@
 				echo "<td>" . $value["Bug"] . "</td>";
 				echo "<td>" . $value["CreationDate"] . "</td>";
 				echo "<td>" . $value["LastOperation"] . "</td>";
-                $state = "";
-				switch($value["State"]) {
-					case 'Resolved':
-						$state .= "<span class=\"label lb_red\"><i class='fa fa-check'></i> " . $value["State"] . "</span> ";
-						break;
-					case 'Assigned':
-						$state .= "<span class=\"label lb_orange\"><i class='fa fa-wrench'></i> " . $value["State"] . "</span> ";
-						break;
-					case 'Open':
-						$state .= "<span class=\"label lb_yellow\"><i class='fa fa-question'></i> " . $value["State"] . "</span> ";
-						break;
-					case 'New':
-						$state .= "<span class=\"label lb_green\"><i class='fa fa-phone'></i> " . $value["State"] . "</span> ";
-						break;
-					default:
-						$state .= "<span class=\"label lb_default\" style=\"\">" . $value["State"] . "</span> ";
-						break;
-				}
-				echo "<td class=\"status\">" . $state . "</td>";
+				echo "<td class=\"status\"><span class=\"label " . $value["Color"] . "\"><i class='fa fa-" . $value["Icon"] . "'></i>" . $value["State"] . "</span></td>";
                 echo "<td>";
-				if($value["State"] != "Resolved") {
-					echo "<button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:red;\" onClick=\"change_state(" . $value["Id"] . ", 4);\"><i class=\"fa fa-check\"></i></button>
-						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:orange;\" onClick=\"change_state(" . $value["Id"] . ", 3);\"><i class=\"fa fa-wrench\"></i></button>
-						  <button class=\"btn btn-default btn-rounded btn-sm\" style=\"background-color:yellow;\"  onClick=\"change_state(" . $value["Id"] . ", 2);\"><i class=\"fa fa-question\"></i></button>";
-				} else {
+                if($value["State"] != "Resolved") {
+                    foreach($states["content"] as $state) {
+                        if($value["State"] != $state["Name"]) {
+                            echo "<button class=\"btn btn-default btn-rounded btn-sm " . $state["Color"] . "\" onClick=\"change_state(" . $value["Id"] . ", " . $state["Id"] . ");\"><i class=\"fa fa-" . $state["Icon"] . "\"></i></button>";
+                        }
+                    }
+                } else {
 					echo "The bug is resolved.";
 				}
 				echo "</td>";

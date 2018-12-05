@@ -28,9 +28,9 @@
 		$name = mysql_real_escape_string($_POST["name"]);
 		$email = mysql_real_escape_string($_POST["email"]);
 		$bug = mysql_real_escape_string($_POST["bug"]);
-		$result = new_bug($name, $email, $bug);
+		$result = new_bug($mysqli, $name, $email, $bug);
 		echo json_encode($result);
-	} else if(isset($_GET["change_state"]) && isset($_POST["id"]) && $_POST["id"] > 0 && isset($_POST["state"]) && $_POST["state"] > 1 && $_POST["state"] < 5) {
+	} else if(isset($_GET["change_state"]) && isset($_POST["id"]) && $_POST["id"] > 0 && isset($_POST["state"]) && $_POST["state"] > 0 && $_POST["state"] < 5) {
 		// Non deve essere possibile cambiare lo status di un bug_report  in new, quindi maggiore di 1 deve essere.
 		$id = mysql_real_escape_string($_POST["id"]);
 		$state = mysql_real_escape_string($_POST["state"]);

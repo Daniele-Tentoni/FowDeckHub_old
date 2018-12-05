@@ -1,25 +1,28 @@
 // Creo la chiamata ajax per creare un nuovo bug.
-function new_bug(string_data){
-    var success = new function() {
-        $(".e-panel").show();
-		if(msg["result"] === true) {
-			$(".e-body").html("<span class=\"alert alert-success\">" + msg["content"] + "</span>");
-			if(ret != null) {
-				window.location = ret + "?" + func + "=" + msg["id"];
-			}
-		} else {
-			$(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
-			console.log(msg["data"]);
-		}
+function new_bug(string_data, dialog){
+    var method = "POST";
+	var action = "adders/add_bug_report.php?new_bug";
+    var success = function(msg) {
+        // Modifico la mb per il successo o comunico il fallimento.
+        if(msg["result"] == true) {
+            $("#log_bug_report").removeClass().html("<p class=\"alert alert-" + msg["class"] + "\">" + msg["content"] + "</p>");
+            $("#log_bug_report_buttons").html("<button class=\"btn btn-default btn-lg mb-control-close\">Close</button>");
+            $(".mb-control-close").on("click",function(){
+               $(this).parents(".message-box").removeClass("open");
+               return false;
+            });  
+        } else {
+            $("#log_bug_report").append("riprova");
+        }
+        
+        // Performo la chiusura della finestra.
+        //$(".mb-control-close").click();
     };
-    var error = function () {
+    var error = function (msg) {
+        // Comunico l'errore.
         console.log(msg);
 		console.log("error");
-		$(".e-panel").show();
-		$(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
     };
-	
-	var action = "bug_report.php?new_bug";
 	
 	// Eseguo una chiamata ajax al bug report.
 	ajax_call(method, action, string_data, success, error);
@@ -58,6 +61,10 @@ function change_state(id, state) {
                 break;
             case "2":
                 classToAdd = "lb_yellow";
+                htmlToAdd = "Open";
+                break;
+            case "1":
+                classToAdd = "lb_green";
                 htmlToAdd = "Open";
                 break;
             default:

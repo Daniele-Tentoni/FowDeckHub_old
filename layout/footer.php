@@ -3,7 +3,7 @@
                     <div class="col-md-3">
                         <ul>
                             <li><a href="#"><i class="fa fa-question" aria-hidden="true"></i> F.A.Q. (Frequently Answered Questions)</a></li>
-                            <li><a href="#" class="mb-control" data-box="#mb-bugreport"><i class="fa fa-info" aria-hidden="true"></i> Report a bug!</a></li>
+                            <li><a href="#" class="mb-control" data-box="#mb-bugreport"><i class="fa fa-bug" aria-hidden="true"></i> Report a bug!</a></li>
                         </ul>
                         
                     </div>
