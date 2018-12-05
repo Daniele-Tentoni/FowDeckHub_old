@@ -17,6 +17,24 @@
     <div class="col-md-3">
         <?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/bug_reports_widget.php'; ?>
     </div>
+    <div class="col-md-3">
+        <script>
+            google_color_border = "#003399";
+            google_color_bg = "#FFFFFF";
+            google_color_link = "#0033CC";
+            google_color_url = "#008000";
+            google_color_text = "#000000";
+            google_ui_features = "rc:0";
+            !function(d,l,e,s,c) {
+                e=d.createElement("script");
+                e.src="//ad.altervista.org/js.ad/size=300X250/?ref="+encodeURIComponent(l.hostname+l.pathname)+"&r="+Date.now();
+                s=d.scripts;
+                c=s[s.length-1];
+                c.parentNode.insertBefore(e,c)
+            }(document,location)
+        </script>
+    </div>
+    
     <!-- END UTILITY WIDGETS -->
     
     <!-- START EVENTS BLOCK -->
