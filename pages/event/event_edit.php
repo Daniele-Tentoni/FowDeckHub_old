@@ -56,14 +56,13 @@
 										<select class="form-control add-item" id="Nation" name="Nation" placeholder="Nation">
 											<?php
 											// Essendo la prima query apro la connessione.
-											$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-											if($conn->connect_error){
+											if($mysqli->connect_error){
 												echo "<option value=\"0\">-- Connection Error --</option>";
 											} else {
 												$query = "SELECT s.Id, s.Name
 														FROM nations s
 														ORDER BY s.Name";
-												$stmt = $conn->prepare($query);
+												$stmt = $mysqli->prepare($query);
 												$stmt->execute();
 												$result = $stmt->get_result();
 												if($result->num_rows > 0) {
@@ -106,9 +105,7 @@
 											</thead>
 											<tbody id="cards-table-body">
 											<?php
-												// Essendo la prima query apro la connessione.
-												$rbconn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-												if($rbconn->connect_error){
+												if($mysqli->connect_error){
 													echo "-- Connection Error --";
 												} else {
 													$query = 'select c.Id, c.Name
@@ -116,7 +113,7 @@
 																join card_types ct on c.Id = ct.Card
 																join types t on ct.Type = t.Id
 																where t.Name = "Ruler / J-Ruler"';
-													$stmt = $rbconn->prepare($query);
+													$stmt = $mysqli->prepare($query);
 													$stmt->execute();
 													$result = $stmt->get_result();
 													if($result->num_rows > 0) {

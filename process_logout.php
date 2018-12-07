@@ -1,5 +1,6 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . '/config/functions.php';
+require_once 'definings.php';
+require_once ROOT_PATH . '/config/functions.php';
 sec_session_start();
 // Elimina tutti i valori della sessione.
 $_SESSION = array();

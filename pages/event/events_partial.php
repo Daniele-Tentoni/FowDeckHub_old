@@ -22,14 +22,14 @@
 					<div class="panel panel-default">
 
 						<div class="panel-heading">
-							<h3 class="panel-title">Events</h3>
+							<h3 class="panel-title">Events questo</h3>
 							<button type="button" class="btn btn-primary btn-rounded pull-right" data-toggle="modal" data-target="#add_event_modal"><i class="fa fa-plus"></i>New</button>
 						</div>
 
 						<div class="panel-body">
 							<div class="table-responsive">
 								<?php 
-									require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/events_table.php'; 
+									require_once ROOT_PATH . '/components/tables/events_table.php'; 
 								?>
 							</div>
 						</div>
@@ -66,7 +66,7 @@
 <!-- END MESSAGE BOX-->
 
 <!-- ADD EVENT MODAL -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/add_event_modal.php'; ?>
+<?php require_once ROOT_PATH . '/components/modals/add_event_modal.php'; ?>
 <!-- END ADD EVENT MODAL -->
 
 <!-- START THIS PAGE PLUGINS-->        

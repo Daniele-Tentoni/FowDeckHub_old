@@ -9,43 +9,32 @@
 <div class="row">
     <!-- UTILITY WIDGETS -->
 	<div class="col-md-3">
-		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/visitors_widget.php'; ?>
+		<?php require_once ROOT_PATH . '/components/widgets/visitors_widget.php'; ?>
 	</div>
 	<div class="col-md-3">
-		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/users_widget.php'; ?>
+		<?php require_once ROOT_PATH . '/components/widgets/users_widget.php'; ?>
     </div>
     <div class="col-md-3">
-        <!-- START NEW USERS WIDGET SLIDER -->
-        <div class="widget widget-default widget-carousel">
-            <div class="owl-carousel" id="owl-example">
-                <div>                                    
-                    <div class="widget-title">Ticket Aperti</div>
-                    <div class="widget-subtitle">Da visionare</div>
-                    <div class="widget-int">
-                        0
-                    </div>
-                </div>
-                <div>                                    
-                    <div class="widget-title">Ticket Chiusi</div>
-                    <div class="widget-subtitle">Risolti</div>
-                    <div class="widget-int">
-                        0
-                    </div>
-                </div>
-                <div>                                    
-                    <div class="widget-title">Ticket Sospesi</div>
-                    <div class="widget-subtitle">In Sviluppo o in pausa</div>
-                    <div class="widget-int">
-                        0
-                    </div>
-                </div>
-            </div>                            
-            <div class="widget-controls">                                
-                <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
-            </div>                             
-        </div>        
-        <!-- END WIDGET SLIDER -->
+        <?php require_once ROOT_PATH . '/components/widgets/bug_reports_widget.php'; ?>
     </div>
+    <div class="col-md-3">
+        <script>
+            google_color_border = "#003399";
+            google_color_bg = "#FFFFFF";
+            google_color_link = "#0033CC";
+            google_color_url = "#008000";
+            google_color_text = "#000000";
+            google_ui_features = "rc:0";
+            !function(d,l,e,s,c) {
+                e=d.createElement("script");
+                e.src="//ad.altervista.org/js.ad/size=300X250/?ref="+encodeURIComponent(l.hostname+l.pathname)+"&r="+Date.now();
+                s=d.scripts;
+                c=s[s.length-1];
+                c.parentNode.insertBefore(e,c)
+            }(document,location)
+        </script>
+    </div>
+    
     <!-- END UTILITY WIDGETS -->
     
     <!-- START EVENTS BLOCK -->
@@ -128,7 +117,7 @@
 	
     <!-- START SETS BLOCK -->
 	<div class="col-md-6">
-		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/sets_filling_widget.php'; ?>
+		<?php require_once ROOT_PATH . '/components/widgets/sets_filling_widget.php'; ?>
 	</div>
     <!-- END SETS BLOCK -->
     
@@ -213,4 +202,6 @@
 <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
         
 <script type="text/javascript" src="js/demo_dashboard.js"></script>
-<!-- END THIS PAGE PLUGINS--> 
+<!-- END THIS PAGE PLUGINS--> "<br />
+<b>Fatal error</b>:  require_once(): Failed opening required 'ROOT_PATH/config/functions.php' (include_path='.:') in <b>/membri/fowdeckhub/loaders/load_sets_filling.php</b> on line <b>2</b><br />
+"

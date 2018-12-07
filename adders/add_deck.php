@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
+require_once './definings.php';
+require_once ROOT_PATH . '/config/functions.php';
 $msg = array();
 $msg["result"] = true;
 $msg["error"] = "nothing";
@@ -23,18 +23,18 @@ if(!isset($_POST)) {
 
 $content = "Operazioni effettuate: ";
 try {
-	$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+	$mysqli = new mysqli("localhost", "root", "", "my_fowdeckhub");
 	$msg = array();
 	$msg["result"] = true;
-	if($conn->connect_error){
+	if($mysqli->connect_error){
 		$msg["error"] = "Connect Error";
 		$msg["result"] = false;
 	} else {
 		// Inserisco la carta.
-		$stmt = $conn->prepare("INSERT INTO `decklists`(`Name`, `Ruler`, `Player`, `Event`, `Type`, `Visibility`, `GachaCode`, `Position`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+		$stmt = $mysqli->prepare("INSERT INTO `decklists`(`Name`, `Ruler`, `Player`, `Event`, `Type`, `Visibility`, `GachaCode`, `Position`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 		if(!$stmt) {
 			$msg["result"] = false;
-			$msg["data"] = $conn->error_list;
+			$msg["data"] = $mysqli->error_list;
 			$msg["error"] = "Boolean value in \$stmt";
 			echo json_encode($msg);
 		} else {
@@ -51,7 +51,7 @@ try {
                 $content .= "Inserimento della carta $deckname effettuato con successo.";
             } else {
                 $msg["result"] = false;
-                $msg["data"] = $conn->error_list;
+                $msg["data"] = $mysqli->error_list;
                 $content .= "Riscontrato problema nell'inserimento della carta $deckname, contattare il supporto.";
             }
         }

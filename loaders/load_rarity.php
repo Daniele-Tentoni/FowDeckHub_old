@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+$conn = new mysqli(HOST, USER, PASSWORD, DATABASE);
 $msg = array();
 $msg["result"] = true;
 if($conn->connect_error){

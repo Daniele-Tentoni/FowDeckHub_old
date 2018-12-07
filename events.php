@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
+require_once 'definings.php';
+require_once ROOT_PATH . '/config/functions.php';
 sec_session_start();
 
 /*
@@ -17,7 +17,7 @@ if($log_result) {
 	$active_page = 12;
 	$title = "";
 	$page = "";
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_events.php';
+	require_once ROOT_PATH . '/loaders/load_events.php';
 	if(isset($_GET["new_event"])) {
 		$title = "New Event - Administrator - Fow Deck Hub";
 		$page = "/pages/event/new_event.php";
@@ -25,15 +25,15 @@ if($log_result) {
 		$title = "Event Details - Administrator - Fow Deck Hub";
 		$page = "/pages/event/events_details.php";
 		$event_id = $_GET["event_id"];
-		$event = get_event($event_id)["content"];
-		$decklists = get_event_decks($event_id);
+		$event = get_event_by_id($event_id)["content"];
+		$decklists = get_event_decks($mysqli, $event_id);
         $chart = get_chart_data_by_decks($decklists["content"]);
 	} else if(isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
 		$title = "Event Edit - Administrator - Fow Deck Hub";
 		$page = "/pages/event/event_edit.php";
 		$event_id = $_GET["event_edit"];
-		$event = get_event($event_id)["content"];
-		$decklists = get_event_decks($event_id);
+		$event = get_event_by_id($event_id)["content"];
+		$decklists = get_event_decks($mysqli, $event_id);
 	} else {
 		$title = "Events - Administrator - Fow Deck Hub";
 		$page = "/pages/event/events_partial.php";
@@ -41,15 +41,15 @@ if($log_result) {
 		if(isset($_GET) && isset($_GET["year"]) && $_GET["year"] < $year) {
 			$year = $_GET["year"];
 		}
-		$events = getEvents(0, $year);
+		$events = get_all_events($mysqli, 0, $year);
 	}
 	
 	/*
 	 * Assemblo la pagina.
 	 */
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/header.php';
-	require_once $_SERVER['DOCUMENT_ROOT'] . $page;
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/footer.php';
+	require_once ROOT_PATH . '/layout/header.php';
+	require_once ROOT_PATH . $page;
+	require_once ROOT_PATH . '/layout/footer.php';
 } else {
     var_dump($log_result);
     header("Refresh: 5;URL=login.php");

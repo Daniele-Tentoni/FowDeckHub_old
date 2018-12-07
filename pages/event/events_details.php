@@ -21,26 +21,29 @@
 			<div class="row">                        
 				<div class="col-md-12">
 					<div class="panel panel-default">
-
-						<div class="panel-heading">
-							<h3 class="panel-title">Event Details</h3>
-							<a href="events.php?event_edit=<?php echo $event_id; ?>" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-pencil"></i>Edit</a>
-						</div>
-						
+                        <?php
+                        // Se l'utente ha il permesso di modificare gli eventi allora glielo permetto.
+                        if(isset($_SESSION['can_edit_events']) && $_SESSION['can_edit_events'] == 1) {
+                            ?>
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Event Details</h3>
+                                <a href="events.php?event_edit=<?php echo $event_id; ?>" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-pencil"></i>Edit</a>
+                            </div>
+                            <?php
+                        }
+                        ?>
 						<div class="panel-body">                            
 							<div class="tocify-content">
-								
-								<h2><?php echo $event["Name"]; ?></h2>
+								<h2><?php echo $event["Name"]; ?>&nbsp; <?php echo $event["Year"]; ?></h2>
                                 <h3><?php echo $event["Date"]; ?> in <?php echo $event["Nation"]; ?></h3>
                                 <p><?php echo $event["Attendance"]; ?> players</p>
 								<p>
 									<?php
 									$event_hide = true;
 									$action_hide = true;
-									require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/decklists_table.php'; 
+									require_once ROOT_PATH . '/components/tables/decklists_table.php'; 
 									?>
 								</p>
-								
                                 <!--
                                 RulerBreakdown
                                 --><div class="col-md-6">
@@ -52,44 +55,42 @@
                                         </div>
                                     </div>
                                     <!-- END DOUNT CHART -->
+                                </div><!--
+                                Card percentage in top8
+                                --><div class="col-md-6">
+                                    <h2>Card Percentage in top 8</h2>                                    
+                                    <p>I'm working on it. It's really hard to implement.</p>
+                                </div><!--
+                                Rune Deck percentage in top8
+                                --><div class="col-md-6">
+                                    <h2>Rune deck Percentage in top 8</h2>
+                                    <p>I'm working on it. It's really hard to implement.</p>
+                                </div><!--
+                                Tournament reports
+                                --><div class="col-md-12">
+                                    <h2>Tournament reports from comunity</h2>
+                                    <p><?php echo $event["CommunityReports"]; ?></p>
+                                </div><!--
+                                Other Links
+                                --><div class="col-md-12">
+                                    <h2>Other Links</h2>
+                                    <p><?php echo $event["OtherLinks"]; ?></p>
                                 </div>
-									<div class="col-md-6">
-										<h2>Card Percentage in top 8</h2>                                    
-										<p>I'm working on it. It's really hard to implement.</p>
-									</div>
-									<div class="col-md-6">
-										<h2>Rune deck Percentage in top 8</h2>
-										<p>I'm working on it. It's really hard to implement.</p>
-									</div>
-									<div class="col-md-12">
-										<h2>Tournament reports from comunity</h2>
-										<p><?php echo $event["CommunityReports"]; ?></p>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="col-md-12">
-										<h2>Other Links</h2>
-										<p><?php echo $event["OtherLinks"]; ?></p>
-									</div>
-								</div>
+                            </div>
 								
-								
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-3" style="position: relative;">
-					<div id="tocify"></div>
-				</div>
-			</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="position: relative;">
+                <div id="tocify"></div>
+            </div>
+        </div>
 
-		<!-- END PAGE CONTENT WRAPPER -->                                    
-		</div>
-	</div>
-	<!-- END PAGE CONTENT -->
+    <!-- END PAGE CONTENT WRAPPER -->                                    
+    </div>
 </div>
-<!-- END PAGE CONTAINER -->    
+<!-- END PAGE CONTENT -->  
 
 <!-- MESSAGE BOX-->
 <div class="message-box animated fadeIn" data-sound="alert" id="mb-remove-row">

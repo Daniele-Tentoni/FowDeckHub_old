@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="it">
-    <head>        
+    <head>
         <!-- META SECTION -->
-        <title><?php echo $title; ?></title>            
+        <title><?php echo $title; ?></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,8 +10,9 @@
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <!-- END META SECTION -->
         
-        <!-- CSS INCLUDE -->        
+        <!-- CSS INCLUDE -->
         <link rel="stylesheet" type="text/css" id="theme" href="css/theme-default.css"/>
+        <link rel="stylesheet" type="text/css" id="theme" href="css/main.css"/>
         <!-- EOF CSS INCLUDE -->       
 		
         <!-- START PRELOADS -->
@@ -54,16 +55,17 @@
                     <li class="xn-openable <?php if(isset($active_page) && $active_page >= 10 && $active_page < 20) { echo "active"; } ?>">
                         <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Administration</span></a>
                         <ul>
-                            <li class="<?php if(isset($active_page) && $active_page == 10) { echo "active"; } ?>"><a href="users.php"><span class="fa fa-image"></span> Users</a></li>
-                            <li class="<?php if(isset($active_page) && $active_page == 11) { echo "active"; } ?>"><a href="cards.php"><span class="fa fa-user"></span> Cards</a></li>
-                            <li class="<?php if(isset($active_page) && $active_page == 12) { echo "active"; } ?>"><a href="events.php"><span class="fa fa-users"></span> Events</a></li>
-                            <li class="<?php if(isset($active_page) && $active_page == 13) { echo "active"; } ?>"><a href="decklists.php"><span class="fa fa-comments"></span> Decklists</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 10) { echo "active"; } ?>"><a href="users.php"><i class="fa fa-image" aria-hidden="true"></i> Users</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 11) { echo "active"; } ?>"><a href="cards.php"><i class="fa fa-user" aria-hidden="true"></i> Cards</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 12) { echo "active"; } ?>"><a href="events.php"><i class="fa fa-users" aria-hidden="true"></i> Events</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 13) { echo "active"; } ?>"><a href="decklists.php"><i class="fa fa-comments" aria-hidden="true"></i> Decklists</a></li>
+							<li class="<?php if(isset($active_page) && $active_page == 14) { echo "active"; } ?>"><a href="bug_report.php"><i class="fa fa-bug" aria-hidden="true"></i> Bug Reports</a></li>
                         </ul>
                     </li>
                     <li class="xn-openable <?php if(isset($active_page) && $active_page >= 20 && $active_page < 30) { echo "active"; } ?>">
                         <a href="#"><span class="fa fa-file-text-o"></span> <span class="xn-text">Users</span></a>
                         <ul>
-                            <li class="<?php if(isset($active_page) && $active_page == 20) { echo "active"; } ?>"><a href="decklists.php"><span class="fa fa-comments"></span> Decklists</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 20) { echo "active"; } ?>"><a href="decklists.php"><i class="fa fa-comments"></i> Decklists</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -104,7 +106,7 @@
                     <!-- MESSAGES -->
 					<?php
 					if(isset($login_checked) && $login_checked) {
-						require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/notifications/notifications.php';
+						require_once ROOT_PATH . '/pages/notifications/notifications.php';
 					} else {
 						?>
 						<?php

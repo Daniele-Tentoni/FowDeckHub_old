@@ -8,12 +8,11 @@
 			<li>
 				<select id="Date" class="form-control">
 					<?php
-					$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-					if($conn->connect_error){
-						echo "<option value=\"0\">-- Connection Error --</option>";
+					if($mysqli->connect_error){
+						echo "<option value=\"0\">-- Lost Connection Error --</option>";
 					} else {
 						$query ="select distinct Year from card_sets order by Year desc";
-						$stmt = $conn->prepare($query);
+						$stmt = $mysqli->prepare($query);
 						$stmt->execute();
 						$result = $stmt->get_result();
 						if($result->num_rows > 0) {
@@ -24,10 +23,6 @@
 						} else {
 							echo "<option value=\"0\">-- No Result --</option>";
 						}
-					}
-					// Essendo l'ultima query chiudo questa connessione.
-					if(isset($conn)){
-						$conn->close();
 					}
 					?>
 				</select>

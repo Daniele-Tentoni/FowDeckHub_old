@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
+require_once 'definings.php';
+require_once ROOT_PATH . '/config/functions.php';
 sec_session_start();
 
 /*
@@ -17,20 +17,22 @@ if($log_result) {
 	$active_page = 13;
 	$title = "";
 	$page = "";
+	require_once ROOT_PATH . '/loaders/load_decklists.php';
 	if(isset($_GET["newDecklist"])) {
 		$title = "New Decklists - Administrator - Fow Deck Hub";
 		$page = "/pages/decklist/new_decklist_partial.php";
 	} else {
 		$title = "Decklists - Administrator - Fow Deck Hub";
+		$decklists = get_decks($mysqli, 0);
 		$page = "/pages/decklist/decklists_partial.php";
 	}
 	
 	/*
 	 * Assemblo la pagina.
 	 */
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/header.php';
-	require_once $_SERVER['DOCUMENT_ROOT'] . $page;
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/footer.php';
+	require_once ROOT_PATH . '/layout/header.php';
+	require_once ROOT_PATH . $page;
+	require_once ROOT_PATH . '/layout/footer.php';
 } else {
     var_dump($log_result);
     header("Refresh: 5;URL=login.php");

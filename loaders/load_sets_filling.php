@@ -1,8 +1,11 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+require_once './definings.php';
+require_once ROOT_PATH . '/config/functions.php';
+
+// Utilizzo la connessione $mysqli dentro a functions->db_connect.
 $msg = array();
 $msg["result"] = true;
-if($conn->connect_error){
+if($mysqli->connect_error){
 	$msg["error"] = "Connect Error";
 	$msg["result"] = false;
 } else {
@@ -22,7 +25,7 @@ if($conn->connect_error){
 	}
 	// Recupero i dati relativi al riempimento dei sets.
 	$query .= " group by s.Code;";
-	$stmt = $conn->prepare($query);
+	$stmt = $mysqli->prepare($query);
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
@@ -49,8 +52,8 @@ if($conn->connect_error){
 		$msg["result"] = false;
 	}
 }
-if(isset($conn)){
-	$conn->close();
+if(isset($mysqli)){
+	$mysqli->close();
 }
 echo json_encode($msg);
 ?>

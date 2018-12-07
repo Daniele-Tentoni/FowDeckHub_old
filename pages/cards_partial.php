@@ -28,11 +28,7 @@
 
 						<div class="panel-body">
 							<div class="table-responsive">
-								<?php
-								require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_cards.php';
-								$cards = getCards(0);
-								require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/cards_table.php'; 
-								?>
+								<?php require_once ROOT_PATH . '/components/tables/cards_table.php'; ?>
 							</div>
 						</div>
 					</div>
@@ -69,11 +65,11 @@
 <!-- END MESSAGE BOX-->
 
 <!-- START ADD CARD MODAL -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/add_card_modal.php'; ?>
+<?php require_once ROOT_PATH . '/components/modals/add_card_modal.php'; ?>
 <!-- END ADD CARD MODAL -->
 
 <!-- START SINGLE CARD MODAL -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/single_card_modal.php'; ?>
+<?php require_once ROOT_PATH . '/components/modals/single_card_modal.php'; ?>
 <!-- END SINGLE CARD MODAL -->
 
 <!-- START THIS PAGE PLUGINS-->        

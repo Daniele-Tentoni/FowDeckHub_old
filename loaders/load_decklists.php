@@ -1,16 +1,15 @@
 <?php
-function getDecks($id){
+function get_decks($mysqli, $id){
 	$res = array();
 	$res["result"] = false;
-	$dlconn = new mysqli("localhost", "root", "", "my_fowdeckhub");
 
 	// Controllo che la connessione sia impostata.
-	if(!isset($dlconn)) {
+	if(!isset($mysqli)) {
 		$res["msg"] = "Problemi di connessione al server, contact the support.";
 		return $res;
 	}
 
-	if(isset($dlconn) && $dlconn->connect_error) {
+	if(isset($mysqli) && $mysqli->connect_error) {
 		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
 		return $res;
 	} 
@@ -22,8 +21,7 @@ function getDecks($id){
 				join decktypes dt on d.Type = dt.Id
 				join playstyles p on dt.Style = p.Id
 				join `events` e on d.Event = e.Id
-				join cards c on d.Ruler = c.Id
-				where d.Visibility = 1";
+				join cards c on d.Ruler = c.Id";
 
 	if(isset($id) && $id > 0) {
 		// Carico una specifica decklist.
@@ -32,7 +30,7 @@ function getDecks($id){
 
 	$query .= " order by Event, Position";
 
-	$stmt = $dlconn->prepare($query);
+	$stmt = $mysqli->prepare($query);
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
@@ -56,9 +54,6 @@ function getDecks($id){
 	}
 
 	$res["result"] = true;
-	if(isset($dlconn)) {
-		$dlconn->close();
-	}
 	return $res;
 }
 ?>
