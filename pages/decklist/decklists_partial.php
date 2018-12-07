@@ -28,13 +28,11 @@
                                 <select class="form-control select add-item" id="event">
                                     <option value="0">-- Filter by event --</option>
                                     <?php
-                                    // Essendo la prima query apro la connessione.
-                                    $format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-                                    if($format_conn->connect_error){
+                                    if($mysqli->connect_error){
                                         echo "<option value=\"0\">-- Connection Error --</option>";
                                     } else {
                                         $query = "SELECT Id, Name FROM events";
-                                        $stmt = $format_conn->prepare($query);
+                                        $stmt = $mysqli->prepare($query);
                                         $stmt->execute();
                                         $result = $stmt->get_result();
                                         if($result->num_rows > 0) {
@@ -43,9 +41,6 @@
                                             }
                                         } else {
                                             echo "<option value=\"0\">-- No Result --</option>";
-                                        }
-                                        if(isset($format_conn)) {
-                                            $format_conn->close();
                                         }
                                     }
                                     ?>
@@ -57,9 +52,9 @@
 						<div class="panel-body">
 							<div class="table-responsive">
 								<?php 
-								require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_decklists.php';
+								require_once ROOT_PATH . '/loaders/load_decklists.php';
 								$decklists = getDecks(0);
-								require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/decklists_table.php'; 
+								require_once ROOT_PATH . '/components/tables/decklists_table.php'; 
 								?>
 							</div>
 						</div>

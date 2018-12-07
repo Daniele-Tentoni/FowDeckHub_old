@@ -29,7 +29,7 @@
 						<div class="panel-body">
 							<div class="table-responsive">
 								<?php 
-									require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/events_table.php'; 
+									require_once ROOT_PATH . '/components/tables/events_table.php'; 
 								?>
 							</div>
 						</div>

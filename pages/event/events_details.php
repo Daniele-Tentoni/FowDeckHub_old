@@ -41,7 +41,7 @@
 									<?php
 									$event_hide = true;
 									$action_hide = true;
-									require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/decklists_table.php'; 
+									require_once ROOT_PATH . '/components/tables/decklists_table.php'; 
 									?>
 								</p>
                                 <!--

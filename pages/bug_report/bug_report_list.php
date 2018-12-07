@@ -24,7 +24,7 @@
 
 						<div class="panel-body panel-body-table"  id="bug_report_panel_body">
 							<div class="table-responsive">
-								<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/bug_report_table.php'; ?>
+								<?php require_once ROOT_PATH . '/components/tables/bug_report_table.php'; ?>
 							</div>
 						</div>
 					</div>                                                

@@ -9,13 +9,13 @@
 <div class="row">
     <!-- UTILITY WIDGETS -->
 	<div class="col-md-3">
-		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/visitors_widget.php'; ?>
+		<?php require_once ROOT_PATH . '/components/widgets/visitors_widget.php'; ?>
 	</div>
 	<div class="col-md-3">
-		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/users_widget.php'; ?>
+		<?php require_once ROOT_PATH . '/components/widgets/users_widget.php'; ?>
     </div>
     <div class="col-md-3">
-        <?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/bug_reports_widget.php'; ?>
+        <?php require_once ROOT_PATH . '/components/widgets/bug_reports_widget.php'; ?>
     </div>
     <div class="col-md-3">
         <script>
@@ -117,7 +117,7 @@
 	
     <!-- START SETS BLOCK -->
 	<div class="col-md-6">
-		<?php require_once $_SERVER["DOCUMENT_ROOT"] . '/components/widgets/sets_filling_widget.php'; ?>
+		<?php require_once ROOT_PATH . '/components/widgets/sets_filling_widget.php'; ?>
 	</div>
     <!-- END SETS BLOCK -->
     

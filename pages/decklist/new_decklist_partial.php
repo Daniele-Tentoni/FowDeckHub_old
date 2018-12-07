@@ -98,13 +98,11 @@
 									<div class="col-md-9 col-xs-12">
 										<select class="form-control select add-item" id="format" >
 											<?php
-											// Essendo la prima query apro la connessione.
-											$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-											if($format_conn->connect_error){
+											if($mysqli->connect_error){
 												echo "<option value=\"0\">-- Connection Error --</option>";
 											} else {
 												$query = "SELECT Code, Name FROM formats WHERE Tournament = 1 AND Visibility = 1";
-												$stmt = $format_conn->prepare($query);
+												$stmt = $mysqli->prepare($query);
 												$stmt->execute();
 												$result = $stmt->get_result();
 												if($result->num_rows > 0) {
@@ -113,9 +111,6 @@
 													}
 												} else {
 													echo "<option value=\"0\">-- No Result --</option>";
-												}
-												if(isset($format_conn)) {
-													$format_conn->close();
 												}
 											}
 											?>
@@ -130,13 +125,11 @@
 									<div class="col-md-9 col-xs-12">
 										<select class="form-control select add-item" id="type" >
 											<?php
-											// Essendo la prima query apro la connessione.
-											$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-											if($format_conn->connect_error){
+											if($mysqli->connect_error){
 												echo "<option value=\"0\">-- Connection Error --</option>";
 											} else {
 												$query = "SELECT d.Id, d.Name, p.Name as Style FROM decktypes d JOIN playstyles p ON d.Style = p.Id";
-												$stmt = $format_conn->prepare($query);
+												$stmt = $mysqli->prepare($query);
 												$stmt->execute();
 												$result = $stmt->get_result();
 												if($result->num_rows > 0) {
@@ -146,10 +139,6 @@
 												} else {
 													echo "<option value=\"0\">-- No Result --</option>";
 												}
-												if(isset($format_conn)) {
-													$format_conn->close();
-												}
-											}
 											?>
 										</select>
 										<span class="help-block">Select play style.</span>
@@ -162,9 +151,7 @@
 									<div class="col-md-9 col-xs-12">
 										<select class="form-control select add-item" id="ruler" >
 											<?php
-											// Essendo la prima query apro la connessione.
-											$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-											if($format_conn->connect_error){
+											if($mysqli->connect_error){
 												echo "<option value=\"0\">-- Connection Error --</option>";
 											} else {
 												$query = "SELECT c.Id,
@@ -173,7 +160,7 @@
                                                             left join card_types ct on ct.Card = c.Id
                                                             left join types t on ct.Type = t.Id
                                                             where t.Id = 6";
-												$stmt = $format_conn->prepare($query);
+												$stmt = $mysqli->prepare($query);
 												$stmt->execute();
 												$result = $stmt->get_result();
 												if($result->num_rows > 0) {
@@ -182,9 +169,6 @@
 													}
 												} else {
 													echo "<option value=\"0\">-- No Result --</option>";
-												}
-												if(isset($format_conn)) {
-													$format_conn->close();
 												}
 											}
 											?>
@@ -199,13 +183,11 @@
 									<div class="col-md-9 col-xs-12">
 										<select class="form-control select add-item" id="event" onchange="style_change(event);">
 											<?php
-											// Essendo la prima query apro la connessione.
-											$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
-											if($format_conn->connect_error){
+											if($mysqli->connect_error){
 												echo "<option value=\"0\">-- Connection Error --</option>";
 											} else {
 												$query = "SELECT Id, Name FROM events";
-												$stmt = $format_conn->prepare($query);
+												$stmt = $mysqli->prepare($query);
 												$stmt->execute();
 												$result = $stmt->get_result();
 												if($result->num_rows > 0) {
@@ -214,9 +196,6 @@
 													}
 												} else {
 													echo "<option value=\"0\">-- No Result --</option>";
-												}
-												if(isset($format_conn)) {
-													$format_conn->close();
 												}
 											}
 											?>

@@ -29,9 +29,9 @@
 						<div class="panel-body">
 							<div class="table-responsive">
 								<?php
-								require_once $_SERVER['DOCUMENT_ROOT'] . '/loaders/load_cards.php';
+								require_once ROOT_PATH . '/loaders/load_cards.php';
 								$cards = getCards(0);
-								require_once $_SERVER['DOCUMENT_ROOT'] . '/components/tables/cards_table.php'; 
+								require_once ROOT_PATH . '/components/tables/cards_table.php'; 
 								?>
 							</div>
 						</div>
