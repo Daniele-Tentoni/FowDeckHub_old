@@ -25,14 +25,14 @@ if($log_result) {
 		$title = "Event Details - Administrator - Fow Deck Hub";
 		$page = "/pages/event/events_details.php";
 		$event_id = $_GET["event_id"];
-		$event = get_event($event_id)["content"];
+		$event = get_event_by_id($event_id)["content"];
 		$decklists = get_event_decks($mysqli, $event_id);
         $chart = get_chart_data_by_decks($decklists["content"]);
 	} else if(isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
 		$title = "Event Edit - Administrator - Fow Deck Hub";
 		$page = "/pages/event/event_edit.php";
 		$event_id = $_GET["event_edit"];
-		$event = get_event($event_id)["content"];
+		$event = get_event_by_id($event_id)["content"];
 		$decklists = get_event_decks($mysqli, $event_id);
 	} else {
 		$title = "Events - Administrator - Fow Deck Hub";

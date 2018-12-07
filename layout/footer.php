@@ -55,6 +55,7 @@
 
         <script type='text/javascript' src='js/plugins/bootstrap/bootstrap-datepicker.js'></script>
         <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
+        <script type="text/javascript" src="js\plugins\bootstrap\bootstrap-select.js"></script>
         <script type="text/javascript" src="js/bug_report.js"></script>
 
         <!-- START TEMPLATE -->

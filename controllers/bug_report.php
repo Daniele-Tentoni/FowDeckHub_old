@@ -23,24 +23,23 @@ function new_bug($mysqli, $name, $email, $bug){
                 if($stmt->execute()) {
                     $msg["result"] = true;
                     $msg["class"] = "success";
-                    $content .= "Inserimento del bug $name effettuato con successo.";
+                    $content .= "Successful Bug Report with number " . $mysqli->insert_id . ". Write down the number of the problem that will be used when we will contact you. <br />";
                     // Costruisco il messaggio    
-                    $contenuto_email = "Nome: $name_sql\n\n"; //Queste variabili sono create nel passaggio precedente
+                    $contenuto_email = "Name: $name_sql\n\n"; //Queste variabili sono create nel passaggio precedente
                     $contenuto_email .= "Email: $email_sql\n\n";
-                    $contenuto_email .= "Messaggio:\n $bug_sql\n\n";
+                    $contenuto_email .= "Bug Explanation:\n $bug_sql\n\n";
                     //limita la lunghezza a 70 caratteri per la compatibilità
                     $contenuto_email = wordwrap($contenuto_email,70);
                     //invia l'email    
-                    $mail_sent = mail($email,"Bug Report",$contenuto_email, 'From: d.tentoni@wedoit.io');
+                    $mail_sent = mail($email,"Bug Report",$contenuto_email, 'From: noreplay@fowdeckhub.io');
                     if(isset($mail_sent)) {
-                        $content .= " Risultato della mail $mail_sent.";
-                        $content .= " Mail inviata a $email.";
-                        $content .= " Contenuto $contenuto_email.";
+                        $content .= " We thank you for your patience and support. We believe a lot in cooperation and everyone's help is precious. We will contact you once the problem is solved. We apologize for the inconvenience.<br />";
+
                     }
                     $msg["id"] = $mysqli->insert_id;
                 } else {
                     $msg["data"] = $mysqli->error_list;
-                    $content .= "Riscontrato problema nell'inserimento del bug $name, contattare il supporto.";
+                    $content .= "Problem encountered during the Bug Report. Contact the support.";
                 }
             }
         }

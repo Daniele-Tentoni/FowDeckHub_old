@@ -66,7 +66,7 @@
 <!-- END MESSAGE BOX-->
 
 <!-- ADD EVENT MODAL -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/add_event_modal.php'; ?>
+<?php require_once ROOT_PATH . '/components/modals/add_event_modal.php'; ?>
 <!-- END ADD EVENT MODAL -->
 
 <!-- START THIS PAGE PLUGINS-->        

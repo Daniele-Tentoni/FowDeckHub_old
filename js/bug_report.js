@@ -50,7 +50,8 @@ function change_state(id, state) {
         var classToAdd = "";
         var htmlToAdd = "";
 		// Qui ci andrà per bene il codice per cambiare lo stato anche nella view.
-        switch(result["update_state"]) {
+        var updated_state = result["update_state"];
+        switch(update_state) {
             case "4":
                 classToAdd = "lb_red";
                 htmlToAdd = "Resolved";

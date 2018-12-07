@@ -1,4 +1,5 @@
 <?php
+require_once './definings.php';
 require_once ROOT_PATH . '/config/functions.php';
 
 // Utilizzo la connessione $mysqli dentro a functions->db_connect.
