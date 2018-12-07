@@ -1,6 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
-function getCards($id){
+function getCards($mysqli, $id){
     $res = array();
     $res["result"] = false;
 

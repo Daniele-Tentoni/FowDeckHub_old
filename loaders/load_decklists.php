@@ -1,9 +1,7 @@
 <?php
-function getDecks($id){
+function getDecks($mysqli, $id){
 	$res = array();
 	$res["result"] = false;
-	// Occorre ridichiarare la connessione al database.
-    $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 
 	// Controllo che la connessione sia impostata.
 	if(!isset($mysqli)) {
@@ -23,8 +21,7 @@ function getDecks($id){
 				join decktypes dt on d.Type = dt.Id
 				join playstyles p on dt.Style = p.Id
 				join `events` e on d.Event = e.Id
-				join cards c on d.Ruler = c.Id
-				where d.Visibility = 1";
+				join cards c on d.Ruler = c.Id";
 
 	if(isset($id) && $id > 0) {
 		// Carico una specifica decklist.

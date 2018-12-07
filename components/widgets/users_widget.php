@@ -22,14 +22,14 @@
         </div>
         <div>                                    
             <div class="widget-title">New Month</div>
-            <div class="widget-subtitle">Visitors</div>
+            <div class="widget-subtitle">Users</div>
             <div class="widget-int">
                 <?php
                 // Recupero il timestamp
                 $now = time();
                 // Recupero il numero di tutti i login effettuari nell'ultimo giorno.
                 $valid_attempts = $now - (24 * 60 * 60); 
-                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM users WHERE registerdate < '$valid_attempts'")) {
+                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM users WHERE registerdate > '$valid_attempts'")) {
                     // Eseguo la query creata.
                     $stmt->execute();
                     $stmt->store_result();
@@ -44,14 +44,14 @@
         </div>
         <div>                                    
             <div class="widget-title">New Today</div>
-            <div class="widget-subtitle">Visitors</div>
+            <div class="widget-subtitle">Users</div>
             <div class="widget-int">
                 <?php
                 // Recupero il timestamp
                 $now = time();
                 // Recupero il numero di tutti i login effettuari nell'ultimo mese.
                 $valid_attempts = $now - (30 * 24 * 60 * 60); 
-                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM users WHERE registerdate < '$valid_attempts'")) {
+                if ($stmt = $mysqli->prepare("SELECT COUNT(*) as 'Count' FROM users WHERE registerdate > '$valid_attempts'")) {
                     // Eseguo la query creata.
                     $stmt->execute();
                     $stmt->store_result();

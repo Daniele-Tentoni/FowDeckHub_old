@@ -23,7 +23,7 @@
 							<select class="form-control add-item" id="Nation" name="Nation" placeholder="Nation">
 								<?php
 								// Essendo la prima query apro la connessione.
-								$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+								$conn = new mysqli(HOST, USER, PASSWORD, DATABASE);
 								if($conn->connect_error){
 									echo "<option value=\"0\">-- Connection Error --</option>";
 								} else {

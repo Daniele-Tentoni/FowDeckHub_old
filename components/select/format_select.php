@@ -3,7 +3,7 @@
 	<select class="form-control select" id="format" onchange="format_change(event);" z-index="2">
 		<?php
 		// Essendo la prima query apro la connessione.
-		$format_conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+		$conn = new mysqli(HOST, USER, PASSWORD, DATABASE);
 		if($format_conn->connect_error){
 			echo "<option value=\"0\">-- Connection Error --</option>";
 		} else {

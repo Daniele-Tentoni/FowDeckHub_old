@@ -1,9 +1,7 @@
 <?php
-function get_event($id) {
+function get_event_by_id($mysqli, $id) {
 	$res = array();
 	$res["result"] = false;
-	// Occorre ridichiarare la connessione al database.
-    $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 
 	// Controllo che la connessione sia impostata.
 	if(!isset($mysqli)) {
@@ -58,11 +56,9 @@ function get_event($id) {
 /*
  * Get the lists of all events.
  */
-function get_events($id, $year){
+function get_all_events($mysqli, $id, $year){
     $res = array();
 	$res["result"] = false;
-	// Occorre ridichiarare la connessione al database.
-    $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
     
 	// Controllo che la connessione sia impostata.
 	if(!isset($mysqli)) {
@@ -131,11 +127,9 @@ function get_events($id, $year){
 /*
  * Get all decklists from an event.
  */
-function get_event_decks($event) {
+function get_event_decks($mysqli, $event) {
 	$res = array();
 	$res["result"] = false;
-	// Occorre ridichiarare la connessione al database.
-    $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
 
 	// Controllo che la connessione sia impostata.
 	if(!isset($mysqli)) {

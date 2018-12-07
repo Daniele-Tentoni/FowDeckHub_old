@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
+require_once ROOT_PATH . '/config/functions.php';
 
 // Utilizzo la connessione $mysqli dentro a functions->db_connect.
 $msg = array();
