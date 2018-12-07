@@ -1,8 +1,8 @@
 <?php
 	// Variabili globali, funzioni di db/login e controllers.
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/bug_report.php';
+	require_once '../definings.php';
+	require_once ROOT_PATH . '/config/functions.php';
+	require_once ROOT_PATH . '/controllers/bug_report.php';
 	$result = array();
 	$result["result"] = false;
 	$result["error"] = "nothing";

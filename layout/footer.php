@@ -47,7 +47,7 @@
         <!-- END LOGOUT MESSAGE BOX-->
         <!-- BUG REPORT MESSAGE BOX-->
         
-        <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/bug_report_modal.php'; ?>
+        <?php require_once ROOT_PATH . '/components/modals/bug_report_modal.php'; ?>
             
         <!-- BUG REPORT MESSAGE BOX-->
         

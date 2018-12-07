@@ -1,5 +1,5 @@
 <?php
-function getDecks($mysqli, $id){
+function get_decks($mysqli, $id){
 	$res = array();
 	$res["result"] = false;
 

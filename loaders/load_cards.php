@@ -1,5 +1,5 @@
 <?php
-function getCards($mysqli, $id){
+function get_cards($mysqli, $id){
     $res = array();
     $res["result"] = false;
 
@@ -32,13 +32,14 @@ function getCards($mysqli, $id){
             left join card_types ct on ct.Card = c.Id
             left join types t on ct.Type = t.Id
             left join rarity r on c.Rarity = r.Id
-            where c.Visibility = 1
-            order by c.Id";
+            where c.Visibility = 1";
 
     // Carico una specifica carta.
     if(isset($id) && $id > 0) {
         $query .= " and c.Id = " . $id;
     }
+	
+	$query .= " order by c.Id";
 
     $stmt = $mysqli->prepare($query);
     $stmt->execute();

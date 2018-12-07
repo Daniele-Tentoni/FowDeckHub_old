@@ -26,14 +26,14 @@ if($log_result) {
 		$page = "/pages/event/events_details.php";
 		$event_id = $_GET["event_id"];
 		$event = get_event($event_id)["content"];
-		$decklists = get_event_decks($event_id);
+		$decklists = get_event_decks($mysqli, $event_id);
         $chart = get_chart_data_by_decks($decklists["content"]);
 	} else if(isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
 		$title = "Event Edit - Administrator - Fow Deck Hub";
 		$page = "/pages/event/event_edit.php";
 		$event_id = $_GET["event_edit"];
 		$event = get_event($event_id)["content"];
-		$decklists = get_event_decks($event_id);
+		$decklists = get_event_decks($mysqli, $event_id);
 	} else {
 		$title = "Events - Administrator - Fow Deck Hub";
 		$page = "/pages/event/events_partial.php";
@@ -41,7 +41,7 @@ if($log_result) {
 		if(isset($_GET) && isset($_GET["year"]) && $_GET["year"] < $year) {
 			$year = $_GET["year"];
 		}
-		$events = get_events(0, $year);
+		$events = get_all_events($mysqli, 0, $year);
 	}
 	
 	/*

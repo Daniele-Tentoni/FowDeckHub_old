@@ -8,6 +8,8 @@ if($log_result) {
 	$login_checked = true;
 	$active_page = 11;
     $title = "Cards - Administrator - Fow Deck Hub";
+	require_once ROOT_PATH . '/loaders/load_cards.php';
+	$cards = get_cards($mysqli, 0);
 	require_once ROOT_PATH . '/layout/header.php';
 	require_once ROOT_PATH . '/pages/cards_partial.php';
 	require_once ROOT_PATH . '/layout/footer.php';

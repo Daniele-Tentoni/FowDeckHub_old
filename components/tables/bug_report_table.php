@@ -23,12 +23,19 @@
 				echo "<td>" . $value["CreationDate"] . "</td>";
 				echo "<td>" . $value["LastOperation"] . "</td>";
 				echo "<td class=\"status\"><span class=\"label " . $value["Color"] . "\"><i class='fa fa-" . $value["Icon"] . "'></i>" . $value["State"] . "</span></td>";
-                echo "<td>";
+                echo "<td>echo";
                 if($value["State"] != "Resolved") {
                     foreach($states["content"] as $state) {
-                        if($value["State"] != $state["Name"]) {
-                            echo "<button class=\"btn btn-default btn-rounded btn-sm " . $state["Color"] . "\" onClick=\"change_state(" . $value["Id"] . ", " . $state["Id"] . ");\"><i class=\"fa fa-" . $state["Icon"] . "\"></i></button>";
-                        }
+						echo "<button ";
+						echo "id=\"state_" . $value["Id"] . "_" . $state["Id"] . "\" ";
+						echo "class=\"btn btn-default btn-rounded btn-sm state " . $state["Color"] . "\" ";
+						echo "onClick=\"change_state(" . $value["Id"] . ", " . $state["Id"] . ");\" ";
+						if($value["State"] == $state["Name"]) {
+							echo "style=\"display:none;\" ";
+						}
+						echo ">";
+						echo 	"<i class=\"fa fa-" . $state["Icon"] . "\"></i>";
+						echo "</button>";
                     }
                 } else {
 					echo "The bug is resolved.";

@@ -106,7 +106,7 @@
                     <!-- MESSAGES -->
 					<?php
 					if(isset($login_checked) && $login_checked) {
-						require_once $_SERVER['DOCUMENT_ROOT'] . '/pages/notifications/notifications.php';
+						require_once ROOT_PATH . '/pages/notifications/notifications.php';
 					} else {
 						?>
 						<?php

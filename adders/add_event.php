@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
+require_once './definings.php';
+require_once ROOT_PATH . '/config/functions.php';
 $msg = array();
 $msg["result"] = false;
 $msg["error"] = "nothing";
@@ -21,17 +21,17 @@ if(!isset($_POST)) {
 
 $content = "Operazioni effettuate: ";
 try {
-	$conn = new mysqli("localhost", "root", "", "my_fowdeckhub");
+	$mysqli = new mysqli("localhost", "root", "", "my_fowdeckhub");
 	$msg = array();
-	if($conn->connect_error){
+	if($mysqli->connect_error){
 		$msg["error"] = "Connection Error";
 		echo json_encode($msg);
 		return;
 	} else {
 		// Inserisco la carta.
-		$stmt = $conn->prepare("INSERT INTO  events (Name, Nation, Year, Attendance, Date) VALUES (?, ?, ?, ?, ?)");
+		$stmt = $mysqli->prepare("INSERT INTO  events (Name, Nation, Year, Attendance, Date) VALUES (?, ?, ?, ?, ?)");
 		if(!$stmt) {
-			$msg["data"] = $conn->error_list;
+			$msg["data"] = $mysqli->error_list;
 			$msg["error"] = "Boolean value in \$stmt";
 			echo json_encode($msg);
 			return;
@@ -45,10 +45,10 @@ try {
             if($stmt->execute()) {
                 $msg["result"] = true;
                 $content .= "Inserimento della carta $name effettuato con successo.";
-				$msg["id"] = $conn->insert_id;
+				$msg["id"] = $mysqli->insert_id;
             } else {
                 $msg["result"] = false;
-                $msg["data"] = $conn->error_list;
+                $msg["data"] = $mysqli->error_list;
                 $content .= "Riscontrato problema nell'inserimento della carta $name, contattare il supporto.";
 				echo json_encode($msg);
             }

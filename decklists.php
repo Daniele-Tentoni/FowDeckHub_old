@@ -17,11 +17,13 @@ if($log_result) {
 	$active_page = 13;
 	$title = "";
 	$page = "";
+	require_once ROOT_PATH . '/loaders/load_decklists.php';
 	if(isset($_GET["newDecklist"])) {
 		$title = "New Decklists - Administrator - Fow Deck Hub";
 		$page = "/pages/decklist/new_decklist_partial.php";
 	} else {
 		$title = "Decklists - Administrator - Fow Deck Hub";
+		$decklists = get_decks($mysqli, 0);
 		$page = "/pages/decklist/decklists_partial.php";
 	}
 	

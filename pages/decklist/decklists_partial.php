@@ -51,11 +51,7 @@
 
 						<div class="panel-body">
 							<div class="table-responsive">
-								<?php 
-								require_once ROOT_PATH . '/loaders/load_decklists.php';
-								$decklists = getDecks(0);
-								require_once ROOT_PATH . '/components/tables/decklists_table.php'; 
-								?>
+								<?php require_once ROOT_PATH . '/components/tables/decklists_table.php'; ?>
 							</div>
 						</div>
 					</div>

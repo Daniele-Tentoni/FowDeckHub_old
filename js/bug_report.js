@@ -73,6 +73,8 @@ function change_state(id, state) {
                 break;
         }
         $("#trow_" + id + " span").addClass("label").addClass(classToAdd).html(htmlToAdd);
+		$("#trow_" + id + " state").fadeIn();
+		$("#state_" + id + "_" + result["update_state"]).fadeOut();
         console.log(result);
 	};
 	var error = function(error) {
