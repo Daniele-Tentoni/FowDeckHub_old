@@ -1,0 +1,1 @@
+create table security_requests( Id int(11) auto_increment not null primary key, UserId int(11) not null, RequestDate datetime not null, ExitCode int(111) not null, PageRequired varchar(100), Note varchar(5000) null, foreign key (UserId) references users(id) )

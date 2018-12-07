@@ -129,7 +129,7 @@ $(function() {
         
         //iCheckbox and iRadion - custom elements
         var feiCheckbox = function(){
-            if($(".icheckbox").length > 0){
+            if($(".icheckbox,.iradio").length > 0){
                  $(".icheckbox,.iradio").iCheck({checkboxClass: 'icheckbox_minimal-grey',radioClass: 'iradio_minimal-grey'});
             }
         }
@@ -176,13 +176,6 @@ $(function() {
             if($(".datatable_simple").length > 0){                
                 $(".datatable_simple").dataTable({"ordering": false, "info": false, "lengthChange": false,"searching": false});
                 $(".datatable_simple").on('page.dt',function () {
-                    onresize(100);
-                });                
-            } 
-			
-            if($(".datatable_search").length > 0){                
-                $(".datatable_search").dataTable({"ordering": false, "info": true, "lengthChange": true,"searching": true});
-                $(".datatable_search").on('page.dt',function () {
                     onresize(100);
                 });                
             }            

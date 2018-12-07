@@ -1,4 +1,4 @@
-<?php
+ <?php
 require_once 'definings.php';
 require_once ROOT_PATH . '/config/functions.php';
 sec_session_start();
@@ -25,7 +25,7 @@ if($log_result) {
 		$title = "Event Details - Administrator - Fow Deck Hub";
 		$page = "/pages/event/events_details.php";
 		$event_id = $_GET["event_id"];
-		$event = get_event_by_id($event_id)["content"];
+		$event = get_event_by_id($mysqli, $event_id)["content"];
 		$decklists = get_event_decks($mysqli, $event_id);
         $chart = get_chart_data_by_decks($decklists["content"]);
 	} else if(isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {

@@ -15,11 +15,29 @@ function sec_session_start() {
 
 function login($email, $password, $mysqli) {
     // Usando statement sql 'prepared' non sarà possibile attuare un attacco di tipo SQL injection.
-    if ($stmt = $mysqli->prepare("SELECT u.id as user_id, username as user_name, password, salt, r.Name as user_title, r.CanEditEvents as CanEditEvents FROM users u, roles r WHERE u.role = r.Id and email = ? LIMIT 1")) {
-        $stmt->bind_param('s', $email); // esegue il bind del parametro '$email'.
+    if ($stmt = $mysqli->prepare("
+        SELECT u.id as user_id, 
+               username as user_name, 
+               password, 
+               salt, 
+               u.role as user_level,
+               r.Name as user_title,
+               r.CanEditEvents as can_edit_events
+        FROM users u
+        INNER JOIN roles r ON u.role = r.Id 
+        WHERE email = ? 
+           or username = ?
+        LIMIT 1")) {
+        $stmt->bind_param('ss', $email, $email); // esegue il bind del parametro '$email'.
         $stmt->execute(); // esegue la query appena creata.
         $stmt->store_result();
-        $stmt->bind_result($user_id, $user_name, $db_password, $salt, $user_title, $can_edit_events); // recupera il risultato della query e lo memorizza nelle relative variabili.
+        $stmt->bind_result($user_id, 
+                           $user_name, 
+                           $db_password, 
+                           $salt, 
+                           $user_level, 
+                           $user_title, 
+                           $can_edit_events); // recupera il risultato della query e lo memorizza nelle relative variabili.
         $stmt->fetch();
         $password = hash('sha512', $password.$salt); // codifica la password usando una chiave univoca.
         if($stmt->num_rows == 1) { // se l'utente esiste
@@ -37,17 +55,15 @@ function login($email, $password, $mysqli) {
                     $successed->bind_param("i", $idUser);
                     $idUser = $user_id;     
                     $successed->execute();
-					
                     $user_browser = $_SERVER['HTTP_USER_AGENT']; // Recupero il parametro 'user-agent' relativo all'utente corrente.
-
                     $user_id = preg_replace("/[^0-9]+/", "", $user_id); // ci proteggiamo da un attacco XSS
                     $_SESSION['user_id'] = $user_id; 
                     $user_name = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $user_name); // ci proteggiamo da un attacco XSS
                     $_SESSION['user_name'] = $user_name;
+                    $_SESSION['user_level'] = $user_level;
                     $_SESSION['user_title'] = $user_title;
                     $_SESSION['can_edit_events'] = $can_edit_events;
                     $_SESSION['login_string'] = hash('sha512', $password.$user_browser);
-                    
                     return "eseguito";    
                 } else {
                     // Registriamo il tentativo fallito nel database.
@@ -135,4 +151,76 @@ function login_check($mysqli) {
         return false;
     }
 }
-?>
+
+/*
+ * Controllo il livello massimo di permessi per accedere ad una determinata funzione del sito.
+ */
+function check_level($mysqli, $max_level, $track) {
+    $user_id = "";
+    $page_required = "Page: " . $_SERVER["SCRIPT_FILENAME"] . "/Level: " .$max_level;
+    $note = "";
+    if(isset($_SESSION) && isset($_SESSION['login_string']) && isset($_SESSION["user_level"])) {
+        $note .="Logged user. ";
+        $user_id = $_SESSION["user_name"];
+        if($_SESSION["user_level"] <= $max_level) {
+            $exit_code = 0;
+            $note .= "Accepted Level. ";
+        } else {
+            $exit_code = 2;
+            $note .= "User over max-level ";
+        }
+    } else {
+        $exit_code = 1;
+        $note .="Not logged user. ";
+    }
+
+    if($track == true) {
+        // Mi salvo il tentativo errato di accesso alla risorsa.
+        $failed = $mysqli->prepare("INSERT INTO security_requests(UserId, ExitCode, PageRequired, Note) VALUES (?, ?, ?, ?)");
+        $failed->bind_param("siss", $user_id_sql, $exit_code_sql, $page_required_sql, $note_sql);
+        $user_id_sql = $user_id;
+        $exit_code_sql = $exit_code;
+        $page_required_sql = $page_required;
+        $note_sql = $note;
+        $failed->execute();
+    }
+    
+    return $exit_code;
+}
+
+/*
+ * Controllo se l'utente ha uno specifico permesso.
+ */
+function check_permission($mysqli, $permission, $track) {
+    $user_id = "";
+    $page_required = "Page: " . $_SERVER["SCRIPT_FILENAME"] . "/Level: " .$permission;
+    $note = "";
+    if(isset($_SESSION) && isset($_SESSION['login_string']) && isset($_SESSION[$permission])) {
+        $note .="Logged user. ";
+        $user_id = $_SESSION["user_name"];
+        if($_SESSION[$permission] == 1) {
+            $exit_code = 0;
+            $note .= "Permission given. ";
+        } else {
+            $exit_code = 2;
+            $note .= "User over max-level ";
+        }
+    } else {
+        $exit_code = 1;
+        $note .="Not logged user. ";
+    }
+
+    if($track == true) {
+        // Mi salvo il tentativo errato di accesso alla risorsa.
+        $failed = $mysqli->prepare("INSERT INTO security_requests(UserId, ExitCode, PageRequired, Note) VALUES (?, ?, ?, ?)");
+        $failed->bind_param("i", $user_id_sql, $exit_code_sql, $page_required_sql, $note_sql);
+        $user_id_sql = $user_id;
+        $exit_code_sql = $exit_code;
+        $page_required_sql = $page_required;
+        $note_sql = $note;
+        $failed->execute();
+    }
+
+    return $exit_code;
+}
+?>
