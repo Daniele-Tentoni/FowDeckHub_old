@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
+require_once 'definings.php';
+require_once ROOT_PATH . '/config/functions.php';
 // Recupero la password criptata dal form di inserimento.
 $password = mysql_real_escape_string($_POST['p']); 
 $msg = array();

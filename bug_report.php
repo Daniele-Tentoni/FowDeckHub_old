@@ -1,6 +1,6 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/functions.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
+require_once 'definings.php';
+require_once ROOT_PATH . '/config/functions.php';
 sec_session_start();
 
 /*
@@ -17,7 +17,7 @@ if($log_result) {
 	$active_page = 14;
 	$title = "";
 	$page = "";
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/bug_report.php';
+	require_once ROOT_PATH . '/controllers/bug_report.php';
 	if(isset($_GET["bug_try"])) {
 		$title = "Bug Try - Administrator - Fow Deck Hub";
 		$page = "/pages/event/new_event.php";
@@ -31,9 +31,9 @@ if($log_result) {
 	/*
 	 * Assemblo la pagina.
 	 */
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/header.php';
-	require_once $_SERVER['DOCUMENT_ROOT'] . $page;
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/layout/footer.php';
+	require_once ROOT_PATH . '/layout/header.php';
+	require_once ROOT_PATH . $page;
+	require_once ROOT_PATH . '/layout/footer.php';
 } else {
     var_dump($log_result);
     header("Refresh: 5;URL=login.php");
