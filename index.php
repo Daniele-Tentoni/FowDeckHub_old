@@ -6,7 +6,7 @@ sec_session_start();
 // Controllo di essere collegato, se sono in test eseguo automaticamente un login.
 $log_result = login_check($mysqli);
 // Controllo il livello senza tracciarlo, altrimenti qui sarebbe un morire.
-$check_level = check_level($mysqli, 2, true);
+$check_level = check_level($mysqli, 2, false);
 if($log_result && $check_level == 0) {
 	$login_checked = true;
     $title = "Dashboard - Administrator - Fow Deck Hub";

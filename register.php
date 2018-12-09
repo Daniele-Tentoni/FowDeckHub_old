@@ -19,7 +19,7 @@
         <div class="login-container">
         
             <div class="login-box animated fadeInDown">
-                <div class="login-logo"></div>
+                <a href="index.php"><div class="login-logo"></div></a>
                 <div class="login-body">
                     <div class="login-title"><strong>Register</strong> a new account!</div>
                     <form id="register-form" class="form-horizontal">
@@ -57,12 +57,12 @@
                 </div>
                 <div class="login-footer">
                     <div class="pull-left">
-                        &copy; 2014 AppName
+                        &copy; 2018 Fow Deck Hub
                     </div>
                     <div class="pull-right">
-                        <a href="#">About</a> |
-                        <a href="#">Privacy</a> |
-                        <a href="#">Contact Us</a>
+                        <a href="faq.php">About</a> |
+                        <!--<a href="#">Privacy</a> |-->
+                        <a href="mailto:fowdeckhub@altervista.org">Contact Us</a>
                     </div>
                 </div>
             </div>

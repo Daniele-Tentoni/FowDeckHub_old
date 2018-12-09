@@ -2,7 +2,7 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-3">
                         <ul>
-                            <li><a href="#"><i class="fa fa-question" aria-hidden="true"></i> F.A.Q. (Frequently Answered Questions)</a></li>
+                            <li><a href="faq.php"><i class="fa fa-question" aria-hidden="true"></i> F.A.Q.</a></li>
                             <li><a href="#" class="mb-control" data-box="#mb-bugreport"><i class="fa fa-bug" aria-hidden="true"></i> Report a bug!</a></li>
                         </ul>
                         
@@ -10,7 +10,7 @@
                     <div class="col-md-3">
                         <ul>
                             <li>Thank for templates to <a href="https://github.com/sbilly" target="_blank">Sbilly</a></li>
-                            <li>Fow Deck Hub: <span class="copyright">@ Daniele Tentoni, 2019 </span></li>
+                            <li>Fow Deck Hub: <span class="copyright">&copy; Daniele Tentoni, 2018 </span></li>
                         </ul>
                         
                     </div>
@@ -56,6 +56,11 @@
         <!-- START TEMPLATE -->
 		<script type="text/javascript" src="js/plugins.js"></script>        
 		<script type="text/javascript" src="js/actions.js"></script>
+        <?php 
+        if(isset($add_script)) {
+            echo $add_script;
+        }
+        ?>
         <!-- END TEMPLATE -->
     <!-- END SCRIPTS -->         
     </body>
