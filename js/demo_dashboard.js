@@ -149,6 +149,7 @@ $(function(){
     });*/
     /* End Moris Area Chart */
     /* Vector Map */
+    
     var load_event_by_region = function(region) {
         $.ajax({
             type: "POST",
@@ -156,41 +157,69 @@ $(function(){
             dataType: "json",
             data: "region=" + region,
             success: function (result) {
-                console.log(result);
+                $("#event_list").html("");
+                var elem = "";
+                if(result.result == true) {
+                    result.content.forEach(function(value){
+                        console.log(value);
+                        // Mostro la tabellina degli eventi disponibili, colorandoli se sono completi oppure no.
+                        elem += "<div class=\"progress-list\">";
+                        if(value.Cont > 7) {
+                            elem += "   <div class=\"pull-left\"><a href=\"events.php?event_id=" + value.Id + "\"><strong class=\"text-success\">" + value.Name + "</strong></a></div>";
+                            elem += "   <div class=\"pull-right\">" + value.Cont + "/8 Decklist uploaded</div>";
+                            elem += "   <div class=\"progress progress-small progress-striped active\">";
+                            elem += "       <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"" + value.Cont + "\" aria-valuemin=\"0\" aria-valuemax=\"8\" style=\"width: " + value.Cont / 8 * 100 + "%;\">50%</div>";
+                        } else if(value.Cont > 0) {
+                            elem += "   <div class=\"pull-left\"><a href=\"events.php?event_id=" + value.Id + "\"><strong class=\"text-warning\">" + value.Name + "</strong></a></div>";
+                            elem += "   <div class=\"pull-right\">" + value.Cont + "/8 Decklist uploaded</div>";
+                            elem += "   <div class=\"progress progress-small progress-striped active\">";
+                            elem += "       <div class=\"progress-bar progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"" + value.Cont + "\" aria-valuemin=\"0\" aria-valuemax=\"8\" style=\"width: " + value.Cont / 8 * 100 + "%;\">50%</div>";
+                        } else {
+                            elem += "   <div class=\"pull-left\"><a href=\"events.php?event_id=" + value.Id + "\"><strong class=\"text-danger\">" + value.Name + "</strong></a></div>";
+                            elem += "   <div class=\"pull-right\">" + value.Cont + "/8 Decklist uploaded</div>";
+                            elem += "   <div class=\"progress progress-small progress-striped active\">";
+                            elem += "       <div class=\"progress-bar progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"" + value.Cont + "\" aria-valuemin=\"0\" aria-valuemax=\"8\" style=\"width: " + value.Cont / 8 * 100 + "%;\">50%</div>";
+                        }
+                        elem += "   </div>";
+                        elem += "</div>";
+                    });
+                } else {
+                    elem += "<p>There was a problem, contact the system administrator with the bug report button.</p>";
+                }
+                $("#event_list").html(elem);
             },
             error: function(error) {
                 console.log(error);
             }
         });
     };
-    var events = [];
+    
+    var inizialize_map = function(values) {
+        var jvm_wm = new jvm.WorldMap({
+            container: $('#dashboard-map-seles'),
+            map: 'world_mill_en',
+            backgroundColor: '#FFFFFF',
+            regionStyle: {selected: {fill: '#B64645'}, initial: {fill: '#E5E5E5'}},
+            series: {
+                regions: [{
+                    values: values,
+                    scale: ['#C8EEFF', '#0071A4'],
+                    normalizeFunction: 'polynomial'
+                }]
+            },
+            onRegionClick: function(e, code){
+                load_event_by_region(code);
+            }
+        });
+    };
+    
+    // Devo caricare anche i markers.
     $.ajax({
 		type: "POST",
 		url: "ajax/event_ajax.php?event_map",
 		dataType: "json",
 		success: function (result) {
-            console.log(result);
-            events = result.content;
-            console.log(events);
-            var jvm_wm = new jvm.WorldMap({
-                container: $('#dashboard-map-seles'),
-                map: 'world_mill_en',
-                backgroundColor: '#FFFFFF',
-                regionsSelectable: true,
-                regionStyle: {selected: {fill: '#B64645'}, initial: {fill: '#33414E'}},
-                onRegionSelected: function() {
-                    var regions = jvm_wm.getSelectedRegions();
-                    events.forEach(function (k, v) {
-                        console.log("K" + k.Sign);
-                        console.log(events[1]);
-                        if(regions.includes(k.Sign)) {
-                            load_event_by_region(k.Sign);
-                        } else {
-                            console.log("Non Inclusione: " + k.Sign);
-                        }
-                    });
-                }
-            }); 
+            inizialize_map(result);
         },
 		error: function(error) {
             console.log(error);

@@ -7,6 +7,7 @@
 
 <!-- START WIDGETS -->                    
 <div class="row">
+    <!-- Advertisment -->
     <div class="col-md-3">
         <script>
             google_color_border = "#003399";
@@ -25,8 +26,9 @@
         </script>
     </div>
     
-    <!-- END UTILITY WIDGETS -->
-    
+    <div class="col-md-12">
+        <h3>Select a region and explore all big Events!</h3>
+    </div>
     
 	<div class="col-md-12">
         <?php require_once ROOT_PATH . '/components/world_map.php'; ?>
