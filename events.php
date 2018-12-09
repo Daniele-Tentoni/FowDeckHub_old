@@ -17,10 +17,20 @@ $title = "";
 $page = "";
 require_once ROOT_PATH . '/loaders/load_events.php';
 if($log_result && isset($_GET["new_event"])) {
+    $header = '/layout/header.php';
     $login_checked = true;
     $title = "New Event - Administrator - Fow Deck Hub";
     $page = "/pages/event/new_event.php";
-} else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
+} else if($log_result && isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
+    $header = '/layout/header.php';
+    $title = "Event Details - Administrator - Fow Deck Hub";
+    $page = "/pages/event/events_details.php";
+    $event_id = $_GET["event_id"];
+    $event = get_event_by_id($mysqli, $event_id)["content"];
+    $decklists = get_event_decks($mysqli, $event_id);
+    $chart = get_chart_data_by_decks($decklists["content"]);
+} else if(!$log_result && isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
+    $header = '/layout/user_header.php';
     $title = "Event Details - Administrator - Fow Deck Hub";
     $page = "/pages/event/events_details.php";
     $event_id = $_GET["event_id"];
@@ -28,6 +38,7 @@ if($log_result && isset($_GET["new_event"])) {
     $decklists = get_event_decks($mysqli, $event_id);
     $chart = get_chart_data_by_decks($decklists["content"]);
 } else if($log_result && isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
+    $header = '/layout/header.php';
     $login_checked = true;
     $title = "Event Edit - Administrator - Fow Deck Hub";
     $page = "/pages/event/event_edit.php";
@@ -35,6 +46,7 @@ if($log_result && isset($_GET["new_event"])) {
     $event = get_event_by_id($event_id)["content"];
     $decklists = get_event_decks($mysqli, $event_id);
 } else {
+    $header = '/layout/user_header.php';
     $title = "Events - Administrator - Fow Deck Hub";
     $page = "/pages/event/events_partial.php";
     $year = date("Y");
@@ -47,7 +59,7 @@ if($log_result && isset($_GET["new_event"])) {
 /*
  * Assemblo la pagina.
  */
-require_once ROOT_PATH . '/layout/header.php';
+require_once ROOT_PATH . $header;
 require_once ROOT_PATH . $page;
 require_once ROOT_PATH . '/layout/footer.php';
 ?>
