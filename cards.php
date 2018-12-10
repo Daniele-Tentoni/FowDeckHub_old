@@ -15,6 +15,6 @@ if($log_result) {
 	require_once ROOT_PATH . '/layout/footer.php';
 } else {
     var_dump($log_result);
-    header("Refresh: 5;URL=login.php");
+    header("Refresh: 2;URL=login.php");
 }
 ?>

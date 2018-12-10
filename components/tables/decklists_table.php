@@ -7,13 +7,13 @@
             <th width="100">Type</th>
             <th width="80">Style</th>
 			<?php
-			if(!isset($event_hide)) {
+			if(!isset($event_hide) || $event_hide) {
 				echo "<th width=\"120\">Event</th>";
 			}
 			?>
             <th width="40">Rank</th>
 			<?php
-			if(!isset($action_hide)) {
+			if(!isset($action_hide) || $event_hide) {
 				echo "<th width=\"140\">Actions</th>";
 			}
 			?>
