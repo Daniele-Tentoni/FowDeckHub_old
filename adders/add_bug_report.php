@@ -2,6 +2,7 @@
 	// Variabili globali, funzioni di db/login e controllers.
 	require_once '../definings.php';
 	require_once ROOT_PATH . '/config/functions.php';
+	sec_session_start();
 	require_once ROOT_PATH . '/controllers/bug_report.php';
 	$result = array();
 	$result["result"] = false;

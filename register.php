@@ -91,7 +91,7 @@
                     success: function(msg){
                         var message = JSON.parse(msg);
                         if(message.result === "done") {
-                            window.location = "login.php";
+                        	$("#errors").append('<div class="alert alert-success"> ' + message.success + '</div>');
                         } else if(message.result === "fail") {
                             if(message.number === 1062) {
                                 $("#errors").append('<div class="alert alert-warning"> Username or Email already exists. Change them before continue.</div>');

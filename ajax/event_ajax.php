@@ -29,7 +29,7 @@
         $region = $_POST["region"];
         $event_map_details = get_event_map_details($mysqli, $region);
         echo json_encode($event_map_details);
-    } else if(isset($_GET["events_widget"]) && isset($_POST["year"]) && $_POST["year"]) > 0) {
+    } else if(isset($_GET["events_widget"]) && isset($_POST["year"]) && $_POST["year"] > 0) {
 		// Controllo il livello senza tracciarlo, altrimenti qui sarebbe un morire.
 		$check_level = check_level($mysqli, 2, false);
 		if($check_level != 0) {
