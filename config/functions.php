@@ -45,7 +45,7 @@ function login($email, $password, $mysqli) {
             if(checkbrute($user_id, $mysqli) == true) { 
                 // Account disabilitato
                 // Invia un e-mail all'utente avvisandolo che il suo account è stato disabilitato.
-                return false;
+                return "bloccato";
             } else {
                 /*
                  * Verifico la password inserita e segno in login_attemps il risultato.
@@ -71,12 +71,12 @@ function login($email, $password, $mysqli) {
                     $failed->bind_param("i", $idUser);
                     $idUser = $user_id;
                     $failed->execute();
-                    return "Pass: $password, Salt: $salt";
+                    return "password";
                 }
             }
         } else {
             // L'utente inserito non esiste.
-            return "inesistente";
+            return "inesistente $email";
         }
     }
 }

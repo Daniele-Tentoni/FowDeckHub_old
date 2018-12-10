@@ -6,12 +6,12 @@
 		</div>                                    
 		<ul class="panel-controls panel-controls-title" style="margin-top: 2px;">
 			<li>
-				<select id="Date" class="form-control">
+				<select id="date_event_filling_widget" class="form-control">
 				<?php
 					if($mysqli->connect_error){
 						echo "<option value=\"0\">-- Lost Connection Error --</option>";
 					} else {
-						$query ="select distinct Year from card_sets order by Year desc";
+						$query ="select distinct Year from events order by Year desc";
 						$stmt = $mysqli->prepare($query);
 						$stmt->execute();
 						$result = $stmt->get_result();
@@ -41,7 +41,7 @@
 
 	<div class="panel-body panel-body-table">
 		<div class="table-responsive">
-			<table class="table datatable">
+			<table class="table">
 				<thead>
 					<tr>
 						<th>Event Name</th>
@@ -51,6 +51,35 @@
 					</tr>
 				</thead>
 				<tbody id="events-filling-table-body">
+                <?php
+                if(isset($events) && $events["result"] == true) {
+                    foreach ($events["content"] as $value) {
+                        echo "<tr id=\"trow_" . $value["Id"] . "\">";
+                        echo "	<td><a href=\"events.php?event_id=" . $value["Id"] . "\"><strong>" . $value["Name"] . "</strong></a></td>";
+                        echo "	<td>" . $value["Nation"] . $value["Cont"] . "</td>";
+                        $pieces = explode(" ", $value["Date"]);
+                        echo "	<td>" . $pieces[0] . "</td>";
+                        $perc = $value["Cont"] / 8 * 100;
+                        $classToAdd = "";
+                        if($value["Cont"] == 8) {
+                            $classToAdd = "success";
+                        } else if($value["Cont"] == 0) {
+                            $classToAdd = "danger";
+                        } else {
+                            $classToAdd = "warning";
+                        }
+                        echo "	<td>";
+                        echo "		<div class=\"progress progress-small progress-striped active\">";
+                        echo "			<div class=\"progress-bar progress-bar-" . $classToAdd . "\" role=\"progressbar\" aria-valuenow=\"" . $value["Cont"] . "\" aria-valuemin=\"0\" aria-valuemax=\"8\" style=\"width: " . $perc . "%;\">" . $perc . "%</div>";
+                        echo "		</div>";
+                        echo "	</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo $events["msg"];
+                }
+                ?>
+                    
 				</tbody>
 				<script type="text/javascript">
 					function load_events(year) {
@@ -68,24 +97,33 @@
 							data: ajax_data,
 							success:function(result){
 								if(result["result"] === true) {
+                                    var riga = "";
 									result["content"].forEach(function (item) {
-										var riga = "<tr id=\"trow_" + item["Id"] + "\">";
+										riga += "<tr id=\"trow_" + item["Id"] + "\">";
 										riga += "	<td><a href=\"events.php?event_id=" + item["Id"] + "\"><strong>" + item["Name"] + "</strong></a></td>";
 										riga += "	<td>" + item["Nation"] + "</td>";
 										var pieces = item["Date"].split(" ");
 										riga += "	<td>" + pieces[0] + "</td>";
 										var perc = item["Cont"] / 8 * 100;
+                                        var classToAdd = "";
+                                        if(item["Cont"] == 8) {
+                                            classToAdd = "success";
+                                        } else if(item["Cont"] == 0) {
+                                            classToAdd = "danger";
+                                        } else {
+                                            classToAdd = "warning";
+                                        }
 										riga += "	<td>";
 										riga += "		<div class=\"progress progress-small progress-striped active\">";
-										riga += "			<div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"" + item["Cont"] + "\" aria-valuemin=\"0\" aria-valuemax=\"8\" style=\"width: " + perc + "%;\">" + perc + "%</div>";
+										riga += "			<div class=\"progress-bar progress-bar-" + classToAdd + "\" role=\"progressbar\" aria-valuenow=\"" + item["Cont"] + "\" aria-valuemin=\"0\" aria-valuemax=\"8\" style=\"width: " + perc + "%;\">" + perc + "%/div>";
 										riga += "		</div>";
 										riga += "	</td>";
 										riga += "</tr>";
-										$("#sets-filling-table-body").append(riga);
 									});
+                                    $("#events-filling-table-body").html(riga);
 								} else if(result["result"] === false) {
 									console.log("Fallimento");
-									$("#sets-filling-table-body").append(result["Errore"]);
+									$("#events-filling-table-body").append(result["Errore"]);
 								}
 							},
 							error:function(result){
@@ -94,12 +132,11 @@
 							}
 						});
 					}
-					
+                    
 					$(document).ready(function () {
-						$("#Date").change(function () {
-							load_sets($("#Date").val());
+						$("#date_event_filling_widget").change(function () {
+							load_events($("#date_event_filling_widget").val());
 						});
-						load_sets(2018);
 					});
 				</script>
 			</table>

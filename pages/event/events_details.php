@@ -35,7 +35,12 @@
 						<div class="panel-body">                            
 							<div class="tocify-content">
 								<h2><?php echo $event["Name"]; ?>&nbsp; <?php echo $event["Year"]; ?></h2>
-                                <h3><?php echo $event["Date"]; ?> in <?php echo $event["Nation"]; ?></h3>
+                                <h3>
+                                    <?php 
+                                    $pieces = explode(" ", $event["Date"]);
+                                    echo $pieces[0]; 
+                                    ?> in <?php echo $event["Nation"]; ?>
+                                </h3>
                                 <p><?php echo $event["Attendance"]; ?> players</p>
 								<p>
 									<?php
@@ -113,7 +118,7 @@
 <!-- END MESSAGE BOX-->
 
 <!-- ADD EVENT MODAL -->
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/components/modals/add_event_modal.php'; ?>
+<?php require_once ROOT_PATH . '/components/modals/add_event_modal.php'; ?>
 <!-- END ADD EVENT MODAL -->
 
 <!-- START THIS PAGE PLUGINS-->        

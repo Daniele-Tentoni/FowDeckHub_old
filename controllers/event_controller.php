@@ -125,7 +125,7 @@ function get_event_widget_details($mysqli, $year) {
                 JOIN nations n on e.Nation = n.Id
                 LEFT JOIN (SELECT d.Event, COUNT(*) as Cont
                              FROM decklists d
-                             JOIN events e1 ON d.Events = e1.Id
+                             JOIN events e1 ON d.Event = e1.Id
                              WHERE e1.Year = ?
                              GROUP BY d.Event
                              HAVING Cont < 8) AS de ON de.Event = e.Id
@@ -134,7 +134,6 @@ function get_event_widget_details($mysqli, $year) {
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("ii", $year_sql, $year_sql);
     $year_sql = $year;
-    $region_sql = $region;
     $stmt->execute();
     $result = $stmt->get_result();
     if($result->num_rows > 0) {
@@ -145,7 +144,7 @@ function get_event_widget_details($mysqli, $year) {
             $stringa["Name"] = $row["Name"];
             $stringa["Nation"] = $row["Nation"];
             $stringa["Date"] = $row["Date"];
-            $stringa["Cont"] = $row["Cont"];
+            $stringa["Cont"] = $row["Cont"] != null ? $row["Cont"] : 0;
             array_push($msg["content"], $stringa);
         }
     } else {

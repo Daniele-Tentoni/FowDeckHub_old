@@ -38,7 +38,10 @@
                         <a href="#" class="x-navigation-control"></a>
                     </li>
                     <li>
-                        <a href="faq.php"><i class="fa fa-question-circle"></i> FAQ</a>
+                        <a href="events.php"><i class="fa fa-users" aria-hidden="true"></i> Events</a>
+                    </li>
+                    <li>
+                        <a href="faq.php"><i class="fa fa-question-circle"></i> F.A.Q.</a>
                     </li>
                     <!--<li class="xn-openable">
                         <a href="#"><span class="fa fa-pencil"></span> <span class="xn-text">Forms</span></a>
