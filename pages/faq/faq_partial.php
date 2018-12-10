@@ -24,11 +24,29 @@
                 <div class="panel-body faq">
 
                     <div class="faq-item">
+                        <div class="faq-title"><span class="fa fa-angle-down"></span>What is the purpose of the site?</div>
+                        <div class="faq-text">
+                            <h5>Meta analysis and statistics.</h5>
+                            <p>It is about collecting data and information regarding the current state of the game and the goal, providing users with a global vision with events from all over the globe.</p>
+                            <p>Mainly events with more than 32 players and a certain level of competitiveness from the 3rd level of the CR will be taken into consideration.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
                         <div class="faq-title"><span class="fa fa-angle-down"></span>How does this app work?</div>
                         <div class="faq-text">
                             <h5>It's very easy!</h5>
                             <p>You have only to click on a region to see all events done in that region. After that, you have to click on a events name to see all details.</p>
                             <p>You don't need to register to see events and decklists.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-title"><span class="fa fa-angle-down"></span>Can i add an event?</div>
+                        <div class="faq-text">
+                            <h5>Only administrator can add events.</h5>
+                            <p>This is because not all events are relevant, especially worldwide. A local event with 8 participants is decidedly insignificant for the purpose of this site, which is to give the possibility to analyze the destination in a more or less extended way. So only the administrators will take care to insert the most relevant events for this objective. in general with the participation of more than 32 people and with a medium-high competitive level, let's say from the 3rd level of the CR.</p>
+                            <p>But if you know of an interesting event, you can let the administrators know by sending an email to the following address: <a href="mailto:fowdeckhub@altervista.org">fowdeckhub@altervista.org</a>. Every contribution can be fundamental!</p>
                         </div>
                     </div>
 
