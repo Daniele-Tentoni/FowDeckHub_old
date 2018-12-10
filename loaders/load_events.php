@@ -156,7 +156,7 @@ function get_event_decks($mysqli, $event) {
 		$query .= " and d.Event = " . $event;
 	}
 
-	$query .= " order by Event, Position";
+	$query .= " order by Event, d.Position";
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->execute();

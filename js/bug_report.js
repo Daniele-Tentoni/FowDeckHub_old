@@ -46,12 +46,13 @@ function change_state(id, state) {
 	var action = "adders/add_bug_report.php?change_state";
 	var string_data = "id=" + id + "&state=" + state;
 	var success = function(result) {
+        console.log(result);
         $("#trow_" + id + " span").removeClass();
         var classToAdd = "";
         var htmlToAdd = "";
 		// Qui ci andrà per bene il codice per cambiare lo stato anche nella view.
         var updated_state = result["update_state"];
-        switch(update_state) {
+        switch(updated_state) {
             case "4":
                 classToAdd = "lb_red";
                 htmlToAdd = "Resolved";
@@ -74,9 +75,8 @@ function change_state(id, state) {
                 break;
         }
         $("#trow_" + id + " span").addClass("label").addClass(classToAdd).html(htmlToAdd);
-		$("#trow_" + id + " state").fadeIn();
-		$("#state_" + id + "_" + result["update_state"]).fadeOut();
-        console.log(result);
+		$("#trow_" + id + " .state").fadeIn();
+		$("#state_" + id + "_" + updated_state).fadeOut();
 	};
 	var error = function(error) {
 		// Qui ci andrà per bene il codice per capire dov'è l'errore.

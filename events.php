@@ -1,11 +1,20 @@
-<?php
+ <?php
 require_once 'definings.php';
 require_once ROOT_PATH . '/config/functions.php';
 sec_session_start();
 
+// Controllo di essere collegato, se sono in test eseguo automaticamente un login.
+$log_result = login_check($mysqli);
+if(!$log_result) {
+	$login_checked = false;
+} else {
+	$login_checked = true;
+}
+// Controllo il livello senza tracciarlo, altrimenti qui sarebbe un morire.
+$check_level = check_level($mysqli, 2, false);
+
 /*
- * Controllo di essere loggato.
- * Se sono in test, eseguo automaticamente il login.
+ * Carico qui diverse informazioni a seconda della pagina richiesta.
  */
 $active_page = 12;
 $title = "";
@@ -59,4 +68,11 @@ if($log_result && $check_level == 0 && isset($_GET["new_event"])) {
     $title = "Events - Administrator - Fow Deck Hub";
     $page = "/pages/event/events_partial.php";
 }
+
+/*
+ * Assemblo la pagina.
+ */
+require_once ROOT_PATH . $header;
+require_once ROOT_PATH . $page;
+require_once ROOT_PATH . '/layout/footer.php';
 ?>

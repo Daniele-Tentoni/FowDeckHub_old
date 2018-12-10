@@ -23,7 +23,7 @@ function new_bug($mysqli, $name, $email, $bug){
                 if($stmt->execute()) {
                     $msg["result"] = true;
                     $msg["class"] = "success";
-                    $content .= "Successful Bug Report with number " . $mysqli->insert_id . ". Write down the number of the problem that will be used when we will contact you. <br />";
+                    $content .= "Successful Bug Report with number $mysqli->insert_id.<br />Write down the number of the problem that will be used when we will contact you. <br />";
                     // Costruisco il messaggio    
                     $contenuto_email = "Name: $name_sql\n\n"; //Queste variabili sono create nel passaggio precedente
                     $contenuto_email .= "Email: $email_sql\n\n";
@@ -31,10 +31,11 @@ function new_bug($mysqli, $name, $email, $bug){
                     //limita la lunghezza a 70 caratteri per la compatibilità
                     $contenuto_email = wordwrap($contenuto_email,70);
                     //invia l'email    
-                    $mail_sent = mail($email,"Bug Report",$contenuto_email, 'From: noreplay@fowdeckhub.io');
-                    if(isset($mail_sent)) {
-                        $content .= " We thank you for your patience and support. We believe a lot in cooperation and everyone's help is precious. We will contact you once the problem is solved. We apologize for the inconvenience.<br />";
-
+                    $mail_sent = mail($email_sql, "Bug Report", $contenuto_email, 'From: fowdeckhub@altervista.org');
+                    if(isset($mail_sent) && $mail_sent) {
+                        $content .= "<br />We've send an email to $email_sql. <br />We thank you for your patience and support. We believe a lot in cooperation and everyone's help is precious. We will contact you once the problem is solved. We apologize for the inconvenience. <br />";
+                    } else {
+                        $content .= "We haven't send an email for a problem. We apologize for the inconvenience. ";
                     }
                     $msg["id"] = $mysqli->insert_id;
                 } else {
@@ -127,7 +128,7 @@ function get_bug_list($mysqli) {
                         s.Icon as Icon
             from bug_reports b
             join bug_report_states s on b.BugState = s.Id
-            order by b.Id";
+            order by b.Id desc";
 
     $stmt = $mysqli->prepare($query);
     $stmt->execute();
