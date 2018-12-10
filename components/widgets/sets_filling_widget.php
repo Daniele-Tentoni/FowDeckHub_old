@@ -7,7 +7,7 @@
 		<ul class="panel-controls panel-controls-title">
 			<li>
 				<select id="Date" class="form-control">
-					<?php
+				<?php
 					if($mysqli->connect_error){
 						echo "<option value=\"0\">-- Lost Connection Error --</option>";
 					} else {
@@ -24,7 +24,7 @@
 							echo "<option value=\"0\">-- No Result --</option>";
 						}
 					}
-					?>
+				?>
 				</select>
 			</li>
 			<li class="dropdown">
@@ -38,8 +38,8 @@
 			</li>                                        
 		</ul>
 	</div>
+	
 	<div class="panel-body panel-body-table">
-
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped">
 				<thead>
@@ -96,6 +96,5 @@
 				</script>
 			</table>
 		</div>
-
 	</div>
 </div>

@@ -1,5 +1,5 @@
 <?php
-require_once './definings.php';
+require_once '../definings.php';
 require_once ROOT_PATH . '/config/functions.php';
 
 // Utilizzo la connessione $mysqli dentro a functions->db_connect.
@@ -16,10 +16,11 @@ if($mysqli->connect_error){
 	$query = "select s.Code, s.Name, s.NumCards, ca.Count
 				from card_sets s
 				left join (
-					select se.Code, COUNT(*) as Count
+					select se.Code, se.NumCards, COUNT(*) as Count
 					from card_sets se
 					join cards c on se.Code = c.Set
-					group by se.Code) as ca on s.Code = ca.Code";
+					group by se.Code
+                    having Count < se.NumCards) as ca on s.Code = ca.Code";
 	if($filtro_anno != "") {
 		$query .= " where Year = $filtro_anno";
 	}

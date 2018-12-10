@@ -65,7 +65,7 @@
                     <li class="xn-openable <?php if(isset($active_page) && $active_page >= 20 && $active_page < 30) { echo "active"; } ?>">
                         <a href="#"><span class="fa fa-file-text-o"></span> <span class="xn-text">Users</span></a>
                         <ul>
-                            <li class="<?php if(isset($active_page) && $active_page == 20) { echo "active"; } ?>"><a href="decklists.php"><i class="fa fa-comments"></i> Decklists</a></li>
+                            <li class="<?php if(isset($active_page) && $active_page == 20) { echo "active"; } ?>"><a href="faq.php"><i class="fa fa-question" aria-hidden="true"></i> F.A.Q.</a></li>
                         </ul>
                     </li>
                 </ul>

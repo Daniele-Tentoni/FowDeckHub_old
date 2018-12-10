@@ -23,7 +23,7 @@
 				echo "<td>" . $value["CreationDate"] . "</td>";
 				echo "<td>" . $value["LastOperation"] . "</td>";
 				echo "<td class=\"status\"><span class=\"label " . $value["Color"] . "\"><i class='fa fa-" . $value["Icon"] . "'></i>" . $value["State"] . "</span></td>";
-                echo "<td>echo";
+                echo "<td>";
                 if($value["State"] != "Resolved") {
                     foreach($states["content"] as $state) {
 						echo "<button ";

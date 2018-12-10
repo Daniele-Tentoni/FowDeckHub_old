@@ -75,7 +75,7 @@
 <!-- START THIS PAGE PLUGINS-->        
 <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
 <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
-<script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>    
+<script type="text/javascript" src="js/plugins/datatables/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/plugins/bootstrap/bootstrap-select.js"></script>
 
 <script type="text/javascript" src="js/demo_tables.js"></script>

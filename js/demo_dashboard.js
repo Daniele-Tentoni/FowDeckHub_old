@@ -27,42 +27,42 @@ $(function(){
     /* end reportrange */
     
     /* Rickshaw dashboard chart */
-    // var seriesData = [ [], [] ];
-    // var random = new Rickshaw.Fixtures.RandomData(1000);
+    /*var seriesData = [ [], [] ];
+    var random = new Rickshaw.Fixtures.RandomData(1000);
 
-    // for(var i = 0; i < 100; i++) {
-        // random.addData(seriesData);
-    // }
+    for(var i = 0; i < 100; i++) {
+    random.addData(seriesData);
+    }
 
-    // var rdc = new Rickshaw.Graph( {
-            // element: document.getElementById("dashboard-chart"),
-            // renderer: 'area',
-            // width: $("#dashboard-chart").width(),
-            // height: 250,
-            // series: [{color: "#33414E",data: seriesData[0],name: 'New'}, 
-                     // {color: "#1caf9a",data: seriesData[1],name: 'Returned'}]
-    // } );
+    var rdc = new Rickshaw.Graph( {
+            element: document.getElementById("dashboard-chart"),
+            renderer: 'area',
+            width: $("#dashboard-chart").width(),
+            height: 250,
+            series: [{color: "#33414E",data: seriesData[0],name: 'New'}, 
+                     {color: "#1caf9a",data: seriesData[1],name: 'Returned'}]
+    } );
 
-    // rdc.render();
+    rdc.render();
 
-    // var legend = new Rickshaw.Graph.Legend({graph: rdc, element: document.getElementById('dashboard-legend')});
-    // var shelving = new Rickshaw.Graph.Behavior.Series.Toggle({graph: rdc,legend: legend});
-    // var order = new Rickshaw.Graph.Behavior.Series.Order({graph: rdc,legend: legend});
-    // var highlight = new Rickshaw.Graph.Behavior.Series.Highlight( {graph: rdc,legend: legend} );        
+    var legend = new Rickshaw.Graph.Legend({graph: rdc, element: document.getElementById('dashboard-legend')});
+    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle({graph: rdc,legend: legend});
+    var order = new Rickshaw.Graph.Behavior.Series.Order({graph: rdc,legend: legend});
+    var highlight = new Rickshaw.Graph.Behavior.Series.Highlight( {graph: rdc,legend: legend} );        
 
-    // var rdc_resize = function() {                
-            // rdc.configure({
-                    // width: $("#dashboard-area-1").width(),
-                    // height: $("#dashboard-area-1").height()
-            // });
-            // rdc.render();
-    // }
+    var rdc_resize = function() {                
+            rdc.configure({
+                    width: $("#dashboard-area-1").width(),
+                    height: $("#dashboard-area-1").height()
+            });
+            rdc.render();
+    }
 
-    // var hoverDetail = new Rickshaw.Graph.HoverDetail({graph: rdc});
+    var hoverDetail = new Rickshaw.Graph.HoverDetail({graph: rdc});
 
-    // window.addEventListener('resize', rdc_resize);        
+    window.addEventListener('resize', rdc_resize);        
 
-    // rdc_resize();
+    rdc_resize();*/
     /* END Rickshaw dashboard chart */
     
     /* Donut dashboard chart */
@@ -123,7 +123,7 @@ $(function(){
       gridTextSize: '10px',
       lineColors: ['#1caf9a','#33414E'],
       gridLineColor: '#E5E5E5'
-    });  */ 
+    }); */
     /* EMD Line dashboard chart */
     /* Moris Area Chart */
       /*Morris.Area({
@@ -149,33 +149,88 @@ $(function(){
     });*/
     /* End Moris Area Chart */
     /* Vector Map */
-    /*var jvm_wm = new jvm.WorldMap({container: $('#dashboard-map-seles'),
-                                    map: 'world_mill_en', 
-                                    backgroundColor: '#FFFFFF',                                      
-                                    regionsSelectable: true,
-                                    regionStyle: {selected: {fill: '#B64645'},
-                                                    initial: {fill: '#33414E'}},
-                                    markerStyle: {initial: {fill: '#1caf9a',
-                                                   stroke: '#1caf9a'}},
-                                    markers: [{latLng: [50.27, 30.31], name: 'Kyiv - 1'},                                              
-                                              {latLng: [52.52, 13.40], name: 'Berlin - 2'},
-                                              {latLng: [48.85, 2.35], name: 'Paris - 1'},                                            
-                                              {latLng: [51.51, -0.13], name: 'London - 3'},                                                                                                      
-                                              {latLng: [40.71, -74.00], name: 'New York - 5'},
-                                              {latLng: [35.38, 139.69], name: 'Tokyo - 12'},
-                                              {latLng: [37.78, -122.41], name: 'San Francisco - 8'},
-                                              {latLng: [28.61, 77.20], name: 'New Delhi - 4'},
-                                              {latLng: [39.91, 116.39], name: 'Beijing - 3'}]
-                                });  */  
+    
+    var load_event_by_region = function(region) {
+        $.ajax({
+            type: "POST",
+            url: "ajax/event_ajax.php?event_map_details",
+            dataType: "json",
+            data: "region=" + region,
+            success: function (result) {
+                $("#event_list").html("");
+                var elem = "";
+                if(result.result == true) {
+                    result.content.forEach(function(value){
+                        console.log(value);
+                        // Mostro la tabellina degli eventi disponibili, colorandoli se sono completi oppure no.
+                        elem += "<div class=\"progress-list\">";
+                        if(value.Cont > 7) {
+                            elem += "   <div class=\"pull-left\"><a href=\"events.php?event_id=" + value.Id + "\"><strong class=\"text-success\">" + value.Name + "</strong></a></div>";
+                            elem += "   <div class=\"pull-right\">" + value.Cont + "/8 Decklist uploaded</div>";
+                            elem += "   <div class=\"progress progress-small progress-striped active\">";
+                            elem += "       <div class=\"progress-bar progress-bar-success\" role=\"progressbar\" aria-valuenow=\"" + value.Cont + "\" aria-valuemin=\"0\" aria-valuemax=\"8\" style=\"width: " + value.Cont / 8 * 100 + "%;\">50%</div>";
+                        } else if(value.Cont > 0) {
+                            elem += "   <div class=\"pull-left\"><a href=\"events.php?event_id=" + value.Id + "\"><strong class=\"text-warning\">" + value.Name + "</strong></a></div>";
+                            elem += "   <div class=\"pull-right\">" + value.Cont + "/8 Decklist uploaded</div>";
+                            elem += "   <div class=\"progress progress-small progress-striped active\">";
+                            elem += "       <div class=\"progress-bar progress-bar-warning\" role=\"progressbar\" aria-valuenow=\"" + value.Cont + "\" aria-valuemin=\"0\" aria-valuemax=\"8\" style=\"width: " + value.Cont / 8 * 100 + "%;\">50%</div>";
+                        } else {
+                            elem += "   <div class=\"pull-left\"><a href=\"events.php?event_id=" + value.Id + "\"><strong class=\"text-danger\">" + value.Name + "</strong></a></div>";
+                            elem += "   <div class=\"pull-right\">" + value.Cont + "/8 Decklist uploaded</div>";
+                            elem += "   <div class=\"progress progress-small progress-striped active\">";
+                            elem += "       <div class=\"progress-bar progress-bar-danger\" role=\"progressbar\" aria-valuenow=\"" + value.Cont + "\" aria-valuemin=\"0\" aria-valuemax=\"8\" style=\"width: " + value.Cont / 8 * 100 + "%;\">50%</div>";
+                        }
+                        elem += "   </div>";
+                        elem += "</div>";
+                    });
+                } else {
+                    elem += "<p>There was a problem, contact the system administrator with the bug report button.</p>";
+                }
+                $("#event_list").html(elem);
+            },
+            error: function(error) {
+                console.log(error);
+            }
+        });
+    };
+    
+    var inizialize_map = function(values) {
+        var jvm_wm = new jvm.WorldMap({
+            container: $('#dashboard-map-seles'),
+            map: 'world_mill_en',
+            backgroundColor: '#FFFFFF',
+            regionStyle: {selected: {fill: '#B64645'}, initial: {fill: '#E5E5E5'}},
+            series: {
+                regions: [{
+                    values: values,
+                    scale: ['#C8EEFF', '#0071A4'],
+                    normalizeFunction: 'polynomial'
+                }]
+            },
+            onRegionClick: function(e, code){
+                load_event_by_region(code);
+            }
+        });
+    };
+    
+    // Devo caricare anche i markers.
+    $.ajax({
+		type: "POST",
+		url: "ajax/event_ajax.php?event_map",
+		dataType: "json",
+		success: function (result) {
+            inizialize_map(result);
+        },
+		error: function(error) {
+            console.log(error);
+        }
+	});
     /* END Vector Map */
 
-    
     $(".x-navigation-minimize").on("click",function(){
         setTimeout(function(){
             rdc_resize();
         },200);    
     });
     
-    
 });
-

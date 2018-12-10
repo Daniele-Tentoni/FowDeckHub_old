@@ -19,13 +19,13 @@
         <div class="login-container">
         
             <div class="login-box animated fadeInDown">
-                <div class="login-logo"></div>
+                <a href="index.php"><div class="login-logo"></div></a>
                 <div class="login-body">
                     <div class="login-title"><strong>Log In</strong> to your account</div>
                     <form id="login-form" class="form-horizontal">
 						<div class="form-group">
 							<div class="col-md-12">
-								<input id="mail" type="email" class="form-control" placeholder="E-mail"/>
+								<input id="mail" type="text" class="form-control" placeholder="E-mail"/>
 							</div>
 						</div>
 						<div class="form-group">
@@ -35,7 +35,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-md-6">
-								<a href="#" class="btn btn-link btn-block btn-disabled">Forgot your password?</a>
+								<!--<a href="#" class="btn btn-link btn-block btn-disabled">Forgot your password?</a>-->
 							</div>
 							<div class="col-md-6">
 								<button type="submit" id="login-button" class="btn btn-info btn-block">Log In</button>
@@ -62,12 +62,12 @@
                 </div>
                 <div class="login-footer">
                     <div class="pull-left">
-                        &copy; 2014 AppName
+                        &copy; 2018 Fow Deck Hub
                     </div>
                     <div class="pull-right">
-                        <a href="#">About</a> |
-                        <a href="#">Privacy</a> |
-                        <a href="#">Contact Us</a>
+                        <a href="faq.php">About</a> |
+                        <!--<a href="#">Privacy</a> |-->
+                        <a href="mailto:fowdeckhub@altervista.org">Contact Us</a>
                     </div>
                 </div>
             </div>
@@ -92,13 +92,15 @@
                         console.log(msg);
                         var message = JSON.parse(msg);
                         if(message.result === "done") {
-                            $("#errors").append('<div class="alert alert-success"> Login eseguito, reindirizzamento in corso.</div>');
+                            $("#errors").append('<div class="alert alert-success"> .</div>');
                             window.location = "index.php";
                         } else if(message.result === "fail") {
-                            if(message.error === "registrato") {
+                            if(message.error === "password") {
                                 $("#errors").append('<div class="alert alert-warning"> La password risulta errata, si prega di riprovare.</div>');
                             } else if(message.error === "inesistente") {
                                 $("#errors").append('<div class="alert alert-warning"> Non è stato trovato nessun utente con il nome inserito, si prega di riprovare    .</div>');
+                            } else if(message.error === "bloccato"){
+                                $("#errors").append('<div class="alert alert-warning"> La password risulta errata, si prega di riprovare.</div>');
                             }
                             console.log(message.u);
                             console.log(message.p);

@@ -19,7 +19,7 @@
         <div class="login-container">
         
             <div class="login-box animated fadeInDown">
-                <div class="login-logo"></div>
+                <a href="index.php"><div class="login-logo"></div></a>
                 <div class="login-body">
                     <div class="login-title"><strong>Register</strong> a new account!</div>
                     <form id="register-form" class="form-horizontal">
@@ -57,12 +57,12 @@
                 </div>
                 <div class="login-footer">
                     <div class="pull-left">
-                        &copy; 2014 AppName
+                        &copy; 2018 Fow Deck Hub
                     </div>
                     <div class="pull-right">
-                        <a href="#">About</a> |
-                        <a href="#">Privacy</a> |
-                        <a href="#">Contact Us</a>
+                        <a href="faq.php">About</a> |
+                        <!--<a href="#">Privacy</a> |-->
+                        <a href="mailto:fowdeckhub@altervista.org">Contact Us</a>
                     </div>
                 </div>
             </div>
@@ -75,36 +75,37 @@
 			$("#register-form").submit(function (e) {
 				e.preventDefault();
 				var password = $("#password").val(), cpassword = $("#confirm-password").val();
-				if(password === cpassword) {
-                    var jsSha = new jsSHA(password);
-                    var hash = jsSha.getHash("SHA-512", "HEX");
-                    console.log(hash);
-					$.ajax({
-						method: "POST",
-						url: "process_register.php",
-						data: "u=" + $("#username").val() + "&p=" + hash + "&e=" + $("#mail").val(),
-						datatype: "json",
-						success: function(msg){
-                            var message = JSON.parse(msg);
-							if(message.result === "done") {
-								window.location = "login.php";
-							} else if(message.result === "fail") {
-                                if(message.number === 1062) {
-								    $("#errors").append('<div class="alert alert-warning"> Il nome utente o la mail inseriti sono già esistenti. Si prega di cambiarli e riprovare.</div>');
-                                } else if(message.error === "error") {
-								    $("#errors").append('<div class="alert alert-warning"> Rilevato errore d\'origine sconosciuta. ' + message.message + '</div>');
-                                }
-							} else {
-								$("#errors").append('<div class="alert alert-warning"> Non è stato possibile collegarsi al database e verificare le credenziali. Si prega di riprovare più tardi. </div>');
-							}
-						},
-						error: function(msg){
-							$("#errors").append('<div class="alert alert-warning"> Non sono riuscito a contattare il server, riprovare più tardi. </div>');
-						}
-					});
-				} else {
-					$("#errors").append('<div class="alert alert-warning"> Le password non corrispondono.</div>');
-				}
+				if(password !== cpassword) {
+                    $("#errors").append('<div class="alert alert-warning"> Password dosen\'t match.</div>');
+                    return;
+                }
+                
+                var jsSha = new jsSHA(password);
+                var hash = jsSha.getHash("SHA-512", "HEX");
+                console.log(hash);
+                $.ajax({
+                    method: "POST",
+                    url: "process_register.php",
+                    data: "u=" + $("#username").val() + "&p=" + hash + "&e=" + $("#mail").val(),
+                    datatype: "json",
+                    success: function(msg){
+                        var message = JSON.parse(msg);
+                        if(message.result === "done") {
+                        	$("#errors").append('<div class="alert alert-success"> ' + message.success + '</div>');
+                        } else if(message.result === "fail") {
+                            if(message.number === 1062) {
+                                $("#errors").append('<div class="alert alert-warning"> Username or Email already exists. Change them before continue.</div>');
+                            } else if(message.error === "error") {
+                                $("#errors").append('<div class="alert alert-warning"> Server error. Contact the system admin and send him this code: ' + message.number + ', and this message: ' + message.message + '</div>');
+                            }
+                        } else {
+                            $("#errors").append('<div class="alert alert-warning"> Database Server error. Please contact the system administrator, click on the link Report a bug in the footer of this page.</div>');
+                        }
+                    },
+                    error: function(msg){
+                        $("#errors").append('<div class="alert alert-warning"> Server connection error, try again later. </div>');
+                    }
+                });
 			});
 		</script>
     </body>

@@ -11,7 +11,7 @@
         <div class="panel-body list-group list-group-contacts scroll" style="height: 200px;">
             <a href="#" class="list-group-item">
                 <div class="list-group-status status-online"></div>
-                <img src="assets/images/users/user2.jpg" class="pull-left" alt="John Doe"/>
+                <img src="assets/images/users/user1.jpg" class="pull-left" alt="John Doe"/>
                 <span class="contacts-title">Admin</span>
                 <p>Welcome to Fow Deck Hub!</p>
             </a>

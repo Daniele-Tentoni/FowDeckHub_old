@@ -3,12 +3,13 @@ require_once 'definings.php';
 require_once ROOT_PATH . '/config/functions.php';
 sec_session_start();
 
-/*
- * Controllo di essere loggato.
- * Se sono in test, eseguo automaticamente il login.
- */
+// Controllo di essere collegato, se sono in test eseguo automaticamente un login.
 $log_result = login_check($mysqli);
-if($log_result) {
+// Controllo il livello senza tracciarlo, altrimenti qui sarebbe un morire.
+$check_level = check_level($mysqli, 2, false);
+
+// A questa pagina non ci posso accedere se non sono amministratore.
+if($log_result && $check_level == 0) {
 	$login_checked = true;
 	
 	/*
@@ -30,11 +31,11 @@ if($log_result) {
 	/*
 	 * Assemblo la pagina.
 	 */
-	require_once ROOT_PATH . '/layout/header.php';
+    require_once ROOT_PATH . '/layout/header.php';
 	require_once ROOT_PATH . $page;
 	require_once ROOT_PATH . '/layout/footer.php';
 } else {
     var_dump($log_result);
-    header("Refresh: 5;URL=login.php");
+    header("Refresh: 2;URL=login.php");
 }
 ?>
