@@ -99,7 +99,61 @@ function get_event_map_details($mysqli, $region) {
 
 	$msg["result"] = true;
     return $msg;
-
 }
 
+function get_event_widget_details($mysqli, $year) {
+    $msg = array();
+    $msg["result"] = false;
+    $msg["error"] = "nothing";
+    $msg["content"] = array();
+    
+    // Controllo che la connessione sia impostata.
+    if(!isset($mysqli)) {
+        $msg["error"] = "Server connection error. Please, contact the support.";
+        return $msg;
+    }
+
+    if(isset($mysqli) && $mysqli->connect_error) {
+        $msg["error"] = "Database server connection error. Please, contact the support.";
+        return $msg;
+    }
+
+    // Effettuo finalmente il caricamento della decklist.
+    // Carico tutte le decklists.
+    $query = "SELECT e.Id, e.Name, n.Name as Nation, e.Date, Cont
+                FROM events e
+                JOIN nations n on e.Nation = n.Id
+                LEFT JOIN (SELECT d.Event, COUNT(*) as Cont
+                             FROM decklists d
+                             JOIN events e1 ON d.Events = e1.Id
+                             WHERE e1.Year = ?
+                             GROUP BY d.Event
+                             HAVING Cont < 8) AS de ON de.Event = e.Id
+                WHERE e.Year = ?";
+
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("ii", $year_sql, $year_sql);
+    $year_sql = $year;
+    $region_sql = $region;
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if($result->num_rows > 0) {
+        $msg["content"] = array();
+        $msg["error"] = "There's some data to view";
+        while($row = $result->fetch_assoc()) {
+            $stringa["Id"] = $row["Id"];
+            $stringa["Name"] = $row["Name"];
+            $stringa["Nation"] = $row["Nation"];
+            $stringa["Date"] = $row["Date"];
+            $stringa["Cont"] = $row["Cont"];
+            array_push($msg["content"], $stringa);
+        }
+    } else {
+        $msg["error"] = "No data to view.";
+        return $msg;
+    }
+
+    $msg["result"] = true;
+    return $msg;
+}
 ?>
