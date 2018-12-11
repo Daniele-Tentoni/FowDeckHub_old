@@ -6,7 +6,7 @@
 			<th width="100">Date</th>
 			<th width="80">Year</th>
 			<th width="80">Attendance</th>
-			<th width="150">Actions</th>
+			<?php echo !isset($show_actions) || $show_actions ? "<th width=\"150\">Actions</th>" : ""; ?>
 		</tr>
 	</thead>
 	<tbody> 
