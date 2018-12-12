@@ -12,6 +12,15 @@ if(!$log_result) {
 }
 // Controllo il livello senza tracciarlo, altrimenti qui sarebbe un morire.
 $check_level = check_level($mysqli, 2, false);
+if($check_level == 0) { 
+    $header = '/layout/header.php'; 
+    $show_visibility = true;
+    $show_actions = true; 
+} else { 
+    $header = '/layout/user_header.php';
+    $show_visibility = false;
+    $show_actions = false; 
+} 
 
 /*
  * Carico qui diverse informazioni a seconda della pagina richiesta.
@@ -30,28 +39,33 @@ if($log_result && $check_level == 0 && isset($_GET["new_event"])) {
     }
     $elem = $event["content"];
     $page = "/pages/event/event_edit.php";
-} else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
-    if($log_result) {
+} 
+else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
+    if($check_level == 0) {
         $header = '/layout/header.php';
         $title = "Event Details - Administrator - Fow Deck Hub";
+        $show_event = false;
     } else {
         $header = '/layout/user_header.php';
         $title = "Event Details - Fow Deck Hub";
+        $show_event = true;
     }
     $page = "/pages/event/events_details.php";
     $event_id = $_GET["event_id"];
     $event = get_event_by_id($mysqli, $event_id)["content"];
     $decklists = get_event_decks($mysqli, $event_id);
     $chart = get_chart_data_by_decks($decklists["content"]);
-} else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
+} 
+else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
     $header = '/layout/header.php';
     $login_checked = true;
     $title = "Event Edit - Administrator - Fow Deck Hub";
     $page = "/pages/event/event_edit.php";
     $event_id = $_GET["event_edit"];
-    $event = get_event_by_id($event_id)["content"];
+    $event = get_event_by_id($mysqli, $event_id)["content"];
     $decklists = get_event_decks($mysqli, $event_id);
-} else {
+} 
+else {
     $year = date("Y");
     if(isset($_GET) && isset($_GET["year"]) && $_GET["year"] < $year) {
         $year = $_GET["year"];

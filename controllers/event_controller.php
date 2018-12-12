@@ -436,4 +436,125 @@ function get_chart_data_by_decks($decklists){
     
     return json_encode($chart);
 }
+
+/*
+ * Mi salvo i dati base dell'evento.
+ */
+function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance) {
+    $res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["message"] = SERVER_ERR;
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["message"] = SERVER_CONN_ERR;
+		return $res;
+	}
+
+	// Effettuo update della sezione dei dati base e converto la data in timestamp se necessario.
+	$query = "UPDATE events SET Name=?, Nation=?, Year=?, Attendance=?, Date=? WHERE Id = ?";
+    $pieces = explode(" ", $data);
+    if(!isset($pieces[1])) {
+        $data . " 00:00:00";
+    }
+    
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("siiisi", $name_param, $nation_param, $year_param, $attendance_param, $data_param, $id_param);
+	$id_param = mysql_real_escape_string($id);
+	$name_param = mysql_real_escape_string($name);
+	$year_param = mysql_real_escape_string($year);
+    $data_param = date("Y-m-d H:i:s", strtotime($data));
+	//$data_param = mysql_real_escape_string($data) . " 00:00:00";
+	$nation_param = mysql_real_escape_string($nation);
+	$attendance_param = mysql_real_escape_string($attendance);
+	if($stmt->execute()){
+        $res["result"] = true;
+        $res["message"] = "Update correctly completed.";
+        $res["data"] = $data_param;
+    } else {
+        $res["error"] = "query";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = $mysqli->error;
+    }
+    
+	return $res;
+}
+
+/*
+ * Mi salvo i community reports.
+ */
+function save_community_reports($mysqli, $id, $comm_rep) {
+    $res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["message"] = SERVER_ERR;
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["message"] = SERVER_CONN_ERR;
+		return $res;
+	}
+
+	// Effettuo update della sezione dei dati base e converto la data in timestamp se necessario.
+	$query = "UPDATE events SET CommunityReports= ? WHERE Id = ?";
+    
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("si", $comm_rep_param, $id_param);
+	$id_param = mysql_real_escape_string($id);
+	$comm_rep_param = mysql_real_escape_string($comm_rep);
+	if($stmt->execute()){
+        $res["result"] = true;
+        $res["message"] = "Update correctly completed.";
+    } else {
+        $res["error"] = "query";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = $mysqli->error;
+    }
+    
+	return $res;
+}
+
+/*
+ * Mi salvo i link.
+ */
+function save_other_links($mysqli, $id, $other_links) {
+    $res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["message"] = SERVER_ERR;
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["message"] = SERVER_CONN_ERR;
+		return $res;
+	}
+
+	// Effettuo update della sezione dei dati base e converto la data in timestamp se necessario.
+	$query = "UPDATE events SET OtherLinks= ? WHERE Id = ?";
+    
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("si", $other_links_param, $id_param);
+	$id_param = mysql_real_escape_string($id);
+	$other_links_param = mysql_real_escape_string($other_links);
+	if($stmt->execute()){
+        $res["result"] = true;
+        $res["message"] = "Update correctly completed.";
+    } else {
+        $res["error"] = "query";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = $mysqli->error;
+    }
+    
+	return $res;
+}
 ?>
