@@ -2,6 +2,7 @@
 require_once 'definings.php';
 require_once ROOT_PATH . '/config/functions.php';
 sec_session_start();
+require_once ROOT_PATH . 'controllers/decklist_controller.php';
 
 // Controllo di essere collegato, se sono in test eseguo automaticamente un login.
 $log_result = login_check($mysqli);
@@ -22,7 +23,13 @@ if($log_result && $check_level == 0) {
 	if(isset($_GET["newDecklist"])) {
 		$title = "New Decklists - Administrator - Fow Deck Hub";
 		$page = "/pages/decklist/new_decklist_partial.php";
-	} else {
+	} 
+	else if(isset($_GET["edit_decklist"]) && $_GET["edit_decklist"] > 0) {
+		$title = "Edit Decklists - Administrator - Fow Deck Hub";
+		$page = "/pages/decklists/edit_decklist_partial.php";
+		$decklist = get_decklist_by_id($mysqli, $id);
+	} 
+	else {
 		$title = "Decklists - Administrator - Fow Deck Hub";
 		$decklists = get_decks($mysqli, 0);
 		$page = "/pages/decklist/decklists_partial.php";

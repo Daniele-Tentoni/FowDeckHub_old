@@ -1,0 +1,77 @@
+<html>
+	<head>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	</head>
+	<body>
+		<form id="decklist_importer" action="#" method="post">
+			<div class="form-group">
+				<label for="gacha_text">Gachalog Text List</label>
+				<div class="col-md-9">
+					<textarea id="gacha_text" name="gacha_text" height="500px" width="500px">Gachalog Code:47854097
+Recipe Name:Faerur Mid Range
+Ruler x 1
+Faerur Letoliel x 1
+Main Deck x 40
+Absolute Awareness x 2
+Magic Stone Analysis x 4
+Sacred Elf x 4
+Spirit Caller Elf x 4
+Tama, Familiar of Holy Wind x 4
+Tia Letoliel, Archer Princess of Elves x 4
+Tia's White Falcon x 4
+Mariabella, the Machine Hearted x 4
+Aria, Friendly Vampire x 2
+Sylvia, Blade of the Supreme King x 2
+Severing Winds x 4
+Lightning Strike x 2
+Stone Deck x 10
+Fire Magic Stone x 2
+Wind Magic Stone x 4
+Magic Stone of Blasting Waves x 4
+Sideboard x 0</textarea>
+				</div>
+			</div>
+			<div class="deck_container">
+			</div>
+			<input type="reset">
+			<button onclick="decklist_import(11)"> Importa</button>
+		</form>
+		<script type="text/javascript">
+			var ruler = [];
+			var rune_deck = [];
+			var main_deck = [];
+			var stone_deck = [];
+			var side_deck = [];
+
+			$(document).ready(function(){
+				$("form").submit(function(e){
+					e.preventDefault();
+				});
+			});
+
+			var decklist_import = function(code) {
+				var text = $("#gacha_text").val();
+				var elems = text.split('\n');
+				var preamble = "";
+				// Scomporre tutto quel testo in varie sezioni. Provare con un trim iniziale.
+				$(elems).each(function (){
+					console.log(this);
+					if()
+					var part = this.split(':');
+					switch(part[0]){
+						case "Gachalog Code":
+							console.log("Questo è il codice di gachalog: " + part[1]);
+							break;
+						case "Recipe Name":
+							console.log("Questo è il ruler: ");
+							break;
+						default:
+							console.log(part[0]);
+							break;
+					}
+				});
+			}
+		</script>
+	</body>
+</html>
+
