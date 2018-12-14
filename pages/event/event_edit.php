@@ -132,65 +132,67 @@
         </div>
         <div class="col-md-6">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Ruler Breakdown</h3>
-                    <button onClick="save_ruler_breakdown();" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <p style="margin:20px 0">Here you can insert rulers breakdowns.</p>
-                        <div class="col-md-12"><!--
-                            Breakdown
-                            --><div class="col-md-12">
-                                <table class="table datatable_search">
-                                    <thead>
-                                        <tr>
-                                            <th width="50">Id</th>
-                                            <th>Name</th>
-                                            <th width="100">Quantity</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="cards-table-body">
-                                    <?php
-                                        if($mysqli->connect_error){
-                                            echo "-- Connection Error --";
-                                        } else {
-                                            $query = 'select c.Id, c.Name
-                                                        from cards c
-                                                        join card_types ct on c.Id = ct.Card
-                                                        join types t on ct.Type = t.Id
-                                                        where t.Name = "Ruler / J-Ruler"';
-                                            $stmt = $mysqli->prepare($query);
-                                            $stmt->execute();
-                                            $result = $stmt->get_result();
-                                            if($result->num_rows > 0) {
-                                                while($row = $result->fetch_assoc()) {
-                                                    echo "<tr id=\"trow_" . $row["Id"] . "\">";
-                                                    echo "<td>" . $row["Id"] . "</td>";
-                                                    echo "<td>" . $row["Name"] . "</td>";
-                                                    echo "<td><input id=\"" . $row["Id"] . "\" name=\"" . $row["Id"] . "\" type=\"text\" class=\"form-control breakdown\" placeholder=\"Quantity\"/></td>";
-                                                    echo "</tr>";
-                                                }
+                <form autocomplete="false" class="save_ruler_breakdown_panel" method="post" action="ajax/event_ajax.php?event_save_ruler_breakdown">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Ruler Breakdown</h3>
+                        <button onClick="save_ruler_breakdown();" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <p style="margin:20px 0">Here you can insert rulers breakdowns.</p>
+                            <div class="col-md-12"><!--
+                                Breakdown
+                                --><div class="col-md-12">
+                                    <table class="table datatable_simple">
+                                        <thead>
+                                            <tr>
+                                                <th width="50">Id</th>
+                                                <th>Name</th>
+                                                <th width="100">Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cards-table-body">
+                                        <?php
+                                            if($mysqli->connect_error){
+                                                echo "-- Connection Error --";
                                             } else {
-                                                echo "-- No Result --";
+                                                $query = 'select c.Id, c.Name
+                                                            from cards c
+                                                            join card_types ct on c.Id = ct.Card
+                                                            join types t on ct.Type = t.Id
+                                                            where t.Name = "Ruler / J-Ruler"';
+                                                $stmt = $mysqli->prepare($query);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+                                                if($result->num_rows > 0) {
+                                                    while($row = $result->fetch_assoc()) {
+                                                        echo "<tr id=\"trow_" . $row["Id"] . "\">";
+                                                        echo "<td>" . $row["Id"] . "</td>";
+                                                        echo "<td>" . $row["Name"] . "</td>";
+                                                        echo "<td><input id=\"" . $row["Id"] . "\" name=\"" . $row["Id"] . "\" type=\"text\" class=\"form-control breakdown\" placeholder=\"Quantity\"/></td>";
+                                                        echo "</tr>";
+                                                    }
+                                                } else {
+                                                    echo "-- No Result --";
+                                                }
                                             }
-                                        }
-                                    ?>
-                                    </tbody>
-                                </table>
+                                        ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer">
-                    <!-- Pannello degli errori non visibile -->
-                    <div class="e-panel panel" style="display:none">
-                        <div class="e-body panel-body">
+                    <div class="panel-footer">
+                        <!-- Pannello degli errori non visibile -->
+                        <div class="e-panel panel" style="display:none">
+                            <div class="e-body panel-body">
+                            </div>
                         </div>
+                        <button class="btn btn-default btn-rounded pull-right"  onclick="reset_base_data();"><i class="fa fa-trash-o" aria-hidden="true"></i> Reset</button>
+                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_ruler_breakdown();"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
-                    <button class="btn btn-default btn-rounded pull-right"  onclick="reset_base_data();"><i class="fa fa-trash-o" aria-hidden="true"></i> Reset</button>
-                    <button class="btn btn-primary btn-rounded pull-right" onclick="save_base_data();"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
-                </div>
+                </form>
             </div>
         </div>
         <div class="col-md-6">

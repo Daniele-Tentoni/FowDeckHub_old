@@ -160,42 +160,6 @@ function get_event_widget_details($mysqli, $year) {
 }
 
 /*
- * Crea un nuovo evento e ne ritorna l'id, oppure ritorna l'errore.
- */
-function create_new_event($mysqli){
-	$res = array();
-	$res["result"] = false;
-
-	// Controllo che la connessione sia impostata.
-	if(!isset($mysqli)) {
-		$res["msg"] = "Problemi di connessione al server, contact the support.";
-		return $res;
-	}
-
-	if(isset($mysqli) && $mysqli->connect_error) {
-		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
-		return $res;
-	}
-
-	// Effettuo finalmente il caricamento della decklist.
-	// Carico tutte le decklists.
-    $year = date("Y");
-	$query = "INSERT INTO events(Year) VALUES ($year)";
-
-	$stmt = $mysqli->prepare($query);
-	if($stmt->execute()){
-        return get_event_by_id($mysqli, $mysqli->insert_id);
-    } else {
-        $res["error"] = "query";
-        $res["number"] = $mysqli->errno;
-        $res["message"] = $mysqli->error;
-        return $res;
-    }
-    
-	return $res;
-}
-
-/*
  * Ritorna i dati relativi ad un evento dato il suo id.
  */
 function get_event_by_id($mysqli, $id) {
@@ -438,6 +402,42 @@ function get_chart_data_by_decks($decklists){
 }
 
 /*
+ * Crea un nuovo evento e ne ritorna l'id, oppure ritorna l'errore.
+ */
+function create_new_event($mysqli){
+	$res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["msg"] = "Problemi di connessione al server, contact the support.";
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
+		return $res;
+	}
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+    $year = date("Y");
+	$query = "INSERT INTO events(Year) VALUES ($year)";
+
+	$stmt = $mysqli->prepare($query);
+	if($stmt->execute()){
+        return get_event_by_id($mysqli, $mysqli->insert_id);
+    } else {
+        $res["error"] = "query";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = $mysqli->error;
+        return $res;
+    }
+    
+	return $res;
+}
+
+/*
  * Mi salvo i dati base dell'evento.
  */
 function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance) {
@@ -549,6 +549,58 @@ function save_other_links($mysqli, $id, $other_links) {
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
+    } else {
+        $res["error"] = "query";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = $mysqli->error;
+    }
+    
+	return $res;
+}
+
+/*
+ * Creo o aggiorno i ruler breakdown.
+ */
+function save_ruler_breakdown($mysqli, $id, $breakdown) {
+    $res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["message"] = SERVER_ERR;
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["message"] = SERVER_CONN_ERR;
+		return $res;
+	}
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "SELECT Ruler, Quantity FROM event_rulers_breakdown WHERE Event = ?";
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i", $event_param);
+	$event_param = mysql_real_escape_string($id);
+	if($stmt->execute()){
+        $result = $stmt->get_result();
+        $rulers = array();
+        while($row = $result->fetch_assoc()) {
+            $ruler[$row["Ruler"]] = $row["Quantity"];
+        }
+        foreach ($breakdown as $key, $value) {
+            $ruler[$key] = $value;
+        }
+        foreach ($ruler as $key, $value) {
+            // Compongo la stringa per la query.
+        }
+        $query = "SELECT * FROM event_rulers_breakdown WHERE Event = ?";
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("i", $event_param);
+        $event_param = mysql_real_escape_string($id);
+        $res["result"] = true;
+        $res["message"] = "Update correctly completed.";
+        $res["data"] = $data_param;
     } else {
         $res["error"] = "query";
         $res["number"] = $mysqli->errno;
