@@ -4,9 +4,9 @@
 	</head>
 	<body>
 		<form id="decklist_importer" action="#" method="post">
-			<div class="form-group">
+			<div>
 				<label for="gacha_text">Gachalog Text List</label>
-				<div class="col-md-9">
+				<div>
 					<textarea id="gacha_text" name="gacha_text" height="500px" width="500px">Gachalog Code:47854097
 Recipe Name:Faerur Mid Range
 Ruler x 1
@@ -31,45 +31,152 @@ Magic Stone of Blasting Waves x 4
 Sideboard x 0</textarea>
 				</div>
 			</div>
-			<div class="deck_container">
+			<div id="deck_container">
 			</div>
 			<input type="reset">
 			<button onclick="decklist_import(11)"> Importa</button>
 		</form>
 		<script type="text/javascript">
-			var ruler = [];
-			var rune_deck = [];
-			var main_deck = [];
-			var stone_deck = [];
-			var side_deck = [];
+			var deck;
 
 			$(document).ready(function(){
 				$("form").submit(function(e){
 					e.preventDefault();
 				});
+
+				deck = {
+					name : "",
+					code : "",
+					ruler : {
+						deck : [],
+						c : 0,
+						n : 0
+					},
+					rune : {
+						deck : [],
+						c : 0,
+						n : 0
+					},
+					main : {
+						deck : [],
+						c : 0,
+						n : 0
+					},
+					stone : {
+						deck : [],
+						c : 0,
+						n : 0
+					},
+					side : {
+						deck : [],
+						c : 0,
+						n : 0
+					}
+				};
 			});
 
+			var validate_deck = function(name, num, min, max) {
+				if(num < min || num > max) {
+					$("#deck_container").append(name + " non valido : " + num + " carte <br />");
+					return true;
+				} else {
+					return false;
+				}
+			}
+
 			var decklist_import = function(code) {
+				$("#deck_container").html("");
 				var text = $("#gacha_text").val();
 				var elems = text.split('\n');
+				var nElems = elems.length;
+				var cElems = 0;
 				var preamble = "";
 				// Scomporre tutto quel testo in varie sezioni. Provare con un trim iniziale.
 				$(elems).each(function (){
-					console.log(this);
-					if()
-					var part = this.split(':');
+					var part = this.split(/( x )/);
 					switch(part[0]){
 						case "Gachalog Code":
-							console.log("Questo è il codice di gachalog: " + part[1]);
+							deck.code = part[1];
+							$("#deck_container").append("Questo è il codice di gachalog: " + deck.code + "<br />");
 							break;
 						case "Recipe Name":
-							console.log("Questo è il ruler: ");
+							deck.name = part[1];
+							$("#deck_container").append("Questo è il nome del mazzo: " + deck.name + "<br />");
+							break;
+						case "Ruler":
+							if(validate_deck("Ruler", part[2], 1, 2)) {
+								return "errore";
+							}
+							deck.ruler.n = part[2];
+							$("#deck_container").append("La ruler area contiene: " + deck.ruler.n + " carte <br />");
+							break;
+						case "Main Deck":
+							if(validate_deck("Main Deck", part[2], 40, 60)) {
+								return "errore";
+							}
+							$("#deck_container").append("Il Main Deck contiene: " + part[2] + " carte <br />");
+							deck.main.n = part[2];
+							break;
+						case "Rune Deck":
+							if(validate_deck("Rune Deck", part[2], 0, 5)) {
+								return "errore";
+							}
+							$("#deck_container").append("Il Rune Deck contiene: " + part[2] + " carte <br />");
+							deck.rune.n = part[2];
+							break;
+						case "Stone Deck":
+							if(validate_deck("Stone Deck", part[2], 10, 20)) {
+								return "errore";
+							}
+							$("#deck_container").append("Il Stone Deck contiene: " + part[2] + " carte <br />");
+							deck.stone.n = part[2];
+							break;
+						case "Side Deck":
+							if(validate_deck("Side Deck", part[2], 0, 15)) {
+								return "errore";
+							}
+							$("#deck_container").append("Il Side Deck contiene: " + part[2] + " carte <br />");
+							deck.side.n = part[2];
 							break;
 						default:
-							console.log(part[0]);
+							if(deck.ruler.n != 0 && deck.ruler.n != deck.ruler.c) {
+								deck.ruler.deck.push({name : part[0], count : part[2]});
+								deck.ruler.c += Number(part[2]);
+								//$("#deck_container").append("Aggiungo il ruler " + part[0] + " in " + part[2] + " copie<br />");
+								$("#deck_container").append("C " + deck.ruler.c + " of N " + deck.ruler.n + " progress<br />");
+							}
+							else if(deck.rune.n != 0 && deck.rune.n != deck.rune.c) {
+								//$("#deck_container").append("Aggiungo il rune " + part[0] + " in " + part[2] + " copie<br />");
+								deck.rune.deck.push({name : part[0], count : part[2]});
+								deck.rune.c += Number(part[2]);
+								$("#deck_container").append("C " + deck.rune.c + " of N " + deck.rune.n + " progress<br />");
+							}
+							else if(deck.main.n != 0 && deck.main.n != deck.main.c) {
+								//$("#deck_container").append("Aggiungo il main " + part[0] + " in " + part[2] + " copie<br />");
+								deck.main.deck.push({name : part[0], count : part[2]});
+								deck.main.c += Number(part[2]);
+								$("#deck_container").append("C " + deck.main.c + " of N " + deck.main.n + " progress<br />");
+							}
+							else if(deck.stone.n != 0 && deck.stone.n != deck.stone.c) {
+								//$("#deck_container").append("Aggiungo il stone " + part[0] + " in " + part[2] + " copie<br />");
+								deck.stone.deck.push({name : part[0], count : part[2]});
+								deck.stone.c += Number(part[2]);
+								$("#deck_container").append("C " + deck.stone.c + " of N " + deck.stone.n + " progress<br />");
+							}
+							else if(deck.side.n != 0 && deck.side.n != deck.side.c) {
+								//$("#deck_container").append("Aggiungo il side " + part[0] + " in " + part[2] + " copie<br />");
+								deck.side.deck.push({name : part[0], count : part[2]});
+								deck.side.c += Number(part[2]);
+								$("#deck_container").append("C " + deck.side.c + " of N " + deck.side.n + " progress<br />");
+							}
+							else {
+								$("#deck_container").append("Non risconosciuto + " + part[0] + "<br />");
+							}
 							break;
 					}
 				});
+				$("#deck_container").append(deck + "<br />");
+				console.log(deck);
 			}
 		</script>
 	</body>
