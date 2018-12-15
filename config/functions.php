@@ -158,20 +158,20 @@ function login_check($mysqli) {
 function check_level($mysqli, $max_level, $track) {
     $user_id = "";
     $page_required = "Page: " . $_SERVER["SCRIPT_FILENAME"] . "/Level: " .$max_level;
-    $note = "";
-    if(isset($_SESSION) && isset($_SESSION['login_string']) && isset($_SESSION["user_level"])) {
+    $note = $page_required;
+    if(login_check($mysqli)) {
         $note .="Logged user. ";
         $user_id = $_SESSION["user_name"];
         if($_SESSION["user_level"] <= $max_level) {
             $exit_code = 0;
-            $note .= "Accepted Level. ";
+            $note .= " Accepted Level.";
         } else {
-            $exit_code = 2;
-            $note .= "User over max-level ";
+            $exit_code = 1;
+            $note .= " User over max-level.";
         }
     } else {
-        $exit_code = 1;
-        $note .="Not logged user. ";
+        $exit_code = 2;
+        $note .=" Not logged user.";
     }
 
     if($track == true) {
