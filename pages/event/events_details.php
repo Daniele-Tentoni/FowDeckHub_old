@@ -50,13 +50,25 @@
 									?>
 								</p>
                                 <!--
-                                RulerBreakdown
+                                Top8RulerBreakdown
+                                --><div class="col-md-6">
+                                    <h2>Top 8 Rulers Breakdown</h2>
+                                    <!-- START DOUNT CHART -->
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div id="top8_ruler_breakdown" style="height: 300px;"><svg></svg></div>
+                                        </div>
+                                    </div>
+                                    <!-- END DOUNT CHART -->
+                                </div>
+                                <!--
+                                EventRulerBreakdown
                                 --><div class="col-md-6">
                                     <h2>Rulers Breakdown</h2>
                                     <!-- START DOUNT CHART -->
                                     <div class="panel panel-default">
                                         <div class="panel-body">
-                                            <div id="ruler_breakdown" style="height: 300px;"><svg></svg></div>
+                                            <div id="event_ruler_breakdown" style="height: 300px;"><svg></svg></div>
                                         </div>
                                     </div>
                                     <!-- END DOUNT CHART -->
@@ -117,10 +129,6 @@
 </div>
 <!-- END MESSAGE BOX-->
 
-<!-- ADD EVENT MODAL -->
-<?php require_once ROOT_PATH . '/components/modals/add_event_modal.php'; ?>
-<!-- END ADD EVENT MODAL -->
-
 <!-- START THIS PAGE PLUGINS-->        
 <script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
 <script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
@@ -139,21 +147,9 @@
 			selectors: "h2" 
 		});
         
-        var arrev = "<?php
-                    if(TEST && isset($chart)) {
-                        echo $chart;
-                    } else {
-                        echo "Nessun grafico.";
-                    }
-                    ?>";
-        console.log(arrev);
-        
 	});
 
-	var startChart9 = function() {
-		/*
-		 * Donut chart example.
-		 */
+	var startChart = function() {
 		nv.addGraph(function() {
 			var chart = nv.models.pieChart().x(function(d) {
 				return d.label;
@@ -163,22 +159,44 @@
 			.labelThreshold(.05)//Configure the minimum slice size for labels to show up
 			.labelType("percent")//Configure what type of data to show in the label. Can be "key", "value" or "percent"
 			.donut(true)//Turn on Donut mode. Makes pie chart look tasty!
-			.donutRatio(0.35)//Configure how big you want the donut hole size to be.
-			;;
+			.donutRatio(0.35);;
 
-			d3.select("#ruler_breakdown svg").datum(exampleData()).transition().duration(350).call(chart);
-            console.log(exampleData());
+			d3.select("#top8_ruler_breakdown svg").datum(top8_ruler_breakdown_data()).transition().duration(350).call(chart);
+
+			return chart;
+		});
+		
+		nv.addGraph(function() {
+			var chart = nv.models.pieChart().x(function(d) {
+				return d.label;
+			}).y(function(d) {
+				return d.value;
+			}).showLabels(true)//Display pie labels
+			.labelThreshold(.05)//Configure the minimum slice size for labels to show up
+			.labelType("percent")//Configure what type of data to show in the label. Can be "key", "value" or "percent"
+			.donut(true)//Turn on Donut mode. Makes pie chart look tasty!
+			.donutRatio(0.35);;
+
+			d3.select("#event_ruler_breakdown svg").datum(event_ruler_breakdown_data()).transition().duration(350).call(chart);
+
 			return chart;
 		});
 
 		/*
-		 * Pie chart example data. Note how there is only a single array of key-value pairs.
+		 * Pie chart top8_ruler_breakdown data. Note how there is only a single array of key-value pairs.
 		 */
-		function exampleData() {
-			return <?php echo $chart; ?>;
+		function top8_ruler_breakdown_data() {
+			return <?php echo $chart_top8; ?>;
+		}
+
+		/*
+		 * Pie chart event_ruler_breakdown data. Note how there is only a single array of key-value pairs.
+		 */
+		function event_ruler_breakdown_data() {
+			return <?php echo $chart_event; ?>;
 		}
 	};
-
-	startChart9();
+	
+	startChart();
 </script>
 <!-- END THIS PAGE PLUGINS-->  

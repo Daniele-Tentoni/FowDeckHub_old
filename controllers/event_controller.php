@@ -1,5 +1,223 @@
 <?php
 /*
+ * Get the lists of all events.
+ */
+function get_all_events($mysqli, $id, $year){
+    $res = array();
+	$res["result"] = false;
+    
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["msg"] = "Problemi di connessione al server, contact the support1.";
+		return $res;
+	}
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
+		return $res;
+	} 
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance
+			FROM events e
+			join nations n on e.Nation = n.Id
+			where e.Visibility = 1";
+	
+	$query .= " order by e.Date";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["msg"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Id"] = $row["Id"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Nation"] = $row["Nation"];
+			$stringa["Year"] = $row["Year"];
+			$stringa["Attendance"] = $row["Attendance"];
+			$stringa["Date"] = $row["Date"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+		$res["msg"] = "No data to view.";
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
+ * Get the lists of all events.
+ */
+function get_all_admin_events($mysqli, $id, $year){
+    $res = array();
+	$res["result"] = false;
+    
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["msg"] = "Problemi di connessione al server, contact the support1.";
+		return $res;
+	}
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
+		return $res;
+	} 
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.Visibility
+			FROM events e
+			join nations n on e.Nation = n.Id
+			where 1 = 1";
+	
+	$query .= " order by e.Date";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["msg"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Id"] = $row["Id"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Nation"] = $row["Nation"];
+			$stringa["Year"] = $row["Year"];
+			$stringa["Attendance"] = $row["Attendance"];
+			$stringa["Date"] = $row["Date"];
+			$stringa["Visibility"] = $row["Visibility"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+		$res["msg"] = "No data to view.";
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
+ * Ritorna i dati relativi ad un evento dato il suo id.
+ */
+function get_event_by_id($mysqli, $id) {
+	$res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["msg"] = "Problemi di connessione al server, contact the support.";
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
+		return $res;
+	} 
+	
+	if(!isset($id)) {
+		$res["msg"] = "Necessario indicate id";
+		return $res;
+	}
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
+			FROM events e
+			left join nations n on e.Nation = n.Id
+			where e.Id = ? order by e.Date";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i", $id_param);
+	$id_param = mysql_real_escape_string($id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["msg"] = "There's some data to view";
+		$row = $result->fetch_assoc();
+		$stringa["Id"] = $row["Id"];
+		$stringa["Name"] = $row["Name"];
+		$stringa["Nation"] = $row["Nation"];
+		$stringa["Year"] = $row["Year"];
+		$stringa["Attendance"] = $row["Attendance"];
+		$stringa["Date"] = $row["Date"];
+		$stringa["CommunityReports"] = $row["CommunityReports"];
+		$stringa["OtherLinks"] = $row["OtherLinks"];
+		$res["content"] = $stringa;
+	} else {
+		$res["msg"] = "No data to view.";
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
+ * Get all decklists from an event.
+ */
+function get_event_decks($mysqli, $event) {
+	$res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["msg"] = "Problemi di connessione al server, contact the support.";
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
+		return $res;
+	} 
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, d.Position, c.Name as Ruler
+				from decklists d 
+				join decktypes dt on d.Type = dt.Id
+				join playstyles p on dt.Style = p.Id
+				join cards c on d.Ruler = c.Id
+				where d.Visibility = 1";
+
+	if(isset($event) && $event > 0) {
+		// Carico una specifica decklist.
+		$query .= " and d.Event = " . $event;
+	}
+
+	$query .= " order by Event, d.Position";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["msg"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Id"] = $row["Id"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Player"] = $row["Player"];
+			$stringa["GachaCode"] = $row["GachaCode"];
+			$stringa["Type"] = $row["Type"];
+			$stringa["Style"] = $row["Style"];
+			$stringa["Position"] = $row["Position"];
+			$stringa["Ruler"] = $row["Ruler"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+		$res["msg"] = "No data to view.";
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
  * Ritorna i dati utili ad implementare la mappa cliccabile per adesso.
  */
 function get_event_map($mysqli) {
@@ -102,6 +320,53 @@ function get_event_map_details($mysqli, $region) {
 }
 
 /*
+ * Ottengo tutti i ruler breakdowns per un evento.
+ */
+function get_event_rulers_breakdowns_by_id($mysqli, $event_id) {
+	$msg = array();
+    $msg["result"] = false;
+    $msg["error"] = "nothing";
+    $msg["content"] = array();
+    
+    // Controllo che la connessione sia impostata.
+    if(!isset($mysqli)) {
+        $msg["error"] = "Server connection error. Please, contact the support.";
+        return $msg;
+    }
+
+    if(isset($mysqli) && $mysqli->connect_error) {
+        $msg["error"] = "Database server connection error. Please, contact the support.";
+        return $msg;
+    } 
+
+    // Effettuo finalmente il caricamento dei breakdown.
+	$query = "select b.Ruler, c.Name, b.Quantity
+				from event_rulers_breakdown b
+				join cards c on b.Ruler = c.Id
+				where b.Event = ?
+				  and b.Quantity > 0";
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i", $event_id_param);
+	$event_id_param = mysql_real_escape_string($event_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		while($row = $result->fetch_assoc()) {
+			$stringa["Ruler"] = $row["Ruler"];
+			$stringa["Quantity"] = $row["Quantity"];
+			$stringa["Name"] = $row["Name"];
+			array_push($msg["content"], $stringa);
+		}
+	} else {
+        $msg["error"] = "No data to view.";
+        return $msg;
+    }
+
+	$msg["result"] = true;
+    return $msg;
+}
+
+/*
  * Ritorna i dati per la lista di eventi divisi per anno per il widget.
  */
 function get_event_widget_details($mysqli, $year) {
@@ -160,227 +425,9 @@ function get_event_widget_details($mysqli, $year) {
 }
 
 /*
- * Ritorna i dati relativi ad un evento dato il suo id.
+ * Fill an array of chart data from a decklists array.
  */
-function get_event_by_id($mysqli, $id) {
-	$res = array();
-	$res["result"] = false;
-
-	// Controllo che la connessione sia impostata.
-	if(!isset($mysqli)) {
-		$res["msg"] = "Problemi di connessione al server, contact the support.";
-		return $res;
-	}
-
-	if(isset($mysqli) && $mysqli->connect_error) {
-		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
-		return $res;
-	} 
-	
-	if(!isset($id)) {
-		$res["msg"] = "Necessario indicate id";
-		return $res;
-	}
-
-	// Effettuo finalmente il caricamento della decklist.
-	// Carico tutte le decklists.
-	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
-			FROM events e
-			left join nations n on e.Nation = n.Id
-			where e.Id = ? order by e.Date";
-
-	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("i", $id_param);
-	$id_param = mysql_real_escape_string($id);
-	$stmt->execute();
-	$result = $stmt->get_result();
-	if($result->num_rows > 0) {
-		$res["content"] = array();
-		$res["msg"] = "There's some data to view";
-		$row = $result->fetch_assoc();
-		$stringa["Id"] = $row["Id"];
-		$stringa["Name"] = $row["Name"];
-		$stringa["Nation"] = $row["Nation"];
-		$stringa["Year"] = $row["Year"];
-		$stringa["Attendance"] = $row["Attendance"];
-		$stringa["Date"] = $row["Date"];
-		$stringa["CommunityReports"] = $row["CommunityReports"];
-		$stringa["OtherLinks"] = $row["OtherLinks"];
-		$res["content"] = $stringa;
-	} else {
-		$res["msg"] = "No data to view.";
-		return $res;
-	}
-
-	$res["result"] = true;
-	return $res;
-}
-
-/*
- * Get the lists of all events.
- */
-function get_all_events($mysqli, $id, $year){
-    $res = array();
-	$res["result"] = false;
-    
-	// Controllo che la connessione sia impostata.
-	if(!isset($mysqli)) {
-		$res["msg"] = "Problemi di connessione al server, contact the support1.";
-		return $res;
-	}
-	if(isset($mysqli) && $mysqli->connect_error) {
-		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
-		return $res;
-	} 
-
-	// Effettuo finalmente il caricamento della decklist.
-	// Carico tutte le decklists.
-	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance
-			FROM events e
-			join nations n on e.Nation = n.Id
-			where e.Visibility = 1";
-	
-	$query .= " order by e.Date";
-
-	$stmt = $mysqli->prepare($query);
-	$stmt->execute();
-	$result = $stmt->get_result();
-	if($result->num_rows > 0) {
-		$res["content"] = array();
-		$res["msg"] = "There's some data to view";
-		while($row = $result->fetch_assoc()) {
-			$stringa["Id"] = $row["Id"];
-			$stringa["Name"] = $row["Name"];
-			$stringa["Nation"] = $row["Nation"];
-			$stringa["Year"] = $row["Year"];
-			$stringa["Attendance"] = $row["Attendance"];
-			$stringa["Date"] = $row["Date"];
-			array_push($res["content"], $stringa);
-		}
-	} else {
-		$res["msg"] = "No data to view.";
-		return $res;
-	}
-
-	$res["result"] = true;
-	return $res;
-}
-
-/*
- * Get the lists of all events.
- */
-function get_all_admin_events($mysqli, $id, $year){
-    $res = array();
-	$res["result"] = false;
-    
-	// Controllo che la connessione sia impostata.
-	if(!isset($mysqli)) {
-		$res["msg"] = "Problemi di connessione al server, contact the support1.";
-		return $res;
-	}
-	if(isset($mysqli) && $mysqli->connect_error) {
-		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
-		return $res;
-	} 
-
-	// Effettuo finalmente il caricamento della decklist.
-	// Carico tutte le decklists.
-	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.Visibility
-			FROM events e
-			join nations n on e.Nation = n.Id
-			where 1 = 1";
-	
-	$query .= " order by e.Date";
-
-	$stmt = $mysqli->prepare($query);
-	$stmt->execute();
-	$result = $stmt->get_result();
-	if($result->num_rows > 0) {
-		$res["content"] = array();
-		$res["msg"] = "There's some data to view";
-		while($row = $result->fetch_assoc()) {
-			$stringa["Id"] = $row["Id"];
-			$stringa["Name"] = $row["Name"];
-			$stringa["Nation"] = $row["Nation"];
-			$stringa["Year"] = $row["Year"];
-			$stringa["Attendance"] = $row["Attendance"];
-			$stringa["Date"] = $row["Date"];
-			$stringa["Visibility"] = $row["Visibility"];
-			array_push($res["content"], $stringa);
-		}
-	} else {
-		$res["msg"] = "No data to view.";
-		return $res;
-	}
-
-	$res["result"] = true;
-	return $res;
-}
-
-/*
- * Get all decklists from an event.
- */
-function get_event_decks($mysqli, $event) {
-	$res = array();
-	$res["result"] = false;
-
-	// Controllo che la connessione sia impostata.
-	if(!isset($mysqli)) {
-		$res["msg"] = "Problemi di connessione al server, contact the support.";
-		return $res;
-	}
-
-	if(isset($mysqli) && $mysqli->connect_error) {
-		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
-		return $res;
-	} 
-
-	// Effettuo finalmente il caricamento della decklist.
-	// Carico tutte le decklists.
-	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, d.Position, c.Name as Ruler
-				from decklists d 
-				join decktypes dt on d.Type = dt.Id
-				join playstyles p on dt.Style = p.Id
-				join cards c on d.Ruler = c.Id
-				where d.Visibility = 1";
-
-	if(isset($event) && $event > 0) {
-		// Carico una specifica decklist.
-		$query .= " and d.Event = " . $event;
-	}
-
-	$query .= " order by Event, d.Position";
-
-	$stmt = $mysqli->prepare($query);
-	$stmt->execute();
-	$result = $stmt->get_result();
-	if($result->num_rows > 0) {
-		$res["content"] = array();
-		$res["msg"] = "There's some data to view";
-		while($row = $result->fetch_assoc()) {
-			$stringa["Id"] = $row["Id"];
-			$stringa["Name"] = $row["Name"];
-			$stringa["Player"] = $row["Player"];
-			$stringa["GachaCode"] = $row["GachaCode"];
-			$stringa["Type"] = $row["Type"];
-			$stringa["Style"] = $row["Style"];
-			$stringa["Position"] = $row["Position"];
-			$stringa["Ruler"] = $row["Ruler"];
-			array_push($res["content"], $stringa);
-		}
-	} else {
-		$res["msg"] = "No data to view.";
-		return $res;
-	}
-
-	$res["result"] = true;
-	return $res;
-}
-
-/*
- * Fill an array of chart data from an decklists array.
- */
-function get_chart_data_by_decks($decklists){
+function get_chart_data_by_top8_decks($decklists) {
     $data = array();
     foreach($decklists as $deck){
         if(isset($data) && isset($data[$deck["Ruler"]])) {
@@ -393,7 +440,30 @@ function get_chart_data_by_decks($decklists){
     $chart = array();
     foreach($data as $key => $value){
         $row = array();
+		$pieces = explode("/", $key);
+        $row["label"] = $pieces[0];
         $row["label"] = $key;
+        $row["value"] = $value;
+        array_push($chart, $row);
+    }
+    
+    return json_encode($chart);
+}
+
+/*
+ * Fill an array of chart data from a breakdown array.
+ */
+function get_chart_data_by_breakdown($breakdown) {
+	$data = array();
+    foreach($breakdown as $row){
+		$data[$row["Name"]] = $row["Quantity"];
+    }
+    
+    $chart = array();
+    foreach($data as $key => $value){
+        $row = array();
+		$pieces = explode("/", $key);
+        $row["label"] = $pieces[0];
         $row["value"] = $value;
         array_push($chart, $row);
     }
@@ -584,23 +654,53 @@ function save_ruler_breakdown($mysqli, $id, $breakdown) {
 	$event_param = mysql_real_escape_string($id);
 	if($stmt->execute()){
         $result = $stmt->get_result();
-        $rulers = array();
+        // Divido i ruler in nuovi ed esistenti.
+		$new = array();
+		$old = array();
         while($row = $result->fetch_assoc()) {
-            $ruler[$row["Ruler"]] = $row["Quantity"];
+			$old[$row["Ruler"]] = $row["Quantity"];
         }
-        foreach ($breakdown as $key, $value) {
-            $ruler[$key] = $value;
+        foreach ($breakdown as $key => $value) {
+            if(isset($old[$key])) {
+				$old[$key] = $value;
+			} else {
+				$new[$key] = $value;
+			}
         }
-        foreach ($ruler as $key, $value) {
-            // Compongo la stringa per la query.
-        }
-        $query = "SELECT * FROM event_rulers_breakdown WHERE Event = ?";
-        $stmt = $mysqli->prepare($query);
-        $stmt->bind_param("i", $event_param);
-        $event_param = mysql_real_escape_string($id);
-        $res["result"] = true;
-        $res["message"] = "Update correctly completed.";
-        $res["data"] = $data_param;
+		// Eseguo le update.
+		foreach($old as $key => $value) {
+			$query = "UPDATE event_rulers_breakdown SET Quantity = $value WHERE Event = ? AND Ruler = $key";
+			$stmt = $mysqli->prepare($query);
+			$stmt->bind_param("i", $event_param);
+			if(!$stmt->execute()) {
+				// Interrompo solamente se c'è un errore.
+        		$res["error"] = "query";
+        		$res["number"] = $mysqli->errno;
+        		$res["message"] = $mysqli->error;
+				$res["message"] .= " There were problems during the update of the ruler $key";
+				return $res;
+			}
+		}
+		// Eseguo le insert.
+		foreach($new as $key => $value) {
+			if($value == "") {
+				// Se il valore è null allora lo salto.
+				continue;
+			}
+			$query = "INSERT INTO `event_rulers_breakdown` (`Event`, `Ruler`, `Quantity`) VALUES (?, $key, $value)";
+			$stmt = $mysqli->prepare($query);
+			$stmt->bind_param("i", $event_param);
+			if(!$stmt->execute()) {
+				// Interrompo solamente se c'è un errore.
+        		$res["error"] = "query";
+        		$res["number"] = $mysqli->errno;
+        		$res["message"] = $mysqli->error;
+				$res["message"] .= " There were problems during the insert of the ruler $key";
+				return $res;
+			}
+		}
+		$res["result"] = true;
+		$res["message"] = "Ruler Breakdowns correctly updated!";
     } else {
         $res["error"] = "query";
         $res["number"] = $mysqli->errno;

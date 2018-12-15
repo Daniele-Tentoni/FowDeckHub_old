@@ -30,7 +30,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- END RESPONSIVE TABLES -->ì
+			<!-- END RESPONSIVE TABLES -->
 		</div>
 	</div>
 	<!-- END PAGE CONTENT -->

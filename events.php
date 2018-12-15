@@ -44,17 +44,18 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
     if($check_level == 0) {
         $header = '/layout/header.php';
         $title = "Event Details - Administrator - Fow Deck Hub";
-        $show_event = false;
     } else {
         $header = '/layout/user_header.php';
         $title = "Event Details - Fow Deck Hub";
-        $show_event = true;
     }
     $page = "/pages/event/events_details.php";
     $event_id = $_GET["event_id"];
     $event = get_event_by_id($mysqli, $event_id)["content"];
     $decklists = get_event_decks($mysqli, $event_id);
-    $chart = get_chart_data_by_decks($decklists["content"]);
+    $chart_top8 = get_chart_data_by_top8_decks($decklists["content"]);
+	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
+	$chart_event = get_chart_data_by_breakdown($breakdown);
+	$show_event = false;
 } 
 else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
     $header = '/layout/header.php';
@@ -64,6 +65,7 @@ else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET[
     $event_id = $_GET["event_edit"];
     $event = get_event_by_id($mysqli, $event_id)["content"];
     $decklists = get_event_decks($mysqli, $event_id);
+	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
 } 
 else {
     $year = date("Y");

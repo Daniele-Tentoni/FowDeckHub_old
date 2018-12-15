@@ -14,7 +14,7 @@
                 <form autocomplete="false" class="save_base_data_panel" method="post" action="ajax/event_ajax.php?event_save_base_data">
                     <div class="panel-heading">
                         <h3 class="panel-title">Dati base</h3>
-                        <button onClick="save_base_data('.save_base_data_panel', <?php echo $event["Id"]; ?>)" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button onClick="save_base_data('.save_base_data_panel', <?php echo $event_id; ?>)" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -135,7 +135,7 @@
                 <form autocomplete="false" class="save_ruler_breakdown_panel" method="post" action="ajax/event_ajax.php?event_save_ruler_breakdown">
                     <div class="panel-heading">
                         <h3 class="panel-title">Ruler Breakdown</h3>
-                        <button onClick="save_ruler_breakdown();" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button onclick="save_ruler_breakdown('.save_ruler_breakdown_panel', <?php echo $event_id; ?>);" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -169,7 +169,10 @@
                                                         echo "<tr id=\"trow_" . $row["Id"] . "\">";
                                                         echo "<td>" . $row["Id"] . "</td>";
                                                         echo "<td>" . $row["Name"] . "</td>";
-                                                        echo "<td><input id=\"" . $row["Id"] . "\" name=\"" . $row["Id"] . "\" type=\"text\" class=\"form-control breakdown\" placeholder=\"Quantity\"/></td>";
+                                                        echo "<td>";
+														echo "<input id=\"" . $row["Id"] . "\" name=\"" . $row["Id"] . "\" type=\"text\" class=\"form-control breakdown\" placeholder=\"Quantity\"";
+														echo isset($breakdown[$row["Id"]]) ? "  value=\"" . $breakdown[$row["Id"]] . "\"" : "";
+														echo "/></td>";
                                                         echo "</tr>";
                                                     }
                                                 } else {
@@ -190,7 +193,7 @@
                             </div>
                         </div>
                         <button class="btn btn-default btn-rounded pull-right"  onclick="reset_base_data();"><i class="fa fa-trash-o" aria-hidden="true"></i> Reset</button>
-                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_ruler_breakdown();"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_ruler_breakdown('.save_ruler_breakdown_panel', <?php echo $event_id; ?>);"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                 </form>
             </div>

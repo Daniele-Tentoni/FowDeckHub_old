@@ -52,24 +52,36 @@ else if(isset($_GET["event_save_base_data"]) && isset($_POST["Id"]) && isset($_P
     $data = mysql_real_escape_string($_POST["Date"]);
     $nation = mysql_real_escape_string($_POST["Nation"]);
     $attendance = mysql_real_escape_string($_POST["Attendance"]);
+	
     $result = save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance);
     echo json_encode($result);
 }
-else if(isset($_GET["event_save_ruler_breakdown"]) && isset($_POST["Id"]) && isset($_POST["CommunityReports"])) {
+else if(isset($_GET["event_save_ruler_breakdown"]) && isset($_POST["Id"]) && count($_POST) > 1) {
     $id = mysql_real_escape_string($_POST["Id"]);
-    $comm_reports = mysql_real_escape_string($_POST["Length"]);
-    $result = save_ruler_breakdown($mysqli, $id, $comm_reports);
+	
+	// Mi creo l'array del breakdown.
+	$breakdown = array();
+	$length = count($_POST);
+	foreach($_POST as $key => $value) {
+		if($key != "Id") {
+			$breakdown[$key] = $value;
+		}
+	}
+	
+    $result = save_ruler_breakdown($mysqli, $id, $breakdown);
     echo json_encode($result);
 }
 else if(isset($_GET["event_save_community_reports"]) && isset($_POST["CommunityReports"])) {
     $id = mysql_real_escape_string($_POST["Id"]);
     $comm_reports = mysql_real_escape_string($_POST["CommunityReports"]);
+	
     $result = save_community_reports($mysqli, $id, $comm_reports);
     echo json_encode($result);
 }
 else if(isset($_GET["event_save_other_links"]) && isset($_POST["OtherLinks"])) {
     $id = mysql_real_escape_string($_POST["Id"]);
     $other_links = mysql_real_escape_string($_POST["OtherLinks"]);
+	
     $result = save_other_links($mysqli, $id, $other_links);
     echo json_encode($result);
 }

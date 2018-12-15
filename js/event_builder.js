@@ -57,7 +57,7 @@ var save_ruler_breakdown = function(panel, id) {
 		entities.push($(this).attr('id'));
 	});
     
-    var string_data = "Id=" + id + "&Length=" + entities.length;
+    var string_data = "Id=" + id;
 	for(var i = 0; i < entities.length; i++) {
 		string_data += "&" + entities[i] + '=' + values[i];
 	}
