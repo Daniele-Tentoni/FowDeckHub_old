@@ -1,5 +1,6 @@
-/config
+/config/mysqli_definings.php
 /bin
 /pdf
 /js/plugin
 *.zip
+LICENSE
