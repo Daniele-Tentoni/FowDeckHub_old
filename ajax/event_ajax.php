@@ -45,15 +45,16 @@ else if(isset($_GET["events_widget"]) && isset($_POST["year"]) && $_POST["year"]
     $event_map_details = get_event_widget_details($mysqli, $region);
     echo json_encode($event_map_details);
 }
-else if(isset($_GET["event_save_base_data"]) && isset($_POST["Id"]) && isset($_POST["Name"]) && isset($_POST["Year"]) && isset($_POST["Date"]) && isset($_POST["Nation"]) && isset($_POST["Attendance"])) {
+else if(isset($_GET["event_save_base_data"]) && isset($_POST["Id"]) && isset($_POST["Name"]) && isset($_POST["Year"]) && isset($_POST["Date"]) && isset($_POST["Nation"]) && isset($_POST["Attendance"]) && isset($_POST["Visibility"])) {
     $id = mysql_real_escape_string($_POST["Id"]);
     $name = mysql_real_escape_string($_POST["Name"]);
     $year = mysql_real_escape_string($_POST["Year"]);
     $data = mysql_real_escape_string($_POST["Date"]);
     $nation = mysql_real_escape_string($_POST["Nation"]);
     $attendance = mysql_real_escape_string($_POST["Attendance"]);
+    $visibility = mysql_real_escape_string($_POST["Visibility"]);
 	
-    $result = save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance);
+    $result = save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance, $visibility);
     echo json_encode($result);
 }
 else if(isset($_GET["event_save_ruler_breakdown"]) && isset($_POST["Id"]) && count($_POST) > 1) {
@@ -92,4 +93,3 @@ else {
 }
 
 ?>
-

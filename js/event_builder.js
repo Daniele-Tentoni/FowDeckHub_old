@@ -4,7 +4,13 @@ var save_base_data = function(panel, id) {
 	var entities = [];
 	var values = [];
 	$(panel + " .add_item").each(function(e) {
-		values.push($(this).val());
+        var val = 0;
+        if($(this).attr("type") == "checkbox") {
+            val = $(this).prop("checked") == true ? 1 : 0;
+        } else {
+            val = $(this).val();
+        }
+		values.push(val);
 		entities.push($(this).attr('id'));
 	});
     
@@ -94,14 +100,6 @@ var save_ruler_breakdown = function(panel, id) {
 			$(panel + " .e-body").html("<span class=\"alert alert-danger\">" + msg["message"] + "</span>");
 		}
 	});
-};
-
-var save_community_reports = function() {
-   console.log("save_community_reports.");
-};
-
-var save_other_links = function() {
-   console.log("save_base_data.");
 };
 
 $(document).ready(function(){

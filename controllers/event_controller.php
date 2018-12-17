@@ -510,7 +510,7 @@ function create_new_event($mysqli){
 /*
  * Mi salvo i dati base dell'evento.
  */
-function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance) {
+function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance, $visibility) {
     $res = array();
 	$res["result"] = false;
 
@@ -526,21 +526,21 @@ function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance)
 	}
 
 	// Effettuo update della sezione dei dati base e converto la data in timestamp se necessario.
-	$query = "UPDATE events SET Name=?, Nation=?, Year=?, Attendance=?, Date=? WHERE Id = ?";
+	$query = "UPDATE events SET Name = ?, Nation = ?, Year = ?, Attendance = ?, `Date` = ?, Visibility = ? WHERE Id = ?";
     $pieces = explode(" ", $data);
     if(!isset($pieces[1])) {
         $data . " 00:00:00";
     }
     
 	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("siiisi", $name_param, $nation_param, $year_param, $attendance_param, $data_param, $id_param);
+	$stmt->bind_param("siiisi", $name_param, $nation_param, $year_param, $attendance_param, $data_param, $visibility_param, $id_param);
 	$id_param = mysql_real_escape_string($id);
 	$name_param = mysql_real_escape_string($name);
 	$year_param = mysql_real_escape_string($year);
     $data_param = date("Y-m-d H:i:s", strtotime($data));
-	//$data_param = mysql_real_escape_string($data) . " 00:00:00";
 	$nation_param = mysql_real_escape_string($nation);
 	$attendance_param = mysql_real_escape_string($attendance);
+	$visibility_param = mysql_real_escape_string($visibility);
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
@@ -669,7 +669,12 @@ function save_ruler_breakdown($mysqli, $id, $breakdown) {
         }
 		// Eseguo le update.
 		foreach($old as $key => $value) {
-			$query = "UPDATE event_rulers_breakdown SET Quantity = $value WHERE Event = ? AND Ruler = $key";
+			if($value == "" || $value <= 0) {
+				// Se il valore non è valido vuol dire che è da eliminare.
+				$query = "DELETE FROM event_rulers_breakdown WHERE Event = ? AND Ruler = $key";
+			} else {
+				$query = "UPDATE event_rulers_breakdown SET Quantity = $value WHERE Event = ? AND Ruler = $key";
+			}
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("i", $event_param);
 			if(!$stmt->execute()) {
