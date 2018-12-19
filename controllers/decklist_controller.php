@@ -1,8 +1,129 @@
 <?php
 /*
+ * Legge una singola decklist.
+ */ 
+function get_decklist_by_id($mysqli, $id) {
+	$res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["error"] = SERVER_ERR;
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["error"] = SERVER_CONN_ERR;
+		return $res;
+	}
+
+	// Effettuo finalmente il caricamento della decklist in base all'id.
+	$query = "select d.Id, 
+					 d.Name, 
+					 d.Player, 
+					 d.GachaCode, 
+					 dt.Name as Type, 
+					 p.Name as Style, 
+					 e.Id as EventId, 
+					 e.Name as Event, 
+					 d.Position, 
+					 c.Name as Ruler
+			  from decklists d
+			  left join decktypes dt on d.Type = dt.Id
+			  left join playstyles p on dt.Style = p.Id
+			  left join `events` e on d.Event = e.Id
+			  left join cards c on d.Ruler = c.Id
+			  where d.Id = ?";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i", $id_param);
+	$stmt->execute();
+	$id_param = $mysqli->real_escape_string($id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["msg"] = "There's some data to view";
+		$row = $result->fetch_assoc();
+		$stringa = array();
+		$stringa["Id"] = $row["Id"];
+		$stringa["Name"] = $row["Name"];
+		$stringa["Player"] = $row["Player"];
+		$stringa["GachaCode"] = $row["GachaCode"];
+		$stringa["Type"] = $row["Type"];
+		$stringa["Style"] = $row["Style"];
+		$stringa["EventId"] = $row["EventId"];
+		$stringa["Event"] = $row["Event"];
+		$stringa["Position"] = $row["Position"];
+		$stringa["Ruler"] = $row["Ruler"];
+		$res["content"] = $stringa;
+	} else {
+		$res["msg"] = "No data to view with id $id.";
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
+ * Creazione di una nuova decklist.
+ */
+function create_new_decklist($mysqli){
+	$res = array();
+	$res["result"] = false;
+	$res["error"] = "nothing";
+	$content = "";
+
+	// Controllo che la connessione sia impostata e che vi sia il login.
+	if(!isset($mysqli)) {
+		$res["error"] = SERVER_ERR;
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["error"] = SERVER_CONN_ERR;
+		return $res;
+	}
+
+	if(!login_check($mysqli)) {
+		$res["error"] = "You don't have login permissions.";
+		return $res;
+	}
+
+	$content = "Operazioni effettuate: ";
+	try {
+		// Inserisco la nuova decklist.
+		$stmt = $mysqli->prepare("INSERT INTO `decklists`(`Name`) VALUES (?)");
+		if(!$stmt) {
+			$res["data"] = $mysqli->error_list;
+			$res["error"] = "Boolean value in \$stmt";
+			return $res;
+		} else {
+			$stmt->bind_param("s", $deckname);
+			$deckname = "Not set";
+			if($stmt->execute()) {
+				return get_decklist_by_id($mysqli, $mysqli->insert_id);
+			} else {
+				$res["result"] = false;
+				$res["data"] = $mysqli->error_list;
+				$content .= "There's an error. Riscontrato problema nell'inserimento della carta $deckname, contattare il supporto.";
+			}
+		}
+	} catch (Exception $e) {
+		// Posso effettuare un rollback di tutte le query fatte finora sul db.
+		$res["result"] = false;
+		$res["error"] = "Eccezione";
+		$res["msg"] = $e;
+	}
+	$res["content"] = $content;
+	return $res;
+}
+
+/*
  * Mi salvo i dati base dell'evento.
  */
-function save_base_decklist_data($id, $name, $player, $event, $type, $position, $gacha_code, $visibility) {
+function save_base_decklist_data($mysqli, $id, $name, $player, $event, $type, $position, $gacha_code, $visibility) {
     $res = array();
 	$res["result"] = false;
 

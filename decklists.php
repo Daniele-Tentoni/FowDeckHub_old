@@ -2,7 +2,7 @@
 require_once 'definings.php';
 require_once ROOT_PATH . '/config/functions.php';
 sec_session_start();
-require_once ROOT_PATH . 'controllers/decklist_controller.php';
+require_once ROOT_PATH . '/controllers/decklist_controller.php';
 
 // Controllo di essere collegato, se sono in test eseguo automaticamente un login.
 $log_result = login_check($mysqli);
@@ -21,13 +21,24 @@ if($log_result && $check_level == 0) {
 	$page = "";
 	require_once ROOT_PATH . '/loaders/load_decklists.php';
 	if(isset($_GET["newDecklist"])) {
+		$decklist = create_new_decklist($mysqli);
+		if(!$decklist["result"]) {
+			var_dump($decklist);
+			header("Refresh: 10;URL=decklists.php");
+		}
+		$elem = $decklist["content"];
 		$title = "New Decklists - Administrator - Fow Deck Hub";
-		$page = "/pages/decklist/new_decklist_partial.php";
+		$page = "/pages/decklist/decklist_edit.php";
 	} 
 	else if(isset($_GET["edit_decklist"]) && $_GET["edit_decklist"] > 0) {
+		$decklist = get_decklist_by_id($mysqli, $_GET["edit_decklist"]);
+		if(!$decklist["result"]) {
+			var_dump($decklist);
+			header("Refresh: 10;URL=decklists.php");
+		}
+		$elem = $decklist["content"];
 		$title = "Edit Decklists - Administrator - Fow Deck Hub";
-		$page = "/pages/decklists/edit_decklist_partial.php";
-		$decklist = get_decklist_by_id($mysqli, $id);
+		$page = "/pages/decklist/decklist_edit.php";
 	} 
 	else {
 		$title = "Decklists - Administrator - Fow Deck Hub";

@@ -48,7 +48,12 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
     }
     $page = "/pages/event/events_details.php";
     $event_id = $_GET["event_id"];
-    $event = get_event_by_id($mysqli, $event_id)["content"];
+    $event = get_event_by_id($mysqli, $event_id);
+    if(!$res["result"]) {
+        header("Refresh: 2;URL=events.php");
+    } else {
+        $event = $event["content"];
+    }
     $decklists = get_event_decks($mysqli, $event_id);
     $chart_top8 = get_chart_data_by_top8_decks($decklists["content"]);
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];

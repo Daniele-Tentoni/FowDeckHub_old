@@ -1,11 +1,11 @@
 <!-- START BREADCRUMB -->
 <ul class="breadcrumb">
 	<li><a href="index.php">Home</a></li>
-	<li><a href="#">Events</a></li>
+	<li><a class="active" href="#">Events</a></li>
 </ul>
 <!-- PAGE TITLE -->
 <div class="page-title">
-	<h2><span class="fa fa-arrow-circle-o-left"></span> Event List</h2>
+	<h2 onclick="history.back()"><span class="fa fa-arrow-circle-o-left"></span> Event List</h2>
 </div>
 <!-- END PAGE TITLE -->
 <!-- PAGE CONTENT WRAPPER --> 

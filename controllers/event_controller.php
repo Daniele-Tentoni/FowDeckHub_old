@@ -352,10 +352,9 @@ function get_event_rulers_breakdowns_by_id($mysqli, $event_id) {
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
 		while($row = $result->fetch_assoc()) {
-			$stringa["Ruler"] = $row["Ruler"];
 			$stringa["Quantity"] = $row["Quantity"];
 			$stringa["Name"] = $row["Name"];
-			array_push($msg["content"], $stringa);
+			$msg["content"][$row["Ruler"]] = $stringa;
 		}
 	} else {
         $msg["error"] = "No data to view.";
@@ -455,8 +454,8 @@ function get_chart_data_by_top8_decks($decklists) {
  */
 function get_chart_data_by_breakdown($breakdown) {
 	$data = array();
-    foreach($breakdown as $row){
-		$data[$row["Name"]] = $row["Quantity"];
+    foreach($breakdown as $key => $value){
+		$data[$value["Name"]] = $value["Quantity"];
     }
     
     $chart = array();

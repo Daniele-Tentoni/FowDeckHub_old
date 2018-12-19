@@ -1,14 +1,14 @@
 <!-- START BREADCRUMB -->
 <ul class="breadcrumb">
 	<li><a href="index.php">Home</a></li>
-	<li><a href="events.php">Events</a></li>
-	<li>Event Edit</li>
+	<li><a href="decklists.php">Decklists</a></li>
+	<li class="active">Decklist Edit</li>
 </ul>
 <!-- END BREADCRUMB -->
 
 <!-- PAGE TITLE -->
 <div class="page-title">                    
-	<h2><a href="history.back();" class="link"><span class="fa fa-arrow-circle-o-left"></span></a> Edit Decklist</h2>
+	<h2><a onclick="history.back();" class="link"><span class="fa fa-arrow-circle-o-left"></span></a> Edit Decklist</h2>
 </div>
 <!-- END PAGE TITLE -->
 
@@ -22,7 +22,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<p style="margin: 1rem 0">Edit the decklist with id: <?php echo $decklist["Id"]; ?>. But, pay Attenction! This is the core of the site, so it's ever under maintance, all contents can change without any advice during the Alpha tests.</p>
+						<p style="margin: 1rem 0">Edit the decklist with id: <?php echo $decklist["Id"]; ?>. But, pay Attenction! This is the core of the site, so it's ever under maintance, all contents can change without any advice during the Alpha tests. If you find a bug, please notify to the administrator or report a bug with the utility link at the bottom of the page.</p>
 						<p style="margin: 1rem 0">Change the visibility state permit to all users to see the decklist.</p>
 					</div>
 				</div>
@@ -32,10 +32,10 @@
 		</div>
 		<div class="col-md-6">
             <div class="panel panel-default">
-                <form autocomplete="false" class="save_base_data_panel" method="post" action="ajax/decklist_ajax.php?save_base_data">
+                <form autocomplete="false" class="save_base_data_panel" method="post" action="ajax/decklist_ajax.php?save_decklist_base_data">
                     <div class="panel-heading">
                         <h3 class="panel-title">Base Data</h3>
-                        <button onClick="save_base_data('.save_base_data_panel', <?php echo $decklist_id; ?>)" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button onClick="save_base_data('.save_base_data_panel', <?php echo $elem["Id"]; ?>)" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                     <div class="panel-body">
                         <div class="row"><!--
@@ -46,8 +46,8 @@
                                     <div class="col-md-9">
                                         <input id="Name" name="Name" type="text" class="form-control add_item" placeholder="Name"
                                                <?php
-                                                if(isset($event["Name"])) {
-                                                    echo "value=\"" . $event["Name"] . "\"";
+                                                if(isset($elem["Name"])) {
+                                                    echo "value=\"" . $elem["Name"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -61,8 +61,8 @@
                                     <div class="col-md-9">
                                         <input id="Player" name="Player" type="text" class="form-control add_item" placeholder="Player"
                                                <?php
-                                                if(isset($event["Player"])) {
-                                                    echo "value=\"" . $event["Player"] . "\"";
+                                                if(isset($elem["Player"])) {
+                                                    echo "value=\"" . $elem["Player"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -89,7 +89,7 @@
                                                 if($result->num_rows > 0) {
                                                     while($row = $result->fetch_assoc()) {
                                                         echo "<option value=\"" . $row["Id"] . "\" ";
-                                                        echo isset($event["Event"]) && $event["Event"] == $row["Name"] ? "selected" : " ";
+                                                        echo isset($elem["Event"]) && $elem["Event"] == $row["Name"] ? "selected" : " ";
                                                         echo ">" . $row["Name"];
                                                         echo "</option>";
                                                     }
@@ -113,16 +113,16 @@
                                             if($mysqli->connect_error){
                                                 echo "<option value=\"0\">-- Connection Error --</option>";
                                             } else {
-                                                $query = "SELECT s.Id, s.Name
-                                                        FROM nations s
-                                                        ORDER BY s.Name";
+                                                $query = "SELECT d.Id, d.Name 
+                                                          FROM decktypes d
+                                                          ORDER BY d.Name";
                                                 $stmt = $mysqli->prepare($query);
                                                 $stmt->execute();
                                                 $result = $stmt->get_result();
                                                 if($result->num_rows > 0) {
                                                     while($row = $result->fetch_assoc()) {
                                                         echo "<option value=\"" . $row["Id"] . "\" ";
-                                                        echo isset($event["Type"]) && $event["Type"] == $row["Name"] ? "selected" : " ";
+                                                        echo isset($elem["Type"]) && $elem["Type"] == $row["Name"] ? "selected" : " ";
                                                         echo ">" . $row["Name"];
                                                         echo "</option>";
                                                     }
@@ -142,8 +142,8 @@
                                     <div class="col-md-9">
                                         <input id="Position" type="number" class="form-control add_item" placeholder="Position"
                                                <?php
-                                                if(isset($event["Position"])) {
-                                                    echo "value=\"" . $event["Position"] . "\"";
+                                                if(isset($elem["Position"])) {
+                                                    echo "value=\"" . $elem["Position"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -157,8 +157,8 @@
                                     <div class="col-md-9">
                                         <input id="GachaCode" type="number" class="form-control add_item" placeholder="GachaCode"
                                                <?php
-                                                if(isset($event["GachaCode"])) {
-                                                    echo "value=\"" . $event["GachaCode"] . "\"";
+                                                if(isset($elem["GachaCode"])) {
+                                                    echo "value=\"" . $elem["GachaCode"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -173,8 +173,8 @@
                                        <label class="switch switch-small">
                                             <input type="checkbox" id="Visibility" class="form-control add_item" 
                                             <?php 
-                                            if(isset($event["Visibility"])) {
-                                            	echo "checked=\"" . $event["Visibility"] == 1 ? "true" : "false" . "\"";
+                                            if(isset($elem["Visibility"])) {
+                                            	echo "checked=\"" . $elem["Visibility"] == 1 ? "true" : "false" . "\"";
                                         	}
                                        		?> />
                                             <span></span>
@@ -191,7 +191,7 @@
                             </div>
                         </div>
                         <button type="reset" class="btn btn-default btn-rounded pull-right" ><i class="fa fa-trash-o" aria-hidden="true"></i> Reset</button>
-                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_base_data('.save_base_data_panel', <?php echo $event["Id"]; ?>);"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_base_data('.save_base_data_panel', <?php echo $elem["Id"]; ?>);"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                 </form>
             </div>

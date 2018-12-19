@@ -1,5 +1,5 @@
 <?php
-define("HOSTING", "localhost");
+define("HOSTING", "Altervista");
 if(HOSTING == "Altervista") {
 	define("SERVER_MAIL", "fowdeckhub@altervista.org");
 	define("COMPLETE_URL", "www.fowdeckhub.altervista.org");

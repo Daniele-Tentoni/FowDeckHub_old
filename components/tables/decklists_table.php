@@ -41,7 +41,7 @@
                 echo !isset($show_position) || $show_position ? "    <td><span class=\"label label-" . $classToAdd . "\">" . $value["Position"] . "</span></td>" : "";
                 echo !isset($show_event) || $show_event ? "    <td>" . $value["Event"] . "</td>" : "";
                 echo !isset($show_actions) || $show_actions ? "    <td>" : "";
-                echo !isset($show_actions) || $show_actions ? "        <button class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></button>" : "";
+                echo !isset($show_actions) || $show_actions ? "        <a href=\"decklists.php?edit_decklist=" . $value["Id"] . "\" class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></a>" : "";
                 echo !isset($show_actions) || $show_actions ? "        <button class=\"btn btn-danger btn-rounded btn-sm\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span></button>" : "";
                 echo !isset($show_actions) || $show_actions ? "    </td>" : "";
                 echo "</tr>";

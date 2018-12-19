@@ -1,8 +1,14 @@
 <!-- START BREADCRUMB -->
+<ul class="breadcrumb">
+	<li><a href="index.php">Home</a></li>
+	<li><a href="events.php">Events</a></li>
+	<li class="active">Event Edit</li>
+</ul>
+<!-- END BREADCRUMB -->
 
 <!-- PAGE TITLE -->
 <div class="page-title">                    
-	<h2><a onClick="history.back();" class="link"><span class="fa fa-arrow-circle-o-left"></span></a> Edit Event</h2>
+	<h2><a onclick="history.back();" class="link"><span class="fa fa-arrow-circle-o-left"></span></a> Edit Event</h2>
 </div>
 <!-- END PAGE TITLE -->
 
@@ -202,7 +208,7 @@
                                                         echo "<td>" . $row["Name"] . "</td>";
                                                         echo "<td>";
 														echo "<input id=\"" . $row["Id"] . "\" name=\"" . $row["Id"] . "\" type=\"text\" class=\"form-control breakdown\" placeholder=\"Quantity\"";
-														echo isset($breakdown[$row["Id"]]) ? "  value=\"" . $breakdown[$row["Id"]] . "\"" : "";
+                                                        echo isset($breakdown[$row["Id"]]) ? "  value=\"" . $breakdown[$row["Id"]]["Quantity"] . "\"" : "";
 														echo "/></td>";
                                                         echo "</tr>";
                                                     }
