@@ -49,7 +49,7 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
     $page = "/pages/event/events_details.php";
     $event_id = $_GET["event_id"];
     $event = get_event_by_id($mysqli, $event_id);
-    if(!$res["result"]) {
+    if(!$event["result"]) {
         header("Refresh: 2;URL=events.php");
     } else {
         $event = $event["content"];
