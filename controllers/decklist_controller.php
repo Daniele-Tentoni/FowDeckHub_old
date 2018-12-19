@@ -21,14 +21,14 @@ function save_base_decklist_data($id, $name, $player, $event, $type, $position, 
 	$query = "UPDATE `decklists` SET `Name`=?,`Player`=?,`Event`=?,`Type`=?,`Visibility`=?,`GachaCode`=?,`Position`=? WHERE `Id`=?";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("ssiiisii", $name_param, $player_param, $event_param, $type_param, $position_param, $gacha_code_param, $visibility_param, $id_param);
-	$id_param = mysql_real_escape_string($id);
-	$name_param = mysql_real_escape_string($name);
-	$player_param = mysql_real_escape_string($player);
-	$event_param = mysql_real_escape_string($event);
-	$type_param = mysql_real_escape_string($type);
-	$position_param = mysql_real_escape_string($position);
-	$gacha_code_param = mysql_real_escape_string($gacha_code);
-	$visibility_param = mysql_real_escape_string($visibility);
+	$id_param = $mysqli->real_escape_string($id);
+	$name_param = $mysqli->real_escape_string($name);
+	$player_param = $mysqli->real_escape_string($player);
+	$event_param = $mysqli->real_escape_string($event);
+	$type_param = $mysqli->real_escape_string($type);
+	$position_param = $mysqli->real_escape_string($position);
+	$gacha_code_param = $mysqli->real_escape_string($gacha_code);
+	$visibility_param = $mysqli->real_escape_string($visibility);
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
@@ -65,7 +65,7 @@ function save_decklist($mysqli, $id, $decks) {
 	$query = "DELETE FROM card_quantities WHERE Decklist = ?";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $deck_param);
-	$deck_param = mysql_real_escape_string($id);
+	$deck_param = $mysqli->real_escape_string($id);
 	if($stmt->execute()){
         // Divido i mazzetti da aggiungere.
 		$ruler = array();

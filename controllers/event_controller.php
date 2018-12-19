@@ -132,7 +132,7 @@ function get_event_by_id($mysqli, $id) {
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $id_param);
-	$id_param = mysql_real_escape_string($id);
+	$id_param = $mysqli->real_escape_string($id);
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
@@ -347,7 +347,7 @@ function get_event_rulers_breakdowns_by_id($mysqli, $event_id) {
 				  and b.Quantity > 0";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $event_id_param);
-	$event_id_param = mysql_real_escape_string($event_id);
+	$event_id_param = $mysqli->real_escape_string($event_id);
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
@@ -534,13 +534,13 @@ function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance,
     
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("siiisi", $name_param, $nation_param, $year_param, $attendance_param, $data_param, $visibility_param, $id_param);
-	$id_param = mysql_real_escape_string($id);
-	$name_param = mysql_real_escape_string($name);
-	$year_param = mysql_real_escape_string($year);
+	$id_param = $mysqli->real_escape_string($id);
+	$name_param = $mysqli->real_escape_string($name);
+	$year_param = $mysqli->real_escape_string($year);
     $data_param = date("Y-m-d H:i:s", strtotime($data));
-	$nation_param = mysql_real_escape_string($nation);
-	$attendance_param = mysql_real_escape_string($attendance);
-	$visibility_param = mysql_real_escape_string($visibility);
+	$nation_param = $mysqli->real_escape_string($nation);
+	$attendance_param = $mysqli->real_escape_string($attendance);
+	$visibility_param = $mysqli->real_escape_string($visibility);
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
@@ -577,8 +577,8 @@ function save_community_reports($mysqli, $id, $comm_rep) {
     
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("si", $comm_rep_param, $id_param);
-	$id_param = mysql_real_escape_string($id);
-	$comm_rep_param = mysql_real_escape_string($comm_rep);
+	$id_param = $mysqli->real_escape_string($id);
+	$comm_rep_param = $mysqli->real_escape_string($comm_rep);
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
@@ -614,8 +614,8 @@ function save_other_links($mysqli, $id, $other_links) {
     
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("si", $other_links_param, $id_param);
-	$id_param = mysql_real_escape_string($id);
-	$other_links_param = mysql_real_escape_string($other_links);
+	$id_param = $mysqli->real_escape_string($id);
+	$other_links_param = $mysqli->real_escape_string($other_links);
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
@@ -651,7 +651,7 @@ function save_ruler_breakdown($mysqli, $id, $breakdown) {
 	$query = "SELECT Ruler, Quantity FROM event_rulers_breakdown WHERE Event = ?";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $event_param);
-	$event_param = mysql_real_escape_string($id);
+	$event_param = $mysqli->real_escape_string($id);
 	if($stmt->execute()){
         $result = $stmt->get_result();
         // Divido i ruler in nuovi ed esistenti.

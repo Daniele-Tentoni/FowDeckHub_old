@@ -46,19 +46,19 @@ else if(isset($_GET["events_widget"]) && isset($_POST["year"]) && $_POST["year"]
     echo json_encode($event_map_details);
 }
 else if(isset($_GET["event_save_base_data"]) && isset($_POST["Id"]) && isset($_POST["Name"]) && isset($_POST["Year"]) && isset($_POST["Date"]) && isset($_POST["Nation"]) && isset($_POST["Attendance"]) && isset($_POST["Visibility"])) {
-    $id = mysql_real_escape_string($_POST["Id"]);
-    $name = mysql_real_escape_string($_POST["Name"]);
-    $year = mysql_real_escape_string($_POST["Year"]);
-    $data = mysql_real_escape_string($_POST["Date"]);
-    $nation = mysql_real_escape_string($_POST["Nation"]);
-    $attendance = mysql_real_escape_string($_POST["Attendance"]);
-    $visibility = mysql_real_escape_string($_POST["Visibility"]);
+    $id = $mysqli->real_escape_string($_POST["Id"]);
+    $name = $mysqli->real_escape_string($_POST["Name"]);
+    $year = $mysqli->real_escape_string($_POST["Year"]);
+    $data = $mysqli->real_escape_string($_POST["Date"]);
+    $nation = $mysqli->real_escape_string($_POST["Nation"]);
+    $attendance = $mysqli->real_escape_string($_POST["Attendance"]);
+    $visibility = $mysqli->real_escape_string($_POST["Visibility"]);
 	
     $result = save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance, $visibility);
     echo json_encode($result);
 }
 else if(isset($_GET["event_save_ruler_breakdown"]) && isset($_POST["Id"]) && count($_POST) > 1) {
-    $id = mysql_real_escape_string($_POST["Id"]);
+    $id = $mysqli->real_escape_string($_POST["Id"]);
 	
 	// Mi creo l'array del breakdown.
 	$breakdown = array();
@@ -73,15 +73,15 @@ else if(isset($_GET["event_save_ruler_breakdown"]) && isset($_POST["Id"]) && cou
     echo json_encode($result);
 }
 else if(isset($_GET["event_save_community_reports"]) && isset($_POST["CommunityReports"])) {
-    $id = mysql_real_escape_string($_POST["Id"]);
-    $comm_reports = mysql_real_escape_string($_POST["CommunityReports"]);
+    $id = $mysqli->real_escape_string($_POST["Id"]);
+    $comm_reports = $mysqli->real_escape_string($_POST["CommunityReports"]);
 	
     $result = save_community_reports($mysqli, $id, $comm_reports);
     echo json_encode($result);
 }
 else if(isset($_GET["event_save_other_links"]) && isset($_POST["OtherLinks"])) {
-    $id = mysql_real_escape_string($_POST["Id"]);
-    $other_links = mysql_real_escape_string($_POST["OtherLinks"]);
+    $id = $mysqli->real_escape_string($_POST["Id"]);
+    $other_links = $mysqli->real_escape_string($_POST["OtherLinks"]);
 	
     $result = save_other_links($mysqli, $id, $other_links);
     echo json_encode($result);

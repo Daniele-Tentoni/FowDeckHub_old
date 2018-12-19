@@ -38,12 +38,12 @@ try {
 			echo json_encode($msg);
 		}
 		$stmt->bind_param("issisi", $id, $name, $set, $number, $cost, $rarity);
-		$id = mysql_real_escape_string($_POST["Id"]);
-		$name = mysql_real_escape_string($_POST["CardName"]);
-		$set = mysql_real_escape_string($_POST["Set"]);
-		$number = mysql_real_escape_string($_POST["Number"]);
-		$cost = mysql_real_escape_string($_POST["Cost"]);
-		$rarity = mysql_real_escape_string($_POST["Rarity"]);
+		$id = $mysqli->real_escape_string($_POST["Id"]);
+		$name = $mysqli->real_escape_string($_POST["CardName"]);
+		$set = $mysqli->real_escape_string($_POST["Set"]);
+		$number = $mysqli->real_escape_string($_POST["Number"]);
+		$cost = $mysqli->real_escape_string($_POST["Cost"]);
+		$rarity = $mysqli->real_escape_string($_POST["Rarity"]);
 		if($stmt->execute()) {
 			$content .= "Inserimento della carta $name effettuato con successo.";
 		} else {
