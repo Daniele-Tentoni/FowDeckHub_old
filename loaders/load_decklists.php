@@ -16,7 +16,7 @@ function get_decks($mysqli, $id){
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, e.Name as Event, d.Position, c.Name as Ruler
+	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, e.Name as Event, d.Position, c.Name as Ruler, d.Visibility
 				from decklists d 
 				left join decktypes dt on d.Type = dt.Id
 				left join playstyles p on dt.Style = p.Id
@@ -46,6 +46,7 @@ function get_decks($mysqli, $id){
 			$stringa["Event"] = $row["Event"];
 			$stringa["Position"] = $row["Position"];
 			$stringa["Ruler"] = $row["Ruler"];
+			$stringa["Visibility"] = $row["Visibility"];
 			array_push($res["content"], $stringa);
 		}
 	} else {

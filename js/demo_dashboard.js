@@ -203,7 +203,7 @@ $(function(){
             series: {
                 regions: [{
                     values: values,
-                    scale: ['#C8EEFF', '#0071A4'],
+                    scale: ['#ff0000', '#00ff1d'],
                     normalizeFunction: 'polynomial'
                 }]
             },

@@ -224,7 +224,7 @@
                         <button class="btn btn-default btn-rounded pull-right"  onclick="reset_base_data();">
                         	<i class="fa fa-trash-o" aria-hidden="true"></i> Reset
                         </button>
-                        <button class="btn btn-primary btn-rounded pull-right decklist_importer" data-decklist="<?php echo $decklist["Id"]; ?>" disabled>
+                        <button class="btn btn-primary btn-rounded pull-right decklist_importer" data-decklist="<?php echo $decklist["Id"]; ?>" >
                         	<i class="fa fa-floppy-o" aria-hidden="true"></i> Import
                         </button>
                     </div>

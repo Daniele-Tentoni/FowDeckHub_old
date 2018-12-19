@@ -39,9 +39,7 @@ var save_base_data = function(panel, id) {
 				$(panel + " .e-body").html("<span class=\"alert alert-success\">" + msg["message"] + "</span>");
 			} else {
 				$(panel + " .e-body").html("<span class=\"alert alert-warning\">" + msg["message"] + "</span>");
-                console.log(msg.error);
-                console.log(msg["number"]);
-                console.log(msg["message"]);
+                console.log(msg);
 			}
 		},
 		error:function(msg) {

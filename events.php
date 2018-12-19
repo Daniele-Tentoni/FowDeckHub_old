@@ -26,7 +26,7 @@ if($check_level == 0) {
 /*
  * Carico qui diverse informazioni a seconda della pagina richiesta.
  */
-$active_page = 12;
+$active_page = 13;
 $title = "";
 $page = "";
 require_once ROOT_PATH . '/controllers/event_controller.php';
@@ -59,6 +59,7 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
 	$chart_event = get_chart_data_by_breakdown($breakdown);
 	$show_event = false;
+    $table_simple = true;
 } 
 else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
     $header = '/layout/header.php';

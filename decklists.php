@@ -16,7 +16,7 @@ if($log_result && $check_level == 0) {
 	/*
 	 * Carico qui diverse informazioni a seconda della pagina richiesta.
 	 */
-	$active_page = 13;
+	$active_page = 12;
 	$title = "";
 	$page = "";
 	require_once ROOT_PATH . '/loaders/load_decklists.php';

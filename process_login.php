@@ -6,8 +6,8 @@ $msg = array();
 $msg["result"] = "done";
 
 if(isset($_POST['u'], $_POST['p']) && $_POST['u'] != "a@a.com") { 
-	$email = mysql_real_escape_string($_POST['u']);
-	$password = mysql_real_escape_string($_POST['p']); // Recupero la password criptata.
+	$email = $mysqli->real_escape_string($_POST['u']);
+	$password = $mysqli->real_escape_string($_POST['p']); // Recupero la password criptata.
     $log = login($email, $password, $mysqli);
 	if($log == "eseguito") {
 		// Login eseguito

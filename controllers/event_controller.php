@@ -242,6 +242,7 @@ function get_event_map($mysqli) {
     $query = "SELECT n.Id, n.WorldMapSign as Sign, COUNT(*) as Conteggio
               FROM events e
 			  JOIN nations n ON e.Nation = n.Id
+              WHERE e.Visibility = 1
               GROUP BY Sign";
 
     $stmt = $mysqli->prepare($query);
@@ -289,6 +290,7 @@ function get_event_map_details($mysqli, $region) {
                 JOIN nations n on e.Nation = n.Id
                 LEFT JOIN (SELECT d.Event, COUNT(*) as Cont
 			                 FROM decklists d
+                             WHERE d.Visibility = 1
 			                 GROUP BY d.Event) AS de ON de.Event = e.Id
                 WHERE n.WorldMapSign = ?";
 
@@ -532,7 +534,7 @@ function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance,
     }
     
 	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("siiisi", $name_param, $nation_param, $year_param, $attendance_param, $data_param, $visibility_param, $id_param);
+	$stmt->bind_param("siiisii", $name_param, $nation_param, $year_param, $attendance_param, $data_param, $visibility_param, $id_param);
 	$id_param = $mysqli->real_escape_string($id);
 	$name_param = $mysqli->real_escape_string($name);
 	$year_param = $mysqli->real_escape_string($year);
@@ -548,6 +550,8 @@ function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance,
         $res["error"] = "query";
         $res["number"] = $mysqli->errno;
         $res["message"] = $mysqli->error;
+        $res["data"] = $data_param;
+        $res["data"] = $id_param . "/" . $name_param . "/" . $year_param . "/" . $data_param . "/" . $nation_param . "/" . $attendance_param . "/" . $visibility_param . "/";
     }
     
 	return $res;

@@ -3,9 +3,11 @@ $(document).ready(function (){
 		e.preventDefault();
 	});
 
-	$("#decklist_importer").click(function (){
+	$(".decklist_importer").click(function (){
 		var text = $("#GachaText").val();
-		var container = "#import_decklist_panel e-body";
+        console.log(text);
+        var panel = $(".import_decklist_panel");
+		var container = $(".import_decklist_panel e-body");
 		var deck_id = $(this).attr("data-decklist");
 		if(text.length <= 0 || container.length <= 0) {
 			$(container).html("Incorrect data input.");
@@ -13,9 +15,11 @@ $(document).ready(function (){
 		}
 
 		var res = decklist_import(container, text);
+        console.log("Imported");
 		if(res != false) {
 			var imp = import_ajax_caller(container, res, deck_id);
 			if(imp != false) {
+                console.log("Saved");
 				$(container).append("Decklist correctly imported.");
 			}
 		}
@@ -77,12 +81,9 @@ var save_base_data = function(panel, id) {
 	});
 };
 
-
-
 /******************************************************************************
  ***                      INIZIO DECKLIST IMPORTER                          ***
  ******************************************************************************/
-
 function import_card(part, cname, cquantity) {
 	// Questa parte dovrà effettuare la chiamata ajax al server per il salvataggio.
 	part.deck.push({name: cname, count: cquantity});
@@ -136,13 +137,14 @@ var validate_deck = function(name, num, min, max) {
 };
 
 var decklist_import = function(container, text) {
-	$("#deck_container").html("");
+	$(container).html("");
 	var deck = start_deck();
 	var elems = text.split('\n');
 	var not_valid = false;
 	// Scomporre tutto quel testo in varie sezioni. Provare con un trim iniziale.
 	$(elems).each(function (){
 		if(not_valid == true) {
+            console.log("Non valido");
 			return false;
 		}
 
@@ -220,10 +222,14 @@ var decklist_import = function(container, text) {
 		}
 	});
 
-	if(not_valid)
+	if(not_valid) {
+        console.log("Non valido");
 		return false;
-	else
+    }
+	else {
+        console.log("Non valido");
 		return deck;
+    }
 };
 
 var import_ajax_caller = function(container, decks, deck_id) {
