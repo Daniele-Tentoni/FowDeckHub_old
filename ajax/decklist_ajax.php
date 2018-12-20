@@ -36,13 +36,14 @@ if(isset($_GET["save_decklist_base_data"]) && isset($_POST["Id"]) && isset($_POS
 } 
 else if(isset($_GET["save_decklist"]) && isset($_POST["Id"]) && isset($_POST["Deck"])) {
     $id = $mysqli->real_escape_string($_POST["Id"]);
-    $decks = json_decode($_POST["Deck"]);
-    $res = save_decklist($id, $decks);
+    $decks = json_decode($_POST["Deck"], true);
+    $res = save_decklist($mysqli, $id, $decks);
     echo json_encode($res);
 }
 else {
     // Comunico che non ho capito quale operazione mi è richiesta.
     $result["error"] = "Operazione non riconosciuta.";
+    $result["content"] = var_dump($_POST);
     echo json_encode($result);
 }
 

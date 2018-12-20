@@ -27,7 +27,8 @@ function get_decklist_by_id($mysqli, $id) {
 					 e.Id as EventId, 
 					 e.Name as Event, 
 					 d.Position, 
-					 c.Name as Ruler
+					 c.Name as Ruler,
+					 d.Visibility
 			  from decklists d
 			  left join decktypes dt on d.Type = dt.Id
 			  left join playstyles p on dt.Style = p.Id
@@ -56,6 +57,7 @@ function get_decklist_by_id($mysqli, $id) {
 		$stringa["Event"] = $row["Event"];
 		$stringa["Position"] = $row["Position"];
 		$stringa["Ruler"] = $row["Ruler"];
+		$stringa["Visibility"] = $row["Visibility"];
 		$res["content"] = $stringa;
 	} else {
 		$res["msg"] = "No data to view with id $id.";
@@ -141,7 +143,7 @@ function save_base_decklist_data($mysqli, $id, $name, $player, $event, $type, $p
 	// Effettuo update della sezione dei dati base e converto la data in timestamp se necessario.
 	$query = "UPDATE `decklists` SET `Name`=?,`Player`=?,`Event`=?,`Type`=?,`Visibility`=?,`GachaCode`=?,`Position`=? WHERE `Id`=?";
 	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("ssiiisii", $name_param, $player_param, $event_param, $type_param, $position_param, $gacha_code_param, $visibility_param, $id_param);
+	$stmt->bind_param("ssiiisii", $name_param, $player_param, $event_param, $type_param, $visibility_param, $gacha_code_param, $position_param, $id_param);
 	$id_param = $mysqli->real_escape_string($id);
 	$name_param = $mysqli->real_escape_string($name);
 	$player_param = $mysqli->real_escape_string($player);
@@ -169,6 +171,7 @@ function save_base_decklist_data($mysqli, $id, $name, $player, $event, $type, $p
 function save_decklist($mysqli, $id, $decks) {
     $res = array();
 	$res["result"] = false;
+	$res["message"] = "";
 
 	// Controllo che la connessione sia impostata.
 	if(!isset($mysqli)) {
@@ -187,59 +190,103 @@ function save_decklist($mysqli, $id, $decks) {
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $deck_param);
 	$deck_param = $mysqli->real_escape_string($id);
+	//$res["message"] .= var_dump($decks) . " ||| ";
 	if($stmt->execute()){
         // Divido i mazzetti da aggiungere.
-		$ruler = array();
-        foreach ($decks["ruler"]["deck"] as $value) {
-			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?, ?, ?, ?)";
+        foreach ($decks["ruler"]["deck"] as $key => $value) {
+			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
+					  FROM cards c
+					  WHERE c.Name = ?),0,?)";
 			$stmt = $mysqli->prepare($query);
-			$stmt->bind_param("i", $event_param);
+			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
+			$card_param = $mysqli->real_escape_string($value["name"]);
+			$quantity_param = $mysqli->real_escape_string($id["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore.
         		$res["error"] = "query";
+				$res["query"] = $query;
         		$res["number"] = $mysqli->errno;
-        		$res["message"] = $mysqli->error;
-				$res["message"] .= " There were problems during the insert of the ruler $value";
+        		$res["message"] .= $mysqli->error . var_dump($value);
+				$res["message"] .= " There were problems during the insert of the ruler " . $value["name"] . " di quantita " . $value["count"];
 				return $res;
 			}
         }
-		$rune = array();
+		
         foreach ($decks["rune"]["deck"] as $key => $value) {
-			$rune[$key] = $value;
-        }
-		$main = array();
-        foreach ($decks["main"]["deck"] as $key => $value) {
-			$main[$key] = $value;
-        }
-		$side = array();
-        foreach ($decks["side"]["deck"] as $key => $value) {
-			$side[$key] = $value;
-        }
-		$stone = array();
-        foreach ($decks["stone"]["deck"] as $key => $value) {
-			$stone[$key] = $value;
-        }
-
-		// Eseguo le insert.
-		foreach($new as $key => $value) {
-			if($value == "") {
-				// Se il valore è null allora lo salto.
-				continue;
-			}
-			$query = "INSERT INTO `event_rulers_breakdown` (`Event`, `Ruler`, `Quantity`) VALUES (?, $key, $value)";
+			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
+					  FROM cards c
+					  WHERE c.Name = ?),1,?)";
 			$stmt = $mysqli->prepare($query);
-			$stmt->bind_param("i", $event_param);
+			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
+			$card_param = $mysqli->real_escape_string($value["name"]);
+			$quantity_param = $mysqli->real_escape_string($id["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore.
         		$res["error"] = "query";
+				$res["query"] = $query;
         		$res["number"] = $mysqli->errno;
-        		$res["message"] = $mysqli->error;
-				$res["message"] .= " There were problems during the insert of the ruler $key";
+        		$res["message"] .= $mysqli->error . var_dump($value);
+				$res["message"] .= " There were problems during the insert of the rune " . $value["name"] . " di quantita " . $value["count"];
 				return $res;
 			}
-		}
-		$res["result"] = true;
-		$res["message"] = "Ruler Breakdowns correctly updated!";
+        }
+		
+        foreach ($decks["main"]["deck"] as $key => $value) {
+			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
+					  FROM cards c
+					  WHERE c.Name = ?),2,?)";
+			$stmt = $mysqli->prepare($query);
+			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
+			$card_param = $mysqli->real_escape_string($value["name"]);
+			$quantity_param = $mysqli->real_escape_string($id["count"]);
+			if(!$stmt->execute()) {
+				// Interrompo solamente se c'è un errore.
+        		$res["error"] = "query";
+				$res["query"] = $query;
+        		$res["number"] = $mysqli->errno;
+        		$res["message"] .= $mysqli->error . var_dump($value);
+				$res["message"] .= " There were problems during the insert of the main " . $value["name"] . " di quantita " . $value["count"];
+				return $res;
+			}
+        }
+		
+        foreach ($decks["side"]["deck"] as $key => $value) {
+			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
+					  FROM cards c
+					  WHERE c.Name = ?),3,?)";
+			$stmt = $mysqli->prepare($query);
+			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
+			$card_param = $mysqli->real_escape_string($value["name"]);
+			$quantity_param = $mysqli->real_escape_string($id["count"]);
+			if(!$stmt->execute()) {
+				// Interrompo solamente se c'è un errore.
+        		$res["error"] = "query";
+				$res["query"] = $query;
+        		$res["number"] = $mysqli->errno;
+        		$res["message"] .= $mysqli->error . var_dump($value);
+				$res["message"] .= " There were problems during the insert of the side " . $value["name"] . " di quantita " . $value["count"];
+				return $res;
+			}
+        }
+		
+        foreach ($decks["stone"]["deck"] as $key => $value) {
+			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
+					  FROM cards c
+					  WHERE c.Name = ?),4,?)";
+			$stmt = $mysqli->prepare($query);
+			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
+			$card_param = $mysqli->real_escape_string($value["name"]);
+			$quantity_param = $mysqli->real_escape_string($id["count"]);
+			if(!$stmt->execute()) {
+				// Interrompo solamente se c'è un errore.
+        		$res["error"] = "query";
+				$res["query"] = $query;
+        		$res["number"] = $mysqli->errno;
+        		$res["message"] .= $mysqli->error . var_dump($value);
+				$res["message"] .= " There were problems during the insert of the stone " . $value["name"] . " di quantita " . $value["count"];
+				return $res;
+			}
+        }
     } else {
         $res["error"] = "query";
         $res["number"] = $mysqli->errno;

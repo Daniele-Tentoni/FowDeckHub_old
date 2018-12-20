@@ -54,7 +54,7 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
     } else {
         $event = $event["content"];
     }
-    $decklists = get_event_decks($mysqli, $event_id);
+    $decklists = get_event_decks($mysqli, $event_id, $check_level == 0);
     $chart_top8 = get_chart_data_by_top8_decks($decklists["content"]);
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
 	$chart_event = get_chart_data_by_breakdown($breakdown);

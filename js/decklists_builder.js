@@ -5,19 +5,25 @@ $(document).ready(function (){
 
 	$(".decklist_importer").click(function (){
 		var text = $("#GachaText").val();
-        console.log(text);
         var panel = $(".import_decklist_panel");
-		var container = $(".import_decklist_panel e-body");
-		var deck_id = $(this).attr("data-decklist");
-		if(text.length <= 0 || container.length <= 0) {
+		var container = $(".import_decklist_panel .e-panel");
+		$(container).show();
+		container = $(".import_decklist_panel .e-body");
+		$(container).html("");
+		var deck_id = $(this).data("decklist");
+		if(text.length <= 0 || container.length <= 0 || deck_id.length <= 0) {
+        	console.log(text);
+        	console.log(container);
+        	console.log(deck_id);
 			$(container).html("Incorrect data input.");
+			console.log("Exited.");
 			return false;
 		}
 
 		var res = decklist_import(container, text);
         console.log("Imported");
 		if(res != false) {
-			var imp = import_ajax_caller(container, res, deck_id);
+			var imp = import_ajax_caller(panel, container, res, deck_id);
 			if(imp != false) {
                 console.log("Saved");
 				$(container).append("Decklist correctly imported.");
@@ -137,7 +143,6 @@ var validate_deck = function(name, num, min, max) {
 };
 
 var decklist_import = function(container, text) {
-	$(container).html("");
 	var deck = start_deck();
 	var elems = text.split('\n');
 	var not_valid = false;
@@ -232,20 +237,14 @@ var decklist_import = function(container, text) {
     }
 };
 
-var import_ajax_caller = function(container, decks, deck_id) {
+var import_ajax_caller = function(panel, container, decks, deck_id) {
 	var deck_string = JSON.stringify(decks);
-	var string_data = "Id" + deck_id + "&Deck=" + deck_string;
+	var string_data = "Id=" + deck_id + "&Deck=" + deck_string;
 	console.log(string_data);
 
     var form = $(panel);
 	var action = form.attr("action");
 	var method = form.attr("method");
-    if(form.length > 0) {
-		console.log(action);
-		console.log(method);
-    } else {
-    	return false;
-    }
 
 	$.ajax({
 		type: method,
@@ -253,21 +252,22 @@ var import_ajax_caller = function(container, decks, deck_id) {
 		dataType: "json",
 		data: string_data,
 		success:function(msg) {
-			$(panel + " .e-panel").show();
 			if(msg["result"] === true) {
-				$(panel + " .e-body").html("<span class=\"alert alert-success\">" + msg["message"] + "</span>");
+				$(container).html("<span class=\"alert alert-success\">" + msg["message"] + "</span>");
 			} else {
-				$(panel + " .e-body").html("<span class=\"alert alert-warning\">" + msg["message"] + "</span>");
+				$(container).html("<span class=\"alert alert-warning\">" + msg["message"] + "</span>");
                 console.log(msg.error);
-                console.log(msg["number"]);
-                console.log(msg["message"]);
+                console.log(msg.number);
+				console.log(msg.content);
+				return false;
 			}
 		},
 		error:function(msg) {
 			console.log(msg);
 			console.log("error");
-			$(panel + " .e-panel").show();
-			$(panel + " .e-body").html("<span class=\"alert alert-danger\">" + msg["message"] + "</span>");
+			$(container).show();
+			$(container).html("<span class=\"alert alert-danger\">" + msg["message"] + "</span>");
+			return false;
 		}
 	});
 }

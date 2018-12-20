@@ -22,7 +22,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<p style="margin: 1rem 0">Edit the decklist with id: <?php echo $decklist["Id"]; ?>. But, pay Attenction! This is the core of the site, so it's ever under maintance, all contents can change without any advice during the Alpha tests. If you find a bug, please notify to the administrator or report a bug with the utility link at the bottom of the page.</p>
+						<p style="margin: 1rem 0">Edit the decklist with id: <?php echo $elem["Id"]; ?>. But, pay Attenction! This is the core of the site, so it's ever under maintance, all contents can change without any advice during the Alpha tests. If you find a bug, please notify to the administrator or report a bug with the utility link at the bottom of the page.</p>
 						<p style="margin: 1rem 0">Change the visibility state permit to all users to see the decklist.</p>
 					</div>
 				</div>
@@ -174,8 +174,10 @@
                                             <input type="checkbox" id="Visibility" class="form-control add_item" 
                                             <?php 
                                             if(isset($elem["Visibility"])) {
-                                            	echo "checked=\"" . $elem["Visibility"] == 1 ? "true" : "false" . "\"";
-                                        	}
+                                            	echo "checked=\"" . ($elem["Visibility"] == 1 ? "true" : "false") . "\"";
+                                        	} else {
+                                                var_dump($elem);
+                                            }
                                        		?> />
                                             <span></span>
                                         </label>
@@ -201,7 +203,7 @@
                 <form autocomplete="false" class="import_decklist_panel" method="post" action="ajax/decklist_ajax.php?save_decklist">
                     <div class="panel-heading">
                         <h3 class="panel-title">Decklist Import</h3>
-                        <button class="btn btn-primary btn-rounded pull-right decklist_importer" data-decklist="<?php echo $decklist["Id"]; ?>"><i class="fa fa-floppy-o" aria-hidden="true"></i> Import</button>
+                        <button class="btn btn-primary btn-rounded pull-right decklist_importer" data-decklist="<?php echo $elem["Id"]; ?>"><i class="fa fa-floppy-o" aria-hidden="true"></i> Import</button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -224,7 +226,7 @@
                         <button class="btn btn-default btn-rounded pull-right"  onclick="reset_base_data();">
                         	<i class="fa fa-trash-o" aria-hidden="true"></i> Reset
                         </button>
-                        <button class="btn btn-primary btn-rounded pull-right decklist_importer" data-decklist="<?php echo $decklist["Id"]; ?>" >
+                        <button class="btn btn-primary btn-rounded pull-right decklist_importer" data-decklist="<?php echo $elem["Id"]; ?>" >
                         	<i class="fa fa-floppy-o" aria-hidden="true"></i> Import
                         </button>
                     </div>

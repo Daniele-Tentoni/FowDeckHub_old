@@ -160,7 +160,7 @@ function get_event_by_id($mysqli, $id) {
 /*
  * Get all decklists from an event.
  */
-function get_event_decks($mysqli, $event) {
+function get_event_decks($mysqli, $event, $admin) {
 	$res = array();
 	$res["result"] = false;
 
@@ -177,12 +177,12 @@ function get_event_decks($mysqli, $event) {
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, d.Position, c.Name as Ruler
+	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, d.Position, c.Name as Ruler, d.Visibility
 				from decklists d 
-				join decktypes dt on d.Type = dt.Id
-				join playstyles p on dt.Style = p.Id
-				join cards c on d.Ruler = c.Id
-				where d.Visibility = 1";
+				left join decktypes dt on d.Type = dt.Id
+				left join playstyles p on dt.Style = p.Id
+				left join cards c on d.Ruler = c.Id
+				where " . ($admin ? "d.Visibility IN (0, 1)" : "d.Visibility = 1");
 
 	if(isset($event) && $event > 0) {
 		// Carico una specifica decklist.
@@ -206,6 +206,7 @@ function get_event_decks($mysqli, $event) {
 			$stringa["Style"] = $row["Style"];
 			$stringa["Position"] = $row["Position"];
 			$stringa["Ruler"] = $row["Ruler"];
+			$stringa["Visibility"] = $row["Visibility"];
 			array_push($res["content"], $stringa);
 		}
 	} else {
@@ -224,16 +225,17 @@ function get_event_map($mysqli) {
     $msg = array();
     $msg["result"] = false;
     $msg["error"] = "nothing";
-    $stringa = "";
     
     // Controllo che la connessione sia impostata.
     if(!isset($mysqli)) {
-        $msg["error"] = "Server connection error. Please, contact the support.";
+		$msg["content"] = SERVER_ERR;
+        $msg["error"] = "server_err";
         return $msg;
     }
 
     if(isset($mysqli) && $mysqli->connect_error) {
-        $msg["error"] = "Database server connection error. Please, contact the support.";
+        $msg["content"] = SERVER_CONN_ERR;
+		$msg["error"] = "server_conn_err";
         return $msg;
     } 
 
@@ -250,16 +252,18 @@ function get_event_map($mysqli) {
     $result = $stmt->get_result();
     if($result->num_rows > 0) {
         $msg["content"] = array();
+		$msg["result"] = true;
         $msg["error"] = "There's some data to view";
         while($row = $result->fetch_assoc()) {
-            $stringa[$row["Sign"]] = $row["Conteggio"];
+            $msg["content"][$row["Sign"]] = $row["Conteggio"];
         }
     } else {
-        $msg["error"] = "No data to view.";
+		$msg["content"] = "There's no data to view.";
+        $msg["error"] = "no_data";
         return $msg;
     }
 
-    return $stringa;
+    return $msg;
 }
 
 /*
@@ -274,12 +278,14 @@ function get_event_map_details($mysqli, $region) {
     
     // Controllo che la connessione sia impostata.
     if(!isset($mysqli)) {
-        $msg["error"] = "Server connection error. Please, contact the support.";
+		$msg["content"] = SERVER_ERR;
+        $msg["error"] = "server_err";
         return $msg;
     }
 
     if(isset($mysqli) && $mysqli->connect_error) {
-        $msg["error"] = "Database server connection error. Please, contact the support.";
+        $msg["content"] = SERVER_CONN_ERR;
+		$msg["error"] = "server_conn_err";
         return $msg;
     } 
 
@@ -292,7 +298,8 @@ function get_event_map_details($mysqli, $region) {
 			                 FROM decklists d
                              WHERE d.Visibility = 1
 			                 GROUP BY d.Event) AS de ON de.Event = e.Id
-                WHERE n.WorldMapSign = ?";
+                WHERE n.WorldMapSign = ?
+				  AND e.Visibility = 1";
 
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("s", $region_sql);
@@ -313,7 +320,8 @@ function get_event_map_details($mysqli, $region) {
 			array_push($msg["content"], $stringa);
         }
     } else {
-        $msg["error"] = "No data to view.";
+		$msg["content"] = "There's no data to view.";
+        $msg["error"] = "no_data";
         return $msg;
     }
 
