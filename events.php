@@ -10,6 +10,7 @@ if(!$log_result) {
 } else {
 	$login_checked = true;
 }
+
 // Controllo il livello senza tracciarlo, altrimenti qui sarebbe un morire.
 $check_level = check_level($mysqli, 2, false);
 if($check_level == 0) { 
@@ -25,13 +26,11 @@ if($check_level == 0) {
 /*
  * Carico qui diverse informazioni a seconda della pagina richiesta.
  */
-$active_page = 12;
+$active_page = 13;
 $title = "";
 $page = "";
 require_once ROOT_PATH . '/controllers/event_controller.php';
 if($log_result && $check_level == 0 && isset($_GET["new_event"])) {
-    $header = '/layout/header.php';
-    $login_checked = true;
     $title = "New Event - Administrator - Fow Deck Hub";
     $event = create_new_event($mysqli);
     if(!$event["result"]) {
@@ -45,17 +44,22 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
         $header = '/layout/header.php';
         $title = "Event Details - Administrator - Fow Deck Hub";
     } else {
-        $header = '/layout/user_header.php';
         $title = "Event Details - Fow Deck Hub";
     }
     $page = "/pages/event/events_details.php";
     $event_id = $_GET["event_id"];
-    $event = get_event_by_id($mysqli, $event_id)["content"];
-    $decklists = get_event_decks($mysqli, $event_id);
+    $event = get_event_by_id($mysqli, $event_id);
+    if(!$event["result"]) {
+        header("Refresh: 2;URL=events.php");
+    } else {
+        $event = $event["content"];
+    }
+    $decklists = get_event_decks($mysqli, $event_id, $check_level == 0);
     $chart_top8 = get_chart_data_by_top8_decks($decklists["content"]);
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
 	$chart_event = get_chart_data_by_breakdown($breakdown);
 	$show_event = false;
+    $simple_table = true;
 } 
 else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
     $header = '/layout/header.php';
@@ -64,7 +68,8 @@ else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET[
     $page = "/pages/event/event_edit.php";
     $event_id = $_GET["event_edit"];
     $event = get_event_by_id($mysqli, $event_id)["content"];
-    $decklists = get_event_decks($mysqli, $event_id);
+    // Ho già controllato che l'utente fosse un utente con i privilegi necessari.
+    $decklists = get_event_decks($mysqli, $event_id, true);
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
 } 
 else {
@@ -83,7 +88,7 @@ else {
     }
     $title = "Events - Administrator - Fow Deck Hub";
     $page = "/pages/event/events_partial.php";
-}
+} 
 
 /*
  * Assemblo la pagina.

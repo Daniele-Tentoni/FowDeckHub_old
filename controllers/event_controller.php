@@ -101,6 +101,64 @@ function get_all_admin_events($mysqli, $id, $year){
 }
 
 /*
+ * Ritorna l'ultimo evento disputato che sia visibile.
+ */
+function get_latest_event($mysqli) {
+	$res = array();
+	$res["result"] = false;
+    
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+        $res["error"] = "server_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_ERR;
+		return $res;
+	}
+	if(isset($mysqli) && $mysqli->connect_error) {
+        $res["error"] = "server_conn_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_CONN_ERR;
+		return $res;
+	} 
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
+			FROM events e
+			JOIN nations n on e.Nation = n.Id
+			WHERE e.Visibility = 1
+            ORDER BY e.Date DESC
+            LIMIT 1";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["message"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Id"] = $row["Id"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Nation"] = $row["Nation"];
+			$stringa["Year"] = $row["Year"];
+			$stringa["Attendance"] = $row["Attendance"];
+			$stringa["Date"] = $row["Date"];
+			$stringa["CommunityReports"] = $row["CommunityReports"];
+			$stringa["OtherLinks"] = $row["OtherLinks"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+        $res["error"] = "query";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = "No data to view. " . $mysqli->error;
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
  * Ritorna i dati relativi ad un evento dato il suo id.
  */
 function get_event_by_id($mysqli, $id) {
@@ -132,7 +190,7 @@ function get_event_by_id($mysqli, $id) {
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $id_param);
-	$id_param = mysql_real_escape_string($id);
+	$id_param = $mysqli->real_escape_string($id);
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
@@ -160,7 +218,7 @@ function get_event_by_id($mysqli, $id) {
 /*
  * Get all decklists from an event.
  */
-function get_event_decks($mysqli, $event) {
+function get_event_decks($mysqli, $event, $admin) {
 	$res = array();
 	$res["result"] = false;
 
@@ -177,12 +235,12 @@ function get_event_decks($mysqli, $event) {
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, d.Position, c.Name as Ruler
+	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, d.Position, c.Name as Ruler, d.Visibility
 				from decklists d 
-				join decktypes dt on d.Type = dt.Id
-				join playstyles p on dt.Style = p.Id
-				join cards c on d.Ruler = c.Id
-				where d.Visibility = 1";
+				left join decktypes dt on d.Type = dt.Id
+				left join playstyles p on dt.Style = p.Id
+				left join cards c on d.Ruler = c.Id
+				where " . ($admin ? "d.Visibility IN (0, 1)" : "d.Visibility = 1");
 
 	if(isset($event) && $event > 0) {
 		// Carico una specifica decklist.
@@ -206,6 +264,7 @@ function get_event_decks($mysqli, $event) {
 			$stringa["Style"] = $row["Style"];
 			$stringa["Position"] = $row["Position"];
 			$stringa["Ruler"] = $row["Ruler"];
+			$stringa["Visibility"] = $row["Visibility"];
 			array_push($res["content"], $stringa);
 		}
 	} else {
@@ -224,16 +283,17 @@ function get_event_map($mysqli) {
     $msg = array();
     $msg["result"] = false;
     $msg["error"] = "nothing";
-    $stringa = "";
     
     // Controllo che la connessione sia impostata.
     if(!isset($mysqli)) {
-        $msg["error"] = "Server connection error. Please, contact the support.";
+		$msg["content"] = SERVER_ERR;
+        $msg["error"] = "server_err";
         return $msg;
     }
 
     if(isset($mysqli) && $mysqli->connect_error) {
-        $msg["error"] = "Database server connection error. Please, contact the support.";
+        $msg["content"] = SERVER_CONN_ERR;
+		$msg["error"] = "server_conn_err";
         return $msg;
     } 
 
@@ -242,6 +302,7 @@ function get_event_map($mysqli) {
     $query = "SELECT n.Id, n.WorldMapSign as Sign, COUNT(*) as Conteggio
               FROM events e
 			  JOIN nations n ON e.Nation = n.Id
+              WHERE e.Visibility = 1
               GROUP BY Sign";
 
     $stmt = $mysqli->prepare($query);
@@ -249,16 +310,18 @@ function get_event_map($mysqli) {
     $result = $stmt->get_result();
     if($result->num_rows > 0) {
         $msg["content"] = array();
+		$msg["result"] = true;
         $msg["error"] = "There's some data to view";
         while($row = $result->fetch_assoc()) {
-            $stringa[$row["Sign"]] = $row["Conteggio"];
+            $msg["content"][$row["Sign"]] = $row["Conteggio"];
         }
     } else {
-        $msg["error"] = "No data to view.";
+		$msg["content"] = "There's no data to view.";
+        $msg["error"] = "no_data";
         return $msg;
     }
 
-    return $stringa;
+    return $msg;
 }
 
 /*
@@ -273,12 +336,14 @@ function get_event_map_details($mysqli, $region) {
     
     // Controllo che la connessione sia impostata.
     if(!isset($mysqli)) {
-        $msg["error"] = "Server connection error. Please, contact the support.";
+		$msg["content"] = SERVER_ERR;
+        $msg["error"] = "server_err";
         return $msg;
     }
 
     if(isset($mysqli) && $mysqli->connect_error) {
-        $msg["error"] = "Database server connection error. Please, contact the support.";
+        $msg["content"] = SERVER_CONN_ERR;
+		$msg["error"] = "server_conn_err";
         return $msg;
     } 
 
@@ -289,8 +354,10 @@ function get_event_map_details($mysqli, $region) {
                 JOIN nations n on e.Nation = n.Id
                 LEFT JOIN (SELECT d.Event, COUNT(*) as Cont
 			                 FROM decklists d
+                             WHERE d.Visibility = 1
 			                 GROUP BY d.Event) AS de ON de.Event = e.Id
-                WHERE n.WorldMapSign = ?";
+                WHERE n.WorldMapSign = ?
+				  AND e.Visibility = 1";
 
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("s", $region_sql);
@@ -311,7 +378,8 @@ function get_event_map_details($mysqli, $region) {
 			array_push($msg["content"], $stringa);
         }
     } else {
-        $msg["error"] = "No data to view.";
+		$msg["content"] = "There's no data to view.";
+        $msg["error"] = "no_data";
         return $msg;
     }
 
@@ -347,16 +415,18 @@ function get_event_rulers_breakdowns_by_id($mysqli, $event_id) {
 				  and b.Quantity > 0";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $event_id_param);
-	$event_id_param = mysql_real_escape_string($event_id);
+	$event_id_param = $mysqli->real_escape_string($event_id);
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
+		$cont = 0;
 		while($row = $result->fetch_assoc()) {
-			$stringa["Ruler"] = $row["Ruler"];
 			$stringa["Quantity"] = $row["Quantity"];
 			$stringa["Name"] = $row["Name"];
-			array_push($msg["content"], $stringa);
+			$cont += $stringa["Quantity"];
+			$msg["content"][$row["Ruler"]] = $stringa;
 		}
+		$msg["Total"] = $cont;
 	} else {
         $msg["error"] = "No data to view.";
         return $msg;
@@ -388,16 +458,17 @@ function get_event_widget_details($mysqli, $year) {
 
     // Effettuo finalmente il caricamento della decklist.
     // Carico tutte le decklists.
-    $query = "SELECT e.Id, e.Name, n.Name as Nation, e.Date, Cont
-                FROM events e
-                JOIN nations n on e.Nation = n.Id
-                LEFT JOIN (SELECT d.Event, COUNT(*) as Cont
-                             FROM decklists d
-                             JOIN events e1 ON d.Event = e1.Id
-                             WHERE e1.Year = ?
-                             GROUP BY d.Event
-                             HAVING Cont < 8) AS de ON de.Event = e.Id
-                WHERE e.Year = ?";
+    $query = "SELECT e.Id, e.Name, n.Name as Nation, e.Date, Cont 
+				FROM events e 
+				JOIN nations n on e.Nation = n.Id 
+				LEFT JOIN (
+				    SELECT d.Event, COUNT(*) as Cont 
+				    FROM decklists d 
+				    JOIN events e1 ON d.Event = e1.Id 
+				    WHERE e1.Year = ?
+				    GROUP BY d.Event) AS de ON de.Event = e.Id 
+				WHERE e.Year = ?
+				  AND Cont < 8";
 
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("ii", $year_sql, $year_sql);
@@ -455,8 +526,8 @@ function get_chart_data_by_top8_decks($decklists) {
  */
 function get_chart_data_by_breakdown($breakdown) {
 	$data = array();
-    foreach($breakdown as $row){
-		$data[$row["Name"]] = $row["Quantity"];
+    foreach($breakdown as $key => $value){
+		$data[$value["Name"]] = $value["Quantity"];
     }
     
     $chart = array();
@@ -510,7 +581,7 @@ function create_new_event($mysqli){
 /*
  * Mi salvo i dati base dell'evento.
  */
-function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance) {
+function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance, $visibility) {
     $res = array();
 	$res["result"] = false;
 
@@ -526,21 +597,21 @@ function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance)
 	}
 
 	// Effettuo update della sezione dei dati base e converto la data in timestamp se necessario.
-	$query = "UPDATE events SET Name=?, Nation=?, Year=?, Attendance=?, Date=? WHERE Id = ?";
+	$query = "UPDATE events SET Name = ?, Nation = ?, Year = ?, Attendance = ?, `Date` = ?, Visibility = ? WHERE Id = ?";
     $pieces = explode(" ", $data);
     if(!isset($pieces[1])) {
         $data . " 00:00:00";
     }
     
 	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("siiisi", $name_param, $nation_param, $year_param, $attendance_param, $data_param, $id_param);
-	$id_param = mysql_real_escape_string($id);
-	$name_param = mysql_real_escape_string($name);
-	$year_param = mysql_real_escape_string($year);
+	$stmt->bind_param("siiisii", $name_param, $nation_param, $year_param, $attendance_param, $data_param, $visibility_param, $id_param);
+	$id_param = $mysqli->real_escape_string($id);
+	$name_param = $mysqli->real_escape_string($name);
+	$year_param = $mysqli->real_escape_string($year);
     $data_param = date("Y-m-d H:i:s", strtotime($data));
-	//$data_param = mysql_real_escape_string($data) . " 00:00:00";
-	$nation_param = mysql_real_escape_string($nation);
-	$attendance_param = mysql_real_escape_string($attendance);
+	$nation_param = $mysqli->real_escape_string($nation);
+	$attendance_param = $mysqli->real_escape_string($attendance);
+	$visibility_param = $mysqli->real_escape_string($visibility);
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
@@ -549,6 +620,8 @@ function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance)
         $res["error"] = "query";
         $res["number"] = $mysqli->errno;
         $res["message"] = $mysqli->error;
+        $res["data"] = $data_param;
+        $res["data"] = $id_param . "/" . $name_param . "/" . $year_param . "/" . $data_param . "/" . $nation_param . "/" . $attendance_param . "/" . $visibility_param . "/";
     }
     
 	return $res;
@@ -577,8 +650,8 @@ function save_community_reports($mysqli, $id, $comm_rep) {
     
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("si", $comm_rep_param, $id_param);
-	$id_param = mysql_real_escape_string($id);
-	$comm_rep_param = mysql_real_escape_string($comm_rep);
+	$id_param = $mysqli->real_escape_string($id);
+	$comm_rep_param = $mysqli->real_escape_string($comm_rep);
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
@@ -614,8 +687,8 @@ function save_other_links($mysqli, $id, $other_links) {
     
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("si", $other_links_param, $id_param);
-	$id_param = mysql_real_escape_string($id);
-	$other_links_param = mysql_real_escape_string($other_links);
+	$id_param = $mysqli->real_escape_string($id);
+	$other_links_param = $mysqli->real_escape_string($other_links);
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
@@ -651,7 +724,7 @@ function save_ruler_breakdown($mysqli, $id, $breakdown) {
 	$query = "SELECT Ruler, Quantity FROM event_rulers_breakdown WHERE Event = ?";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $event_param);
-	$event_param = mysql_real_escape_string($id);
+	$event_param = $mysqli->real_escape_string($id);
 	if($stmt->execute()){
         $result = $stmt->get_result();
         // Divido i ruler in nuovi ed esistenti.
@@ -669,7 +742,12 @@ function save_ruler_breakdown($mysqli, $id, $breakdown) {
         }
 		// Eseguo le update.
 		foreach($old as $key => $value) {
-			$query = "UPDATE event_rulers_breakdown SET Quantity = $value WHERE Event = ? AND Ruler = $key";
+			if($value == "" || $value <= 0) {
+				// Se il valore non è valido vuol dire che è da eliminare.
+				$query = "DELETE FROM event_rulers_breakdown WHERE Event = ? AND Ruler = $key";
+			} else {
+				$query = "UPDATE event_rulers_breakdown SET Quantity = $value WHERE Event = ? AND Ruler = $key";
+			}
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("i", $event_param);
 			if(!$stmt->execute()) {
@@ -709,4 +787,15 @@ function save_ruler_breakdown($mysqli, $id, $breakdown) {
     
 	return $res;
 }
+
+function test_controller($mysqli) {
+	$stringa = "Hai richiesto correttamente il controller.";
+	if(isset($mysqli)) {
+		$stringa .= "La connessione è impostata.";
+	} else {
+		$stringa .= "La connessione non è impostata";
+	}
+	return $stringa;
+}
+
 ?>

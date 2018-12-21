@@ -21,9 +21,9 @@
 	// Qui controllo quale operazione devo eseguire arrivato dalla chiamata ajax.
 	if(isset($_GET["new_bug"])) {
 		// Creo il nuovo bug.
-		$name = mysql_real_escape_string($_POST["name"]);
-		$email = mysql_real_escape_string($_POST["email"]);
-		$bug = mysql_real_escape_string($_POST["bug"]);
+		$name = $mysqli->real_escape_string($_POST["name"]);
+		$email = $mysqli->real_escape_string($_POST["email"]);
+		$bug = $mysqli->real_escape_string($_POST["bug"]);
 		$result = new_bug($mysqli, $name, $email, $bug);
 		echo json_encode($result);
 	} else if(isset($_GET["change_state"]) && 
@@ -40,8 +40,8 @@
 		}
 		
 		// Non deve essere possibile cambiare lo status di un bug_report  in new, quindi maggiore di 1 deve essere.
-		$id = mysql_real_escape_string($_POST["id"]);
-		$state = mysql_real_escape_string($_POST["state"]);
+		$id = $mysqli->real_escape_string($_POST["id"]);
+		$state = $mysqli->real_escape_string($_POST["state"]);
 		$result = change_state_bug($mysqli, $id, $state);
 		echo json_encode($result);
 	} else if(isset($_GET["numbers"])) {

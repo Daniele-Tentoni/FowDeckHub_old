@@ -28,7 +28,7 @@ function get_event_by_id($mysqli, $id) {
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $id_param);
-	$id_param = mysql_real_escape_string($id);
+	$id_param = $mysqli->real_escape_string($id);
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
@@ -97,7 +97,7 @@ function get_all_events($mysqli, $id, $year){
 	// Codice poco pulito.
 	if(isset($year) && $year > 0) {
 		$stmt->bind_param("i", $year_param);
-		$year_param = mysql_real_escape_string($year);
+		$year_param = $mysqli->real_escape_string($year);
 	}
 	*/
 	

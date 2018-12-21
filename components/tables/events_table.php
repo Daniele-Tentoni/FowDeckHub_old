@@ -25,8 +25,7 @@
 				echo !isset($show_attendance) || $show_attendance ? "	<td>" . $value["Attendance"] . "</td>" : "";
 				echo !isset($show_visibility) || $show_visibility ? "	<td>" . $value["Visibility"] . "</td>" : "";
 				echo !isset($show_actions) || $show_actions ? "	<td>" : "";
-				echo !isset($show_actions) || $show_actions ? "		<button class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></button>" : "";
-				echo !isset($show_actions) || $show_actions ? "		<button class=\"btn btn-danger btn-rounded btn-sm\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span></button>" : "";
+				echo !isset($show_actions) || $show_actions ? "		<a href=\"events.php?event_edit=" . $value["Id"] . "\" class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></button>" : "";
 				echo !isset($show_actions) || $show_actions ? "	</td>" : "";
 				echo "</tr>";
             }

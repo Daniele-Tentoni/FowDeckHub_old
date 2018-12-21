@@ -55,6 +55,43 @@
 
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <h3 class="push-down-0">Event Questions</h3>
+                </div>
+                <div class="panel-body faq">
+
+                    <div class="faq-item">
+                        <div class="faq-title"><span class="fa fa-angle-down"></span>What are the graphs in the event detail view?</div>
+                        <div class="faq-text">
+                            <h5>Some data that help to analyze the meta of the event.</h5>
+                            <p>There are four type of graphs for each event. All of these are important to understand the state of meta and of the game.</p>
+                            <p>For each graph under this question there are's four question that explain each graph.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-title"><span class="fa fa-angle-down"></span>The ruler breakdown chart?</div>
+                        <div class="faq-text">
+                            <h5>Some data that help to analyze the meta of the event.</h5>
+                            <p>The ruler breakdown chart shows how the sovereigns are distributed throughout the event, shows the king preferred by the players and the less, giving an idea of what will then be an eventual top.</p>
+
+							<p>But eye to appearances! So much variety of sovereigns in this chart will not necessarily mean that the goal is also varied. In a future it will also be implemented the graph of the distribution of the various types of deck used during the competition, giving a slightly more real idea of the state of the goal.</p>
+
+							<p>See the appropriate question about which indicators of a varied and balanced destination are adopted by the developers about it!</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-title"><span class="fa fa-angle-down"></span>The top 8 ruler graph?</div>
+                        <div class="faq-text">
+                            <h5>This graph show how are distributed the rulers among top 8 decks.</h5>
+                            <p></p>
+                            <p>For each graph under this question there are's four question that explain each graph.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-body">
                     <h3 class="push-down-0">Other Questions</h3>
                 </div>
                 <div class="panel-body faq">

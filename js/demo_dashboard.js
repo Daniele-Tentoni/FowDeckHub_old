@@ -161,7 +161,6 @@ $(function(){
                 var elem = "";
                 if(result.result == true) {
                     result.content.forEach(function(value){
-                        console.log(value);
                         // Mostro la tabellina degli eventi disponibili, colorandoli se sono completi oppure no.
                         elem += "<div class=\"progress-list\">";
                         if(value.Cont > 7) {
@@ -184,7 +183,12 @@ $(function(){
                         elem += "</div>";
                     });
                 } else {
-                    elem += "<p>There was a problem, contact the system administrator with the bug report button.</p>";
+                    if(result.error === "no_data") {
+                        elem += "<p>There are no data to show about the event in this nation.";
+                    } else {
+                        elem += "<p>There was a problem, contact the system administrator with the bug report button.</p>";
+                        console.log(result);
+                    }
                 }
                 $("#event_list").html(elem);
             },
@@ -203,7 +207,7 @@ $(function(){
             series: {
                 regions: [{
                     values: values,
-                    scale: ['#C8EEFF', '#0071A4'],
+                    scale: ['#ff0000', '#00ff1d'],
                     normalizeFunction: 'polynomial'
                 }]
             },
@@ -219,7 +223,7 @@ $(function(){
 		url: "ajax/event_ajax.php?event_map",
 		dataType: "json",
 		success: function (result) {
-            inizialize_map(result);
+            inizialize_map(result.content);
         },
 		error: function(error) {
             console.log(error);
