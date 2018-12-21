@@ -4,6 +4,7 @@
   file, You can obtain one at http://mozilla.org/MPL/2.0/.*/
 require_once '../definings.php';
 require_once ROOT_PATH . '/config/functions.php';
+require_once ROOT_PATH . '/controllers/event_controller.php';
 
 include 'TGBot.php';
 $TGBot = new TGBot(file_get_contents('php://input'), 'oBg9PDd5IF6GXySH8tLlVhvpxiMfKmOrNeT72JnR', $_GET['fpam'], $_GET['token']);

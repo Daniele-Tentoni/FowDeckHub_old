@@ -4,6 +4,7 @@ var save_base_data = function(panel, id) {
 	var entities = [];
 	var values = [];
 	$(panel + " .add_item").each(function(e) {
+		debugger;
         var val = 0;
         if($(this).attr("type") == "checkbox") {
             val = $(this).prop("checked") == true ? 1 : 0;

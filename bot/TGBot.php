@@ -249,7 +249,7 @@ class TGBot
         return curl_exec($this->curl);
     }
 
-    public function getBotInfo($info)
+    public function get_bot_info($info)
     {
         $get = json_decode(self::Request('/getme'), true);
         if ($info == 'username') {

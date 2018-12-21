@@ -1,4 +1,6 @@
-ALTER TABLE `events` CHANGE `CommunityReports` `CommunityReports` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'There is no community reports. Contact the admin if you have one!', CHANGE `OtherLinks` `OtherLinks` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'There is no other links. Contact the admin if you have one!';
+ALTER TABLE `events` 
+CHANGE `CommunityReports` `CommunityReports` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'There is no community reports. Contact the admin if you have one!', 
+CHANGE `OtherLinks` `OtherLinks` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT 'There is no other links. Contact the admin if you have one!';
 
 -- 17-12-2018
 ALTER TABLE `event_rulers_breakdown` CHANGE `Quantity` `Quantity` INT(11) NULL;
@@ -41,3 +43,11 @@ INSERT INTO `cards` (`Id`, `Name`, `Set`, `Number`, `Cost`, `Visibility`, `Rarit
 ('3279', 'Karmic Reversal', 'SDV1', '010', '1W', '1', '1'), 
 ('3412', 'Whispers of an Angel', 'NDR', '020', '2W', '1', '2'), 
 ('3281', "Odin's Judgment", 'SDV1', '012', '1WW', '1', '3');
+
+-- 21-12-2018
+ALTER TABLE `events` CHANGE `CommunityReports` `CommunityReports` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'No community reports. Contact the admin if you have one!';
+ALTER TABLE `events` CHANGE `OtherLinks` `OtherLinks` VARCHAR(5000) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT 'No other links. Contact the admin if you have one!';
+
+INSERT INTO `my_fowdeckhub`.`decktypes` (`Id`, `Name`, `Style`) VALUES 
+(NULL, 'Atom Midrange', '2'), 
+(NULL, 'Loki Aggro', '1');

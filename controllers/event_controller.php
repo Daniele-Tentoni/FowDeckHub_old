@@ -101,6 +101,64 @@ function get_all_admin_events($mysqli, $id, $year){
 }
 
 /*
+ * Ritorna l'ultimo evento disputato che sia visibile.
+ */
+function get_latest_event($mysqli) {
+	$res = array();
+	$res["result"] = false;
+    
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+        $res["error"] = "server_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_ERR;
+		return $res;
+	}
+	if(isset($mysqli) && $mysqli->connect_error) {
+        $res["error"] = "server_conn_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_CONN_ERR;
+		return $res;
+	} 
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
+			FROM events e
+			JOIN nations n on e.Nation = n.Id
+			WHERE e.Visibility = 1
+            ORDER BY e.Date DESC
+            LIMIT 1";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["message"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Id"] = $row["Id"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Nation"] = $row["Nation"];
+			$stringa["Year"] = $row["Year"];
+			$stringa["Attendance"] = $row["Attendance"];
+			$stringa["Date"] = $row["Date"];
+			$stringa["CommunityReports"] = $row["CommunityReports"];
+			$stringa["OtherLinks"] = $row["OtherLinks"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+        $res["error"] = "query";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = "No data to view. " . $mysqli->error;
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
  * Ritorna i dati relativi ad un evento dato il suo id.
  */
 function get_event_by_id($mysqli, $id) {
@@ -361,11 +419,14 @@ function get_event_rulers_breakdowns_by_id($mysqli, $event_id) {
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {
+		$cont = 0;
 		while($row = $result->fetch_assoc()) {
 			$stringa["Quantity"] = $row["Quantity"];
 			$stringa["Name"] = $row["Name"];
+			$cont += $stringa["Quantity"];
 			$msg["content"][$row["Ruler"]] = $stringa;
 		}
+		$msg["Total"] = $cont;
 	} else {
         $msg["error"] = "No data to view.";
         return $msg;
@@ -397,16 +458,17 @@ function get_event_widget_details($mysqli, $year) {
 
     // Effettuo finalmente il caricamento della decklist.
     // Carico tutte le decklists.
-    $query = "SELECT e.Id, e.Name, n.Name as Nation, e.Date, Cont
-                FROM events e
-                JOIN nations n on e.Nation = n.Id
-                LEFT JOIN (SELECT d.Event, COUNT(*) as Cont
-                             FROM decklists d
-                             JOIN events e1 ON d.Event = e1.Id
-                             WHERE e1.Year = ?
-                             GROUP BY d.Event
-                             HAVING Cont < 8) AS de ON de.Event = e.Id
-                WHERE e.Year = ?";
+    $query = "SELECT e.Id, e.Name, n.Name as Nation, e.Date, Cont 
+				FROM events e 
+				JOIN nations n on e.Nation = n.Id 
+				LEFT JOIN (
+				    SELECT d.Event, COUNT(*) as Cont 
+				    FROM decklists d 
+				    JOIN events e1 ON d.Event = e1.Id 
+				    WHERE e1.Year = ?
+				    GROUP BY d.Event) AS de ON de.Event = e.Id 
+				WHERE e.Year = ?
+				  AND Cont < 8";
 
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("ii", $year_sql, $year_sql);
@@ -725,4 +787,15 @@ function save_ruler_breakdown($mysqli, $id, $breakdown) {
     
 	return $res;
 }
+
+function test_controller($mysqli) {
+	$stringa = "Hai richiesto correttamente il controller.";
+	if(isset($mysqli)) {
+		$stringa .= "La connessione è impostata.";
+	} else {
+		$stringa .= "La connessione non è impostata";
+	}
+	return $stringa;
+}
+
 ?>
