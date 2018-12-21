@@ -6,11 +6,11 @@
             <span>Show decklists around the world.</span>
         </div>                                     
         <ul class="panel-controls panel-controls-title">
-            <li>
+            <!--<li>
                 <div id="reportrange" class="dtrange">
                     <span></span><b class="caret"></b>
                 </div>                                     
-            </li>                                
+            </li>-->                                
             <li><a href="#" class="panel-fullscreen rounded"><span class="fa fa-expand"></span></a></li>
         </ul>                                    
 

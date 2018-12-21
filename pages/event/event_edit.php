@@ -1,8 +1,14 @@
 <!-- START BREADCRUMB -->
+<ul class="breadcrumb">
+	<li><a href="index.php">Home</a></li>
+	<li><a href="events.php">Events</a></li>
+	<li class="active">Event Edit</li>
+</ul>
+<!-- END BREADCRUMB -->
 
 <!-- PAGE TITLE -->
 <div class="page-title">                    
-	<h2><a onClick="history.back();" class="link"><span class="fa fa-arrow-circle-o-left"></span></a> Edit Event</h2>
+	<h2><a onclick="history.back();" class="link"><span class="fa fa-arrow-circle-o-left"></span></a> Edit Event</h2>
 </div>
 <!-- END PAGE TITLE -->
 
@@ -10,16 +16,30 @@
 <div class="page-content-wrap">
 	<div class="row">
 		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-info" aria-hidden="true"></i> Base Informations</h3>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<p style="margin: 1rem 0">Edit the event with id: <?php echo $event["Id"]; ?>. But, pay Attenction! This is the core of the site, so it's ever under maintance, all contents can change without any advice during the Alpha tests.</p>
+						<p style="margin: 1rem 0">Note that September, October, November and Dicember of an year after the WGP are under the new season beginning, so select the year when the season is started (put the year of the newest cluster. Es: WGP 2018 in Tokyo was played when NDR was already release, so put 2018) .</p>
+						<p style="margin: 1rem 0">Change the visibility state permit to all users to see the event details</p>
+					</div>
+				</div>
+				<div class="panel-footer">
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
             <div class="panel panel-default">
                 <form autocomplete="false" class="save_base_data_panel" method="post" action="ajax/event_ajax.php?event_save_base_data">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Dati base</h3>
+                        <h3 class="panel-title">Base Data</h3>
                         <button onClick="save_base_data('.save_base_data_panel', <?php echo $event_id; ?>)" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <p style="margin:20px 0">Edit the event with id: <?php echo $event["Id"]; ?>. But, pay Attenction! This is the core of the site, so it's ever under maintance, all contents can change without any advice during the Alpha tests.</p>
-                            <p style="margin:20px 0">Note that September, October, November and Dicember of an year after the WGP are under the new season beginning, so select the year when the season is started (put the year of the newest cluster. Es: WGP 2018 in Tokyo was played when NDR was already release, so put 2018) .</p>
                             <div class="col-md-12"><!--
                                 Name
                                 --><div class="form-group">
@@ -115,6 +135,23 @@
                                                />
                                     </div>
                                 </div>
+                            </div><!--
+                                Visibility
+                            --><div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="Visibility" class="col-md-3 control-label">Visibility</label>
+                                    <div class="col-md-9">
+                                       <label class="switch switch-small">
+                                            <input type="checkbox" id="Visibility" class="form-control add_item" 
+                                            <?php 
+                                            if(isset($event["Visibility"])) {
+                                            	echo "checked=\"" . $event["Visibility"] == 1 ? "true" : "false" . "\"";
+                                        	}
+                                       		?> />
+                                            <span></span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -171,7 +208,7 @@
                                                         echo "<td>" . $row["Name"] . "</td>";
                                                         echo "<td>";
 														echo "<input id=\"" . $row["Id"] . "\" name=\"" . $row["Id"] . "\" type=\"text\" class=\"form-control breakdown\" placeholder=\"Quantity\"";
-														echo isset($breakdown[$row["Id"]]) ? "  value=\"" . $breakdown[$row["Id"]] . "\"" : "";
+                                                        echo isset($breakdown[$row["Id"]]) ? "  value=\"" . $breakdown[$row["Id"]]["Quantity"] . "\"" : "";
 														echo "/></td>";
                                                         echo "</tr>";
                                                     }

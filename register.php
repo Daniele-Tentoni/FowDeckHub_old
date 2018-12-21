@@ -53,8 +53,11 @@
 						</div>
 						<div id="errors">
 						</div>
-                    </form>
+                        <div class="login-subtitle">
+                            You already have an account? <a href="login.php">Login here!</a>
+                        </div>
                 </div>
+                    </form>
                 <div class="login-footer">
                     <div class="pull-left">
                         &copy; 2018 Fow Deck Hub

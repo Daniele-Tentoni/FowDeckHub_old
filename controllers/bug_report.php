@@ -17,9 +17,9 @@ function new_bug($mysqli, $name, $email, $bug){
                 $msg["error"] = "Boolean value in \$stmt";
             } else {
                 $stmt->bind_param("sss", $name_sql, $email_sql, $bug_sql);
-                $name_sql = mysql_real_escape_string($name);
-                $email_sql = mysql_real_escape_string($email);
-                $bug_sql = mysql_real_escape_string($bug);
+                $name_sql = $mysqli->real_escape_string($name);
+                $email_sql = $mysqli->real_escape_string($email);
+                $bug_sql = $mysqli->real_escape_string($bug);
                 if($stmt->execute()) {
                     $msg["result"] = true;
                     $msg["class"] = "success";
@@ -71,8 +71,8 @@ function change_state_bug($mysqli, $id, $state) {
                 $msg["error"] = "Boolean value in \$stmt";
             } else {
                 $stmt->bind_param("ii", $state_sql, $id_sql);
-                $id_sql = mysql_real_escape_string($id);
-                $state_sql = mysql_real_escape_string($state);
+                $id_sql = $mysqli->real_escape_string($id);
+                $state_sql = $mysqli->real_escape_string($state);
                 if($stmt->execute()) {
                     $msg["result"] = true;
                     $content .= "Cambiamento del bug $id effettuato con successo.";

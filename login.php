@@ -92,7 +92,6 @@
                         console.log(msg);
                         var message = JSON.parse(msg);
                         if(message.result === "done") {
-                            $("#errors").append('<div class="alert alert-success"> .</div>');
                             window.location = "index.php";
                         } else if(message.result === "fail") {
                             if(message.error === "password") {
