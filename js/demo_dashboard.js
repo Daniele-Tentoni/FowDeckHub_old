@@ -223,7 +223,6 @@ $(function(){
 		url: "ajax/event_ajax.php?event_map",
 		dataType: "json",
 		success: function (result) {
-            console.log(result);
             inizialize_map(result.content);
         },
 		error: function(error) {

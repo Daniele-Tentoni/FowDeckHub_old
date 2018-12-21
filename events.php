@@ -59,7 +59,7 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
 	$chart_event = get_chart_data_by_breakdown($breakdown);
 	$show_event = false;
-    $table_simple = true;
+    $simple_table = true;
 } 
 else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
     $header = '/layout/header.php';
@@ -68,7 +68,8 @@ else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET[
     $page = "/pages/event/event_edit.php";
     $event_id = $_GET["event_edit"];
     $event = get_event_by_id($mysqli, $event_id)["content"];
-    $decklists = get_event_decks($mysqli, $event_id);
+    // Ho già controllato che l'utente fosse un utente con i privilegi necessari.
+    $decklists = get_event_decks($mysqli, $event_id, true);
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
 } 
 else {
@@ -87,7 +88,7 @@ else {
     }
     $title = "Events - Administrator - Fow Deck Hub";
     $page = "/pages/event/events_partial.php";
-}
+} 
 
 /*
  * Assemblo la pagina.

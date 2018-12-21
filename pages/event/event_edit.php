@@ -197,7 +197,7 @@
                                                             from cards c
                                                             join card_types ct on c.Id = ct.Card
                                                             join types t on ct.Type = t.Id
-                                                            where t.Name = "Ruler / J-Ruler"';
+                                                            where t.Name = "Ruler"';
                                                 $stmt = $mysqli->prepare($query);
                                                 $stmt->execute();
                                                 $result = $stmt->get_result();
