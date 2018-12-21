@@ -7,7 +7,7 @@
             <th width="100">Type</th>
             <th width="100">Cost</th>
             <th width="100">Attributes</th>
-            <th width="100">Actions</th>
+            <th width="110">Actions</th>
         </tr>
     </thead>
     <tbody id="cards-table-body">
@@ -24,22 +24,22 @@
                 foreach($chars as $char){
                     switch($char) {
                         case 'W':
-                            $cost .= "<span class=\"label label-success\" style=\"background-color:yellow;\">" . $char . "</span> ";
+                            $cost .= "<span class=\"label label-warning\" " . $char . "</span> ";
                             break;
                         case 'R':
-                            $cost .= "<span class=\"label label-success\" style=\"background-color:red;\">" . $char . "</span> ";
+                            $cost .= "<span class=\"label label-danger\" >" . $char . "</span> ";
                             break;
                         case 'U':
-                            $cost .= "<span class=\"label label-success\" style=\"background-color:blue;\">" . $char . "</span> ";
+                            $cost .= "<span class=\"label label-info\" >" . $char . "</span> ";
                             break;
                         case 'G':
-                            $cost .= "<span class=\"label label-success\" style=\"background-color:green;\">" . $char . "</span> ";
+                            $cost .= "<span class=\"label label-success\" >" . $char . "</span> ";
                             break;
                         case 'B':
-                            $cost .= "<span class=\"label label-success\" style=\"background-color:purple;\">" . $char . "</span> ";
+                            $cost .= "<span class=\"label label-primary\" >" . $char . "</span> ";
                             break;
                         default:
-                            $cost .= "<span class=\"label label-primary\" style=\"background-color:grey;\">" . $char . "</span> ";
+                            $cost .= "<span class=\"label label-default\" >" . $char . "</span> ";
                             break;
                     }
                 }
