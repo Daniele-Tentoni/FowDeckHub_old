@@ -1,14 +1,13 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+DROP DATABASE `my_fowdeckhub`;
 CREATE DATABASE IF NOT EXISTS `my_fowdeckhub` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
 USE `my_fowdeckhub`;
 
-DROP TABLE IF EXISTS `attributes`;
-CREATE TABLE IF NOT EXISTS `attributes` (
+CREATE TABLE `attributes` (
   `Id` int(11) NOT NULL,
-  `Name` varchar(30) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`Id`)
+  `Name` varchar(30) COLLATE utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `attributes` (`Id`, `Name`) VALUES
@@ -19,23 +18,15 @@ INSERT INTO `attributes` (`Id`, `Name`) VALUES
 (5, 'Darkness'),
 (6, 'Void');
 
-DROP TABLE IF EXISTS `bug_reports`;
-CREATE TABLE IF NOT EXISTS `bug_reports` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(100) NOT NULL,
-  `Email` varchar(100) NOT NULL,
-  `Bug` varchar(5000) NOT NULL,
+CREATE TABLE `bug_reports` (
+`Id` int(11) NOT NULL,
+  `Name` varchar(100) COLLATE utf8_bin NOT NULL,
+  `Email` varchar(100) COLLATE utf8_bin NOT NULL,
+  `Bug` varchar(5000) COLLATE utf8_bin NOT NULL,
   `BugState` int(11) NOT NULL DEFAULT '1',
   `CreationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `LastOperation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Id` (`Id`),
-  KEY `BugState` (`BugState`)
+  `LastOperation` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=27 ;
-
---
--- Dump dei dati per la tabella `bug_reports`
---
 
 INSERT INTO `bug_reports` (`Id`, `Name`, `Email`, `Bug`, `BugState`, `CreationDate`, `LastOperation`) VALUES
 (1, 'Daniele Tentoni', 'd.tentoni@wedoit.io', 'Questo bug deve essere New', 1, '2018-12-04 18:20:22', '2018-12-10 21:30:36'),
@@ -43,18 +34,12 @@ INSERT INTO `bug_reports` (`Id`, `Name`, `Email`, `Bug`, `BugState`, `CreationDa
 (3, 'Daniele Tentoni', 'd.tentoni@wedoit.io', 'Questo bug deve essere Assigned', 3, '2018-12-04 18:20:22', '2018-12-10 21:30:40'),
 (4, 'Daniele Tentoni', 'd.tentoni@wedoit.io', 'Questo bug deve essere Resolved', 4, '2018-12-04 18:20:22', '2018-12-10 13:56:59');
 
-DROP TABLE IF EXISTS `bug_report_states`;
-CREATE TABLE IF NOT EXISTS `bug_report_states` (
+CREATE TABLE `bug_report_states` (
   `Id` int(11) NOT NULL,
   `Name` varchar(50) DEFAULT NULL,
   `Ordine` int(5) DEFAULT NULL,
   `Color` varchar(15) DEFAULT NULL,
-  `Icon` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Id` (`Id`),
-  UNIQUE KEY `Ordine` (`Ordine`),
-  UNIQUE KEY `Color` (`Color`),
-  UNIQUE KEY `Icon` (`Icon`)
+  `Icon` varchar(15) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 INSERT INTO `bug_report_states` (`Id`, `Name`, `Ordine`, `Color`, `Icon`) VALUES
@@ -63,41 +48,37 @@ INSERT INTO `bug_report_states` (`Id`, `Name`, `Ordine`, `Color`, `Icon`) VALUES
 (3, 'Assigned', 3, 'lb_orange', 'wrench'),
 (4, 'Resolved', 4, 'lb_red', 'check');
 
-DROP TABLE IF EXISTS `cards`;
-CREATE TABLE IF NOT EXISTS `cards` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `cards` (
+`Id` int(11) NOT NULL,
   `Name` varchar(70) COLLATE utf8_bin NOT NULL,
   `Set` varchar(10) COLLATE utf8_bin DEFAULT NULL,
   `Number` int(11) NOT NULL,
   `Cost` varchar(10) COLLATE utf8_bin NOT NULL,
   `Visibility` int(1) NOT NULL DEFAULT '0',
-  `Rarity` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Id` (`Id`),
-  UNIQUE KEY `Name` (`Name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3491 ;
+  `Rarity` int(11) DEFAULT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3503 ;
 
 INSERT INTO `cards` (`Id`, `Name`, `Set`, `Number`, `Cost`, `Visibility`, `Rarity`) VALUES
 (3269, 'Atom Seikhart', 'SDV1', 2, '1WW', 1, 3),
 (3273, 'Brunhild', 'SDV1', 5, '2WW', 1, 3),
 (3304, 'Isis', 'SDV2', 11, '2RR', 1, 3),
 (3319, 'Arthur', 'SDV3', 2, 'UUU', 1, 3),
-(3325, 'Drone Ciambella', 'SDV3', 7, 'U', 1, 1),
-(3326, 'Galvano, il Cavaliere Rapido', 'SDV3', 4, 'UU', 1, 2),
+(3325, 'Donut Drone', 'SDV3', 7, 'U', 1, 1),
+(3326, 'Gawain, the Swift Knight', 'SDV3', 4, 'UU', 1, 2),
 (3329, 'Loki', 'SDV3', 11, '1UU', 1, 3),
-(3333, 'Alfiere Meccanico', 'SDV3', 14, '1U', 1, 1),
-(3334, 'Soldato Meccanico', 'SDV3', 15, 'U', 1, 1),
+(3333, 'Mechanical Bishop', 'SDV3', 14, '1U', 1, 1),
+(3334, 'Mechanical Soldier', 'SDV3', 15, 'U', 1, 1),
 (3343, 'Chamimi', 'SDV4', 1, '3GG', 1, 3),
 (3351, 'Hanzo', 'SDV3', 8, '1GG', 1, 3),
 (3379, 'Lucifer', 'SDV5', 11, '3BB', 1, 3),
 (3393, 'Aratron, Angel of Knowledge', 'NDR', 1, 'W', 1, 2),
 (3394, 'Ayu, the Mysterious Wanderer', 'NDR', 2, 'WW', 1, 3),
-(3433, 'Arondight, la Lama d\\''Azoto', 'NDR', 41, 'U', 1, 3),
-(3439, 'JÃ¶rmungandr, Piccolo Divoratore di Mondi', 'NDR', 47, 'U', 1, 4),
-(3443, 'Cavaliere Meccanizzato', 'NDR', 51, 'U', 1, 1),
-(3444, 'Merlino, UnitÃ  di Controllo della Rotonda Celeste', 'NDR', 52, '2BB', 1, 3),
-(3448, 'Tecnico della Rotonda del Cielo', 'SDV3', 56, '1B', 1, 1),
-(3449, 'Rotonda del Cielo, il Castello dei Cavalieri nel Cielo', 'NDR', 57, '1BB', 1, 2),
+(3433, 'Arondight, the Nitrogen Blade', 'NDR', 41, 'U', 1, 3),
+(3439, 'Jormungandr, Little Eater of Worlds', 'NDR', 47, 'U', 1, 4),
+(3443, 'Mechanized Knight', 'NDR', 51, 'U', 1, 1),
+(3444, 'Merlin, the Control Unit of Sky Round', 'NDR', 52, '2BB', 1, 3),
+(3448, 'Sky Round Technician', 'SDV3', 56, '1B', 1, 1),
+(3449, 'The Knights\\'' Castle in the Sky, Sky Round', 'NDR', 70, '1U', 1, 2),
 (3274, 'Brunhild, Caller of Spirits', 'SDV1', 5, '2WW', 1, 3),
 (3271, 'Bethor, the Angel of Treasure', 'SDV1', 3, '1W', 1, 1),
 (3385, 'Skeleton Horde', 'SDV5', 16, 'B', 1, 1),
@@ -125,58 +106,149 @@ INSERT INTO `cards` (`Id`, `Name`, `Set`, `Number`, `Cost`, `Visibility`, `Rarit
 (3376, 'Lich', 'SDV5', 9, '1BB', 1, 3),
 (3377, 'Lich, the Saint of Death', 'SDV5', 9, '1BB', 1, 3),
 (3301, 'Fu Xi', 'SDV2', 9, '3RR', 1, 3),
-(3302, 'Fu Xi, King of Kunlun', 'SDV2', 9, '3RR', 1, 3);
+(3302, 'Fu Xi, King of Kunlun', 'SDV2', 9, '3RR', 1, 3),
+(3352, 'Hanzo, Chief of the Kouga', 'SDV4', 9, '2GG', 1, 3),
+(3426, 'Sandstorm', 'NDR', 34, 'R', 1, 2),
+(3303, 'Giant Sandstorm', 'SDV2', 10, 'RRRR', 1, 2),
+(3450, 'Thick Fog', 'NDR', 58, '2U', 1, 1),
+(3451, 'Torrent of Energy', 'NDR', 59, '2U', 1, NULL),
+(3446, 'Scrap and Build', 'NDR', 54, '2U', 1, 2),
+(3447, 'Sky Round Guardian', 'NDR', 55, '3U', 1, 1),
+(3437, 'Invitation', 'NDR', 45, '1UU', 1, 2),
+(3438, 'Iron Cauldron Witch', 'NDR', 46, '4UU', 1, 1),
+(3360, 'Sealing Scroll', 'SDV4', 16, '0', 1, 3),
+(3361, 'Shadow Step', 'SDV4', 17, '1G', 1, 1),
+(3452, 'Viviane, the Mechanical Fairy', 'NDF', 60, 'U', 1, 2),
+(3453, 'Atlantis, the Wielder of Knowledge', 'NDR', 61, '1GG', 1, 3),
+(3440, 'Lancelot, the Glass Knight', 'NDR', 48, '2U', 1, 4),
+(3441, 'Mad Hatter of Misty Woods', 'NDR', 49, '3UU', 1, 2),
+(3337, 'Perceval, the Shining Knight', 'SDV3', 18, '2UU', 1, 4),
+(3338, 'Petrification', 'SDV3', 19, 'UU', 1, 1),
+(3493, 'Magic Stone of Adventure', 'NDR', 101, '', 1, 2),
+(3494, 'Magic Stone of Chaos', 'NDR', 102, '', 1, 3),
+(3495, 'Magic Stone of Corruption', 'NDR', 103, '', 1, 2),
+(3496, 'Magic Stone of Dramaturgy', 'NDR', 104, '', 1, 2),
+(3497, 'Magic Stone of Dueling', 'NDR', 105, '', 1, 3),
+(3498, 'Magic Stone of Omniscience', 'NDR', 107, '', 1, 2),
+(3501, 'Magic Stone of the Undead', 'NDR', 109, '', 1, 3),
+(3502, 'Magic Stone of Tranquility', 'NDR', 110, '', 1, 3),
+(3500, 'Magic Stone of the Hermit', 'NDR', 108, '', 1, 2),
+(3292, 'Light Magic Stone', 'SDV1', 23, '', 1, 1),
+(3317, 'Fire Magic Stone', 'SDV2', 23, '', 1, 1),
+(3342, 'Water Magic Stone', 'SDV3', 23, '', 1, 1),
+(3367, 'Wind Magic Stone', 'SDV4', 23, '', 1, 1),
+(3392, 'Darkness Magic Stone', 'NDR', 23, '', 1, 1),
+(3388, 'Tears of the Fallen', 'SDV5', 19, '0', 1, 1),
+(3375, 'Jet-Black Wings', 'SDV5', 8, '1BB', 1, 2),
+(3371, 'Demon Division', 'SDV5', 4, 'BB', 1, 1),
+(3358, 'Rapid Fire Mi-!!', 'SDV4', 14, 'G', 1, 1),
+(3349, 'Fuhma Shuriken', 'SDV4', 6, 'G', 1, 1),
+(3348, 'Forest Meditation', 'SDV4', 5, '1G', 1, 1),
+(3336, 'Overflowing Knowledge', 'SDV3', 17, 'UU', 1, 1),
+(3332, 'Maintenance', 'SDV3', 13, '0', 1, 1),
+(3295, 'Dragon Dance', 'SDV2', 3, 'R', 1, 1),
+(3382, 'Putrefy', 'SDV5', 13, 'B', 1, 1),
+(3467, 'Song of the Fairies', 'NDR', 75, '1GG', 1, 1),
+(3468, 'Squall of the Tengu', 'NDR', 76, '1GG', 1, 3),
+(3331, 'Loki\\''s Watchdog, Fenrir', 'SDV3', 12, '2UU', 1, 4),
+(3460, 'Jubei, the One-Eyed Swordsmaster', 'NDR', 68, '3GG', 1, 3),
+(3461, 'Karura, the Crow Tengu', 'NDR', 69, '3GG', 1, 4);
 
-DROP TABLE IF EXISTS `card_attributes`;
-CREATE TABLE IF NOT EXISTS `card_attributes` (
+CREATE TABLE `card_attributes` (
   `Card` int(11) NOT NULL,
-  `Attribute` int(11) NOT NULL,
-  PRIMARY KEY (`Card`,`Attribute`),
-  KEY `Attribute` (`Attribute`)
+  `Attribute` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `card_attributes` (`Card`, `Attribute`) VALUES
 (3393, 1),
 (3394, 1);
 
-DROP TABLE IF EXISTS `card_quantities`;
-CREATE TABLE IF NOT EXISTS `card_quantities` (
+CREATE TABLE `card_quantities` (
   `Decklist` int(11) NOT NULL,
   `Card` int(11) NOT NULL,
   `Decktype` int(11) NOT NULL,
-  `Quantity` int(11) NOT NULL,
-  PRIMARY KEY (`Decklist`,`Card`,`Decktype`),
-  KEY `Card` (`Card`),
-  KEY `Decktype` (`Decktype`)
+  `Quantity` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `card_quantities` (`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES
 (12, 3276, 1, 1),
 (12, 3274, 0, 1),
 (12, 3273, 0, 1),
-(11, 3276, 1, 1),
+(11, 3273, 0, 1),
 (11, 3274, 0, 1),
-(11, 3273, 0, 1);
+(11, 3276, 1, 1),
+(5, 3342, 4, 2),
+(5, 3496, 4, 4),
+(5, 3494, 4, 4),
+(5, 3449, 3, 1),
+(5, 3446, 3, 3),
+(5, 3433, 3, 1),
+(5, 3337, 3, 4),
+(5, 3444, 3, 2),
+(5, 3439, 3, 4),
+(5, 3449, 2, 3),
+(5, 3433, 2, 3),
+(5, 3326, 2, 4),
+(5, 3444, 2, 2),
+(5, 3440, 2, 4),
+(5, 3333, 2, 4),
+(5, 3448, 2, 4),
+(5, 3325, 2, 4),
+(5, 3452, 2, 4),
+(5, 3443, 2, 4),
+(5, 3334, 2, 4),
+(5, 3360, 1, 1),
+(5, 3437, 1, 1),
+(5, 3446, 1, 1),
+(5, 3450, 1, 1),
+(5, 3426, 1, 1),
+(5, 3352, 0, 1),
+(5, 3351, 0, 1),
+(6, 3331, 3, 2),
+(6, 3439, 3, 2),
+(6, 3449, 2, 4),
+(6, 3467, 2, 2),
+(6, 3451, 2, 4),
+(6, 3433, 2, 3),
+(6, 3337, 2, 2),
+(6, 3444, 2, 4),
+(6, 3326, 2, 3),
+(6, 3440, 2, 4),
+(6, 3448, 2, 2),
+(6, 3452, 2, 4),
+(6, 3325, 2, 4),
+(6, 3443, 2, 4),
+(6, 3360, 1, 1),
+(6, 3467, 1, 1),
+(6, 3348, 1, 1),
+(6, 3446, 1, 1),
+(6, 3450, 1, 1),
+(6, 3352, 0, 1),
+(6, 3351, 0, 1),
+(6, 3460, 3, 2),
+(6, 3433, 3, 1),
+(6, 3468, 3, 3),
+(6, 3467, 3, 1),
+(6, 3342, 3, 4),
+(6, 3494, 4, 4),
+(6, 3496, 4, 4),
+(6, 3502, 4, 1),
+(6, 3367, 4, 2);
 
-DROP TABLE IF EXISTS `card_rarity`;
-CREATE TABLE IF NOT EXISTS `card_rarity` (
+CREATE TABLE `card_rarity` (
   `Card` int(11) NOT NULL,
-  `Rarity` int(11) NOT NULL,
-  PRIMARY KEY (`Card`,`Rarity`),
-  KEY `Rarity` (`Rarity`)
+  `Rarity` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `card_rarity` (`Card`, `Rarity`) VALUES
 (3393, 1),
 (3394, 3);
 
-DROP TABLE IF EXISTS `card_sets`;
-CREATE TABLE IF NOT EXISTS `card_sets` (
+CREATE TABLE `card_sets` (
   `Code` varchar(10) COLLATE utf8_bin NOT NULL,
   `Name` varchar(50) COLLATE utf8_bin DEFAULT NULL,
   `NumCards` int(11) NOT NULL DEFAULT '110',
-  `Year` int(11) NOT NULL DEFAULT '2018',
-  PRIMARY KEY (`Code`)
+  `Year` int(11) NOT NULL DEFAULT '2018'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `card_sets` (`Code`, `Name`, `NumCards`, `Year`) VALUES
@@ -192,12 +264,9 @@ INSERT INTO `card_sets` (`Code`, `Name`, `NumCards`, `Year`) VALUES
 ('SDV5', 'Starter Deck New Valhalla - Darkness', 23, 2018),
 ('NDR', 'New Dawn Rises', 126, 2018);
 
-DROP TABLE IF EXISTS `card_types`;
-CREATE TABLE IF NOT EXISTS `card_types` (
+CREATE TABLE `card_types` (
   `Card` int(11) NOT NULL,
-  `Type` int(11) NOT NULL,
-  PRIMARY KEY (`Card`,`Type`),
-  KEY `Type` (`Type`)
+  `Type` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `card_types` (`Card`, `Type`) VALUES
@@ -215,19 +284,15 @@ INSERT INTO `card_types` (`Card`, `Type`) VALUES
 (3394, 5),
 (3449, 1);
 
-DROP TABLE IF EXISTS `composta`;
-CREATE TABLE IF NOT EXISTS `composta` (
+CREATE TABLE `composta` (
   `Card` int(11) NOT NULL,
   `Decklist` int(11) NOT NULL,
   `Deck` int(11) NOT NULL,
-  `Quantity` int(11) NOT NULL,
-  PRIMARY KEY (`Card`,`Decklist`,`Deck`),
-  KEY `Decklist` (`Decklist`)
+  `Quantity` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-DROP TABLE IF EXISTS `decklists`;
-CREATE TABLE IF NOT EXISTS `decklists` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `decklists` (
+`Id` int(11) NOT NULL,
   `Name` varchar(80) COLLATE utf8_bin NOT NULL,
   `Ruler` int(11) DEFAULT NULL,
   `Player` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '"Not set"',
@@ -235,13 +300,7 @@ CREATE TABLE IF NOT EXISTS `decklists` (
   `Type` int(11) DEFAULT NULL,
   `Visibility` int(1) NOT NULL DEFAULT '0',
   `GachaCode` varchar(30) COLLATE utf8_bin DEFAULT '0',
-  `Position` int(11) DEFAULT '0',
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Id` (`Id`),
-  UNIQUE KEY `Name` (`Name`),
-  KEY `Ruler` (`Ruler`),
-  KEY `Event` (`Event`),
-  KEY `decklists_style` (`Type`)
+  `Position` int(11) DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=21 ;
 
 INSERT INTO `decklists` (`Id`, `Name`, `Ruler`, `Player`, `Event`, `Type`, `Visibility`, `GachaCode`, `Position`) VALUES
@@ -262,13 +321,10 @@ INSERT INTO `decklists` (`Id`, `Name`, `Ruler`, `Player`, `Event`, `Type`, `Visi
 (19, 'Hanzo Machines Mono Blue by Alessandro Muscela', 3351, 'Alessandro Muscela', 4, 1, 1, '0', 7),
 (20, 'Loki Machines Mono Blue by Davide Quattrone', 3329, 'Davide Quattrone', 4, 5, 1, '0', 8);
 
-DROP TABLE IF EXISTS `decktypes`;
-CREATE TABLE IF NOT EXISTS `decktypes` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `decktypes` (
+`Id` int(11) NOT NULL,
   `Name` varchar(30) COLLATE utf8_bin DEFAULT NULL,
-  `Style` int(11) NOT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `Style` (`Style`)
+  `Style` int(11) NOT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
 
 INSERT INTO `decktypes` (`Id`, `Name`, `Style`) VALUES
@@ -278,15 +334,19 @@ INSERT INTO `decktypes` (`Id`, `Name`, `Style`) VALUES
 (4, 'Atom Midrange', 2),
 (5, 'Loki Aggro', 1);
 
-DROP TABLE IF EXISTS `deck_types`;
-CREATE TABLE IF NOT EXISTS `deck_types` (
+CREATE TABLE `deck_types` (
   `Id` int(11) NOT NULL,
-  `Name` varchar(50) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`Id`)
+  `Name` varchar(50) COLLATE utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-DROP TABLE IF EXISTS `EasyTGBot`;
-CREATE TABLE IF NOT EXISTS `EasyTGBot` (
+INSERT INTO `deck_types` (`Id`, `Name`) VALUES
+(0, 'Ruler Deck'),
+(1, 'Rune Deck'),
+(2, 'Main Deck'),
+(344, 'Stone Deck'),
+(3, 'Side Deck');
+
+CREATE TABLE `easytgbot` (
   `chat_id` bigint(11) NOT NULL,
   `first_name` tinytext,
   `last_name` tinytext,
@@ -295,15 +355,14 @@ CREATE TABLE IF NOT EXISTS `EasyTGBot` (
   `title` tinytext,
   `type` tinytext,
   `to_update` tinytext
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-INSERT INTO `EasyTGBot` (`chat_id`, `first_name`, `last_name`, `username`, `action`, `title`, `type`, `to_update`) VALUES
+INSERT INTO `easytgbot` (`chat_id`, `first_name`, `last_name`, `username`, `action`, `title`, `type`, `to_update`) VALUES
 (138856314, 'Daniele', 'Tentoni', 'AntonioParolisi', 'post.text_b', NULL, 'private', ''),
 (-377391891, NULL, NULL, NULL, 'none', 'Prova del gruppo con fowdeckhub', 'group', '1');
 
-DROP TABLE IF EXISTS `events`;
-CREATE TABLE IF NOT EXISTS `events` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `events` (
+`Id` int(11) NOT NULL,
   `Name` varchar(70) COLLATE utf8_bin DEFAULT NULL,
   `Format` varchar(10) COLLATE utf8_bin DEFAULT NULL,
   `Nation` int(11) DEFAULT NULL,
@@ -312,24 +371,18 @@ CREATE TABLE IF NOT EXISTS `events` (
   `Date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `CommunityReports` varchar(5000) COLLATE utf8_bin NOT NULL DEFAULT 'No community reports. Contact the admin if you have one!',
   `OtherLinks` varchar(5000) COLLATE utf8_bin NOT NULL DEFAULT 'No other links. Contact the admin if you have one!',
-  `Visibility` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Id` (`Id`),
-  UNIQUE KEY `Name` (`Name`)
+  `Visibility` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
-INSERT INTO `events` (`Id`, `Name`, `Location`, `Nation`, `Year`, `Attendance`, `Date`, `CommunityReports`, `OtherLinks`, `Visibility`) VALUES
-(1, 'WGP - World Gran Prix Tokyo Japan', 1, 1, 2018, 121, '2018-09-21 22:00:00', 'No community reports. Contact the admin if you have one!', 'Here there\\\\\\''s a report made by the Italian Force of Will Official Site https://www.fowtcg.it/articoli/922/World-Grand-Prix-2018.', 1),
-(4, 'Win a Box - Magic Akiba', NULL, 3, 2018, 37, '2018-10-20 22:00:00', 'No community reports. Contact the admin if you have one!', 'Here there is a report from the official italian site! Don\\\\\\''t miss that: https://www.fowtcg.it/articoli/934/Italian8-14-21-Ottobre-2018', 1);
+INSERT INTO `events` (`Id`, `Name`, `Format`, `Nation`, `Year`, `Attendance`, `Date`, `CommunityReports`, `OtherLinks`, `Visibility`) VALUES
+(1, 'WGP - World Gran Prix Tokyo Japan', 'NV1', 1, 2018, 121, '2018-09-21 22:00:00', 'No community reports. Contact the admin if you have one!', 'Here there\\\\\\''s a report made by the Italian Force of Will Official Site https://www.fowtcg.it/articoli/922/World-Grand-Prix-2018.', 1),
+(4, 'Win a Box - Magic Akiba', 'NV1', 3, 2018, 37, '2018-10-20 22:00:00', 'No community reports. Contact the admin if you have one!', 'Here there is a report from the official italian site! Don\\\\\\''t miss that: https://www.fowtcg.it/articoli/934/Italian8-14-21-Ottobre-2018', 1);
 
-DROP TABLE IF EXISTS `event_rulers_breakdown`;
-CREATE TABLE IF NOT EXISTS `event_rulers_breakdown` (
+CREATE TABLE `event_rulers_breakdown` (
   `Event` int(11) NOT NULL,
   `Ruler` int(11) NOT NULL,
-  `Quantity` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Event`,`Ruler`),
-  KEY `Ruler` (`Ruler`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `Quantity` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `event_rulers_breakdown` (`Event`, `Ruler`, `Quantity`) VALUES
 (1, 3269, 3),
@@ -348,14 +401,11 @@ INSERT INTO `event_rulers_breakdown` (`Event`, `Ruler`, `Quantity`) VALUES
 (4, 3351, 14),
 (4, 3379, 8);
 
-DROP TABLE IF EXISTS `formats`;
-CREATE TABLE IF NOT EXISTS `formats` (
+CREATE TABLE `formats` (
   `Code` varchar(10) COLLATE utf8_bin NOT NULL,
   `Name` varchar(50) COLLATE utf8_bin DEFAULT NULL,
   `Tournament` int(1) DEFAULT '0',
-  `Visibility` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Code`),
-  UNIQUE KEY `Name` (`Name`)
+  `Visibility` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `formats` (`Code`, `Name`, `Tournament`, `Visibility`) VALUES
@@ -364,50 +414,41 @@ INSERT INTO `formats` (`Code`, `Name`, `Tournament`, `Visibility`) VALUES
 ('R/NV1', 'New Frontier - Reiya / New Valhalla R0 - NV1', 1, 1),
 ('R/NV2', 'New Frontier - Reiya / New Valhalla R0 - NV2', 1, 1);
 
-DROP TABLE IF EXISTS `format_params`;
-CREATE TABLE IF NOT EXISTS `format_params` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `format_params` (
+`Id` int(11) NOT NULL,
   `Code` varchar(30) COLLATE utf8_bin NOT NULL,
   `Value` varchar(30) COLLATE utf8_bin NOT NULL,
   `Des` varchar(100) COLLATE utf8_bin NOT NULL,
   `DesVal` varchar(100) COLLATE utf8_bin NOT NULL,
   `Card` int(11) DEFAULT NULL,
-  `Format` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Code` (`Code`)
+  `Format` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
-DROP TABLE IF EXISTS `login_attempts`;
-CREATE TABLE IF NOT EXISTS `login_attempts` (
-    `Id` int(21) AUTO_INCREMENT NOT NULL,
+CREATE TABLE `login_attempts` (
+`Id` int(21) NOT NULL,
   `UserId` int(11) DEFAULT NULL,
   `DataAccesso` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `Risultato` int(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT = 0;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
-DROP TABLE IF EXISTS `nations`;
-CREATE TABLE IF NOT EXISTS `nations` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `nations` (
+`Id` int(11) NOT NULL,
   `Name` varchar(50) NOT NULL,
-  `WorldMapSign` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `WorldMapSign` (`WorldMapSign`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  `WorldMapSign` varchar(15) DEFAULT NULL
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 INSERT INTO `nations` (`Id`, `Name`, `WorldMapSign`) VALUES
 (1, 'Japan', 'JP'),
 (2, 'Usa', 'US'),
 (3, 'Italy', 'IT'),
-(3, 'France', 'FR'),
-(3, 'Germany', 'DE'),
-(3, 'United Kingdom', 'UK'),
-(3, 'Spain', 'ES');
+(4, 'France', 'FR'),
+(5, 'Germany', 'DE'),
+(6, 'United Kingdom', 'UK'),
+(7, 'Spain', 'ES');
 
-DROP TABLE IF EXISTS `playstyles`;
-CREATE TABLE IF NOT EXISTS `playstyles` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(30) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (`Id`)
+CREATE TABLE `playstyles` (
+`Id` int(11) NOT NULL,
+  `Name` varchar(30) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
 
 INSERT INTO `playstyles` (`Id`, `Name`) VALUES
@@ -417,12 +458,10 @@ INSERT INTO `playstyles` (`Id`, `Name`) VALUES
 (4, 'Combo'),
 (5, 'Other');
 
-DROP TABLE IF EXISTS `rarity`;
-CREATE TABLE IF NOT EXISTS `rarity` (
+CREATE TABLE `rarity` (
   `Id` int(11) NOT NULL,
   `Name` varchar(30) COLLATE utf8_bin NOT NULL,
-  `Symbol` varchar(10) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`Id`)
+  `Symbol` varchar(10) COLLATE utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `rarity` (`Id`, `Name`, `Symbol`) VALUES
@@ -431,17 +470,14 @@ INSERT INTO `rarity` (`Id`, `Name`, `Symbol`) VALUES
 (3, 'Rare', 'R'),
 (4, 'Superare', 'SR');
 
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `roles` (
+`Id` int(11) NOT NULL,
   `Name` varchar(50) COLLATE utf8_bin NOT NULL,
   `UserPower` int(1) NOT NULL DEFAULT '0',
   `CardPower` int(1) NOT NULL DEFAULT '0',
   `DecklistPower` int(1) NOT NULL DEFAULT '0',
   `EventsPower` int(1) NOT NULL DEFAULT '0',
-  `CanEditEvents` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Id` (`Id`)
+  `CanEditEvents` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=11 ;
 
 INSERT INTO `roles` (`Id`, `Name`, `UserPower`, `CardPower`, `DecklistPower`, `EventsPower`, `CanEditEvents`) VALUES
@@ -449,42 +485,31 @@ INSERT INTO `roles` (`Id`, `Name`, `UserPower`, `CardPower`, `DecklistPower`, `E
 (2, 'Administrator', 0, 1, 1, 1, 0),
 (10, 'User', 0, 0, 0, 0, 0);
 
-DROP TABLE IF EXISTS `security_requests`;
-CREATE TABLE IF NOT EXISTS `security_requests` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `security_requests` (
+`Id` int(11) NOT NULL,
   `UserId` int(11) DEFAULT NULL,
   `RequestDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ExitCode` int(111) NOT NULL,
   `PageRequired` varchar(100) DEFAULT NULL,
-  `Note` varchar(5000) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `UserId` (`UserId`)
+  `Note` varchar(5000) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-DROP TABLE IF EXISTS `sets_legality`;
-CREATE TABLE IF NOT EXISTS `sets_legality` (
+CREATE TABLE `sets_legality` (
   `CardSet` varchar(10) COLLATE utf8_bin NOT NULL,
-  `Format` varchar(10) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`CardSet`,`Format`),
-  KEY `sets_legality_formats_fk` (`Format`)
+  `Format` varchar(10) COLLATE utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-DROP TABLE IF EXISTS `site_params`;
-CREATE TABLE IF NOT EXISTS `site_params` (
-  `Id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `site_params` (
+`Id` int(11) NOT NULL,
   `Codice` varchar(30) COLLATE utf8_bin NOT NULL,
   `Valore` varchar(30) COLLATE utf8_bin NOT NULL,
   `DesVal` varchar(100) COLLATE utf8_bin NOT NULL,
-  `Note` varchar(100) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`Id`)
+  `Note` varchar(100) COLLATE utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
-DROP TABLE IF EXISTS `types`;
-CREATE TABLE IF NOT EXISTS `types` (
+CREATE TABLE `types` (
   `Id` int(11) NOT NULL,
-  `Name` varchar(30) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `Name` (`Name`)
+  `Name` varchar(30) COLLATE utf8_bin NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 INSERT INTO `types` (`Id`, `Name`) VALUES
@@ -496,18 +521,14 @@ INSERT INTO `types` (`Id`, `Name`) VALUES
 (5, 'Resonator'),
 (6, 'Ruler');
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+`id` int(11) NOT NULL,
   `username` varchar(30) COLLATE utf8_bin NOT NULL,
   `email` varchar(50) COLLATE utf8_bin NOT NULL,
   `password` char(128) COLLATE utf8_bin NOT NULL,
   `salt` char(128) COLLATE utf8_bin NOT NULL,
   `registerdate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `role` int(11) NOT NULL DEFAULT '10',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`),
-  UNIQUE KEY `email` (`email`)
+  `role` int(11) NOT NULL DEFAULT '10'
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=10 ;
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `salt`, `registerdate`, `role`) VALUES
@@ -520,3 +541,123 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `salt`, `registerdat
 (7, 'test004', 'phelan.najm@cowaway.com', '769594151d9e3d554ec21eca1cab5e491f5e3c66cd9918301e5edfe54d0129b50c3202ed41c3164e3c1a9cbddd60b2e1f9db46e8d7eea3fbdbb2e614975d37af', 'dc4cfd90d9b8492c073d6978424c1301b81e59580c713ad9b6d5346e1f968911f20eeaa70c615176d96dca5bdbc72b8b2e7e9c17e58f2912a432c5726b608e3f', '2018-12-10 13:50:01', 10),
 (8, 'test005', 'o2745534@nwytg.net', 'a4dc9bee8a00a7be0fd487433d079b62767c936484338ceccd3bc40d347fda7bc15afb585bae6717cebb71c157c94be654a06e9f8b15112d4104b8ab2cea394f', 'e2b3bcd061ad6e4de42975c52f29a3992e3efa397ef50136126cecec8a220f9aa2a189caa2832b03854a3a223d51f48f5bf205327f88b5702a576514d86c16ba', '2018-12-10 15:04:21', 10),
 (9, 'prodAdmin', 'd.tentoni@wedoit.io', 'e9e42af60672de9b1afd2c9659fda853b01d5876175e25ade0f07519d60681f40317eb71845047414c9c869d1bf9cbc4395c505d46da904a7daa8c42817020c5', '983c7a297002045d822bb347e00ef73af1f7f73c2fcc81a1d7f6fdb49bc4e1c5593e94e3474b39a7f02064758cdcb715df0f7eb399bb010320cf3af35d3bfaba', '2018-12-10 15:33:43', 1);
+
+ALTER TABLE `attributes`
+ ADD PRIMARY KEY (`Id`);
+
+ALTER TABLE `bug_reports`
+ ADD PRIMARY KEY (`Id`), ADD UNIQUE KEY `Id` (`Id`), ADD KEY `BugState` (`BugState`);
+
+ALTER TABLE `bug_report_states`
+ ADD PRIMARY KEY (`Id`), ADD UNIQUE KEY `Id` (`Id`), ADD UNIQUE KEY `Ordine` (`Ordine`), ADD UNIQUE KEY `Color` (`Color`), ADD UNIQUE KEY `Icon` (`Icon`);
+
+ALTER TABLE `cards`
+ ADD PRIMARY KEY (`Id`), ADD UNIQUE KEY `Id` (`Id`), ADD UNIQUE KEY `Name` (`Name`);
+
+ALTER TABLE `card_attributes`
+ ADD PRIMARY KEY (`Card`,`Attribute`), ADD KEY `Attribute` (`Attribute`);
+
+ALTER TABLE `card_quantities`
+ ADD PRIMARY KEY (`Decklist`,`Card`,`Decktype`), ADD KEY `Card` (`Card`), ADD KEY `Decktype` (`Decktype`);
+
+ALTER TABLE `card_rarity`
+ ADD PRIMARY KEY (`Card`,`Rarity`), ADD KEY `Rarity` (`Rarity`);
+
+ALTER TABLE `card_sets`
+ ADD PRIMARY KEY (`Code`);
+
+ALTER TABLE `card_types`
+ ADD PRIMARY KEY (`Card`,`Type`), ADD KEY `Type` (`Type`);
+
+ALTER TABLE `composta`
+ ADD PRIMARY KEY (`Card`,`Decklist`,`Deck`), ADD KEY `Decklist` (`Decklist`);
+
+ALTER TABLE `decklists`
+ ADD PRIMARY KEY (`Id`), ADD UNIQUE KEY `Id` (`Id`), ADD UNIQUE KEY `Name` (`Name`), ADD KEY `Ruler` (`Ruler`), ADD KEY `Event` (`Event`), ADD KEY `decklists_style` (`Type`);
+
+ALTER TABLE `decktypes`
+ ADD PRIMARY KEY (`Id`), ADD KEY `Style` (`Style`);
+
+ALTER TABLE `deck_types`
+ ADD PRIMARY KEY (`Id`);
+
+ALTER TABLE `events`
+ ADD PRIMARY KEY (`Id`), ADD UNIQUE KEY `Id` (`Id`), ADD UNIQUE KEY `Name` (`Name`);
+
+ALTER TABLE `event_rulers_breakdown`
+ ADD PRIMARY KEY (`Event`,`Ruler`), ADD KEY `Ruler` (`Ruler`);
+
+ALTER TABLE `formats`
+ ADD PRIMARY KEY (`Code`), ADD UNIQUE KEY `Name` (`Name`);
+
+ALTER TABLE `format_params`
+ ADD PRIMARY KEY (`Id`), ADD UNIQUE KEY `Code` (`Code`);
+
+ALTER TABLE `login_attempts`
+ ADD PRIMARY KEY (`Id`);
+
+ALTER TABLE `nations`
+ ADD PRIMARY KEY (`Id`), ADD UNIQUE KEY `WorldMapSign` (`WorldMapSign`);
+
+ALTER TABLE `playstyles`
+ ADD PRIMARY KEY (`Id`);
+
+ALTER TABLE `rarity`
+ ADD PRIMARY KEY (`Id`);
+
+ALTER TABLE `roles`
+ ADD PRIMARY KEY (`Id`), ADD UNIQUE KEY `Id` (`Id`);
+
+ALTER TABLE `security_requests`
+ ADD PRIMARY KEY (`Id`), ADD KEY `UserId` (`UserId`);
+
+ALTER TABLE `sets_legality`
+ ADD PRIMARY KEY (`CardSet`,`Format`), ADD KEY `sets_legality_formats_fk` (`Format`);
+
+ALTER TABLE `site_params`
+ ADD PRIMARY KEY (`Id`);
+
+ALTER TABLE `types`
+ ADD PRIMARY KEY (`Id`), ADD UNIQUE KEY `Name` (`Name`);
+
+ALTER TABLE `users`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `username` (`username`), ADD UNIQUE KEY `email` (`email`);
+
+ALTER TABLE `bug_reports`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
+
+ALTER TABLE `cards`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3503;
+
+ALTER TABLE `decklists`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=21;
+
+ALTER TABLE `decktypes`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+
+ALTER TABLE `events`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+
+ALTER TABLE `format_params`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `login_attempts`
+MODIFY `Id` int(21) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `nations`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+
+ALTER TABLE `playstyles`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+
+ALTER TABLE `roles`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+
+ALTER TABLE `security_requests`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `site_params`
+MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `users`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;

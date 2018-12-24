@@ -76,7 +76,7 @@
                         echo "</tr>";
                     }
                 } else {
-                    echo $events["msg"];
+                    echo $events["content"];
                 }
                 ?>
                     

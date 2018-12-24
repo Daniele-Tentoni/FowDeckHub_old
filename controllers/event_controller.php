@@ -447,12 +447,14 @@ function get_event_widget_details($mysqli, $year) {
     
     // Controllo che la connessione sia impostata.
     if(!isset($mysqli)) {
-        $msg["error"] = "Server connection error. Please, contact the support.";
+		$msg["content"] = SERVER_ERR;
+        $msg["error"] = "server_err";
         return $msg;
     }
 
     if(isset($mysqli) && $mysqli->connect_error) {
-        $msg["error"] = "Database server connection error. Please, contact the support.";
+        $msg["content"] = SERVER_CONN_ERR;
+		$msg["error"] = "server_conn_err";
         return $msg;
     }
 
@@ -487,7 +489,8 @@ function get_event_widget_details($mysqli, $year) {
             array_push($msg["content"], $stringa);
         }
     } else {
-        $msg["error"] = "No data to view.";
+        $msg["message"] = "No data to show.";
+		$msg["error"] = "no_data";
         return $msg;
     }
 

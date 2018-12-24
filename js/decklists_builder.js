@@ -266,7 +266,7 @@ var import_ajax_caller = function(panel, container, decks, deck_id) {
 			console.log(msg);
 			console.log("error");
 			$(container).show();
-			$(container).html("<span class=\"alert alert-danger\">" + msg["message"] + "</span>");
+			$(container).html("<span class=\"alert alert-danger\">" + JSON.stringify(msg.responseText) + "</span>");
 			return false;
 		}
 	});

@@ -28,6 +28,6 @@
 
 }
 
-.label-warning {
+.label-warning, .alert-warning {
 	background-color: orange;
 }

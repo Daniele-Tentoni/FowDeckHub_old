@@ -37,6 +37,14 @@ if($log_result && $check_level == 0) {
 			header("Refresh: 10;URL=decklists.php");
 		}
 		$elem = $decklist["content"];
+		$cards = get_card_list_by_deck_id($mysqli, $elem["Id"]);
+		$show_id = false;
+		$show_code = false;
+		$show_type = false;
+        $show_cost = false;
+        $show_attributes = false;
+		$show_actions = false;
+		$simple_card_table = true;
 		$title = "Edit Decklists - Administrator - Fow Deck Hub";
 		$page = "/pages/decklist/decklist_edit.php";
 	} 

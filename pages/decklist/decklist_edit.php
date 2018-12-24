@@ -233,6 +233,40 @@
                 </form>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <!--<form autocomplete="false" class="import_decklist_panel" method="post" action="ajax/decklist_ajax.php?save_decklist">-->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Actual Decklist</h3>
+                        <!--<button class="btn btn-primary btn-rounded pull-right decklist_importer" data-decklist="<?php echo $elem["Id"]; ?>"><i class="fa fa-floppy-o" aria-hidden="true"></i> Import</button>-->
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <p style="margin: 1rem 0">Here there is the actual decklist uploaded from the importer system. Check if is correct, and if no, then re-import the decklist.</p>
+                            <p style="margin: 1rem 0">I'm working on the possibility of hot-fix of the decklist.</p>
+                            <div class="col-md-12"><!--
+                                GachaText
+                                -->
+                                <?php require_once ROOT_PATH . "/components/tables/cards_table.php"; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <!-- Pannello degli errori non visibile -->
+                        <div class="e-panel panel" style="display:none">
+                            <div class="e-body panel-body">
+                            </div>
+                        </div>
+                        <!--<button class="btn btn-default btn-rounded pull-right"  onclick="reset_base_data();">
+                        	<i class="fa fa-trash-o" aria-hidden="true"></i> Reset
+                        </button>
+                        <button class="btn btn-primary btn-rounded pull-right decklist_importer" data-decklist="<?php echo $elem["Id"]; ?>" >
+                        	<i class="fa fa-floppy-o" aria-hidden="true"></i> Import
+                        </button>-->
+                    </div>
+                <!--</form>-->
+            </div>
+        </div>
 	</div>
 </div>
 
