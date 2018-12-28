@@ -18,7 +18,7 @@ $check_level = check_level($mysqli, 2, false);
 $active_page = 12;
 $title = "";
 $page = "";
-require_once ROOT_PATH . '/loaders/load_decklists.php';
+
 if($log_result && $check_level == 0 && isset($_GET["newDecklist"])) {
 	$decklist = create_new_decklist($mysqli);
 	if(!$decklist["result"]) {
@@ -36,7 +36,7 @@ else if($log_result && $check_level == 0 && isset($_GET["edit_decklist"]) && $_G
 		header("Refresh: 10;URL=decklists.php");
 	}
 	$elem = $decklist["content"];
-	$cards = get_card_list_by_deck_id($mysqli, $elem["Id"]);
+	$cards = get_card_list_by_decklist_id($mysqli, $elem["Id"]);
 	$show_id = false;
 	$show_code = false;
 	$show_type = false;

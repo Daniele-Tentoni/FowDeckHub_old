@@ -1,5 +1,10 @@
 <?php
 /*
+ * Richiedo le funzioni di base.
+ */
+require_once "base_controller.php";
+
+/*
  * Get the lists of all events.
  */
 function get_all_events($mysqli, $id, $year){
@@ -198,7 +203,10 @@ function get_event_decks($mysqli, $event, $admin) {
 		$res["content"] = array();
 		$res["msg"] = "There's some data to view";
 		while($row = $result->fetch_assoc()) {
+
 			$stringa["Id"] = $row["Id"];
+			$checking = check_if_deck_have_card_list($mysqli, $row["Id"]);
+			$stringa["DeckUp"] = $checking["result"] ? $checking["content"] : $checking["message"];
 			$stringa["Name"] = $row["Name"];
 			$stringa["Player"] = $row["Player"];
 			$stringa["GachaCode"] = $row["GachaCode"];
@@ -520,13 +528,14 @@ function get_most_used_cards_by_event_and_deck_type($mysqli, $event, $deck_type)
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "select c.Name, sum(cq.Quantity) as Somma
+	$query = "select cq.Decktype, c.Name, sum(cq.Quantity) as Somma
 			  from decklists d
 			  join card_quantities cq on d.Id = cq.Decklist
 			  join cards c on c.Id = cq.Card
 			  where d.Visibility = 1
 				and cq.Decktype = ?
-				and c.Event = ?
+				and d.Event = ?
+				-- and cq.Decktype in (1, 2, 3, 4)
 			  group by c.Name
 			  order by Somma desc";
 
@@ -540,8 +549,10 @@ function get_most_used_cards_by_event_and_deck_type($mysqli, $event, $deck_type)
 		$res["content"] = array();
 		$res["msg"] = "There's some data to view";
 		while($row = $result->fetch_assoc()) {
+			$stringa = array();
 			$stringa["Name"] = $row["Name"];
 			$stringa["Somma"] = $row["Somma"];
+			$stringa["Decktype"] = $row["Decktype"];
 			array_push($res["content"], $stringa);
 		}
 	} else {
@@ -802,15 +813,5 @@ function save_ruler_breakdown($mysqli, $id, $breakdown) {
 }
 
 #endregion
-
-function test_controller($mysqli) {
-	$stringa = "Hai richiesto correttamente il controller.";
-	if(isset($mysqli)) {
-		$stringa .= "La connessione è impostata.";
-	} else {
-		$stringa .= "La connessione non è impostata";
-	}
-	return $stringa;
-}
 
 ?>

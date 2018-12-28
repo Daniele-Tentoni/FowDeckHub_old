@@ -133,59 +133,6 @@ function get_decklist_by_id($mysqli, $id) {
 }
 
 /*
- * Funzione per capire se un deck ha una decklist e quindi può essere visibile agli utenti.
- */
-function check_if_deck_have_card_list($mysqli, $id) {
-	$res = array();
-	$res["result"] = false;
-
-	// Controllo che la connessione sia impostata.
-	if(!isset($mysqli)) {
-        $res["error"] = "server_err";
-        $res["number"] = $mysqli->errno;
-        $res["message"] = SERVER_ERR;
-	}
-	if(isset($mysqli) && $mysqli->connect_error) {
-        $res["error"] = "server_conn_err";
-        $res["number"] = $mysqli->errno;
-        $res["message"] = SERVER_CONN_ERR;
-		return $res;
-	}
-
-	// Effettuo finalmente il caricamento della decklist in base all'id.
-	$query = "SELECT q.Decklist, q.Decktype, q.Somma
-				from decklists d
-				left join (SELECT Decklist, Decktype, sum(Quantity) as 'Somma'
-							from card_quantities
-							where Decklist = ?
-							group by Decktype) q on d.Id = q.Decklist
-				where q.Decktype in (0, 2, 4)
-				group by q.Decklist, q.Decktype
-				order by q.Decktype, q.Decklist";
-
-	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("i", $id_param);
-	$id_param = $mysqli->real_escape_string($id);
-	$stmt->execute();
-	$result = $stmt->get_result();
-	if($result->num_rows > 0) {
-		$res["content"] = array();
-		$res["message"] = "There's some data to view";
-		while($row = $result->fetch_assoc()) {
-			if($row["Decktype"] == 0 && ($row["Somma"] < 40 || $row["Somma"] > 60)) {
-				return $res["result"] = false;
-			}
-		}
-	} else {
-		$res["message"] = "No data to view with id $id.";
-		return $res;
-	}
-
-	$res["result"] = true;
-	return $res;
-}
-
-/*
  * Mi permette di ottenere tutti i deck che sono storicizzati nel database, con visibilità in base ai permessi.
  */
 function get_all_decks($mysqli, $visibility){

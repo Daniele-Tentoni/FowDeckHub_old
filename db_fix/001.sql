@@ -26,3 +26,4 @@ INSERT INTO `my_fowdeckhub`.`site_params` (`Id`, `Codice`, `Valore`, `DesVal`, `
 
 -- 28-12-2018
 ALTER TABLE `deck_types` ADD `Label` VARCHAR(15) NULL DEFAULT NULL ;
+ALTER TABLE `format_params` ADD `Deck` INT NULL AFTER `Card`;

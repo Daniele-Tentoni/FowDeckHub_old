@@ -16,10 +16,12 @@ $check_level = check_level($mysqli, 2, false);
 if($check_level == 0) { 
     $header = '/layout/header.php'; 
     $show_visibility = true;
+    $show_deck_up = true;
     $show_actions = true; 
 } else { 
     $header = '/layout/user_header.php';
     $show_visibility = false;
+    $show_deck_up = false;
     $show_actions = false; 
 } 
 
@@ -30,6 +32,7 @@ $active_page = 13;
 $title = "";
 $page = "";
 require_once ROOT_PATH . '/controllers/event_controller.php';
+require_once ROOT_PATH . '/controllers/chart_controller.php';
 if($log_result && $check_level == 0 && isset($_GET["new_event"])) {
     $title = "New Event - Administrator - Fow Deck Hub";
     $event = create_new_event($mysqli);
@@ -58,9 +61,33 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
     $chart_top8 = get_chart_data_by_top8_decks($decklists["content"]);
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
     $chart_event = get_chart_data_by_breakdown($breakdown);
-    $main_most_used = get_most_used_cards_by_event_and_deck_type($mysqli, $event_id, 2);
     $rune_most_used = get_most_used_cards_by_event_and_deck_type($mysqli, $event_id, 1);
-	$show_event = false;
+    $chart_rune_most_used = get_chart_data_by_card_list($rune_most_used["content"], "Rune Deck", "#000000");
+    $main_most_used = get_most_used_cards_by_event_and_deck_type($mysqli, $event_id, 2);
+    $chart_main_most_used = get_chart_data_by_card_list($main_most_used["content"], "Main Deck", "#333333");
+    $side_most_used = get_most_used_cards_by_event_and_deck_type($mysqli, $event_id, 3);
+    $chart_side_most_used = get_chart_data_by_card_list($side_most_used["content"], "Side Deck", "#666666");
+    $stone_most_used = get_most_used_cards_by_event_and_deck_type($mysqli, $event_id, 4);
+    $chart_stone_most_used = get_chart_data_by_card_list($stone_most_used["content"], "Stone Deck", "#999999");
+    $result_arr = array();
+    var_dump($result_arr);
+    echo "<br>";
+    array_push($result_arr, $chart_rune_most_used);
+    var_dump($result_arr);
+    echo "<br>";
+    array_push($result_arr, $chart_main_most_used);
+    var_dump($result_arr);
+    echo "<br>";
+    array_push($result_arr, $chart_side_most_used);
+    var_dump($result_arr);
+    echo "<br>";
+    array_push($result_arr, $chart_stone_most_used);
+    var_dump($result_arr);
+    echo "<br>";
+    $result_chart = json_encode($result_arr);
+    var_dump($result_chart);
+    echo "<br>";
+    $show_event = false;
     $simple_table = true;
 } 
 else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET["event_edit"] > 0) {
