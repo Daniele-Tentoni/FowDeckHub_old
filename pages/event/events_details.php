@@ -182,6 +182,33 @@
 			return chart;
 		});
 
+		nv.addGraph(function() {
+			var chart = nv.models.multiBarHorizontalChart().x(function(d) {
+				return d.label;
+			}).y(function(d) {
+				return d.value;
+			}).margin({
+				top : 30,
+				right : 20,
+				bottom : 50,
+				left : 175
+			}).showValues(true)//Show bar value next to each bar.
+			.tooltips(true)//Show tooltips on hover.
+			.transitionDuration(350)
+							.showControls(true)
+							.color(d3.scale.myColors().range());
+			//Allow user to switch between "Grouped" and "Stacked" mode.
+
+			chart.yAxis.tickFormat(d3.format(',.2f'));
+
+			d3.select('#chart-5 svg').datum(main_most_used()).call(chart);
+
+			nv.utils.windowResize(chart.update);
+
+			return chart;
+		});
+	};
+
 		/*
 		 * Pie chart top8_ruler_breakdown data. Note how there is only a single array of key-value pairs.
 		 */
@@ -193,6 +220,13 @@
 		 * Pie chart event_ruler_breakdown data. Note how there is only a single array of key-value pairs.
 		 */
 		function event_ruler_breakdown_data() {
+			return <?php echo $chart_event; ?>;
+		}
+
+		/*
+		 * MultiBarHorizontal chart most_used_cards data. Note how there is only a single array of key-value pairs.
+		 */
+		function main_most_used() {
 			return <?php echo $chart_event; ?>;
 		}
 	};

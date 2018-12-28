@@ -4,7 +4,7 @@
 /*
  * Legge tutte le carte di una singola decklist.
  */
-function get_card_list_by_deck_id($mysqli, $id) {
+function get_card_list_by_decklist_id($mysqli, $id) {
 	$res = array();
 	$res["result"] = false;
     
@@ -24,12 +24,12 @@ function get_card_list_by_deck_id($mysqli, $id) {
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "SELECT `Card`, `Decktype`, `Quantity`, c.`Id`, c.`Name`, c.`Set`, c.`Number` 
+	$query = "SELECT `Card`, t.`Name` as Decktype, `Quantity`, c.`Id`, c.`Name`, c.`Set`, c.`Number`, t.`Label`
 	FROM `card_quantities` q 
 	INNER JOIN `cards` c on q.`Card` = c.`Id` 
 	INNER JOIN `deck_types` t on q.`Decktype` = t.`Id` 
 	WHERE `Decklist` = ?
-	ORDER BY `Decktype`, c.`Name`, c.`Set`, c.`Number`";
+	ORDER BY t.`Id`, c.`Name`, c.`Set`, c.`Number`";
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $id_param);
@@ -48,6 +48,7 @@ function get_card_list_by_deck_id($mysqli, $id) {
 			$stringa["Name"] = $row["Name"];
 			$stringa["Set"] = $row["Set"];
 			$stringa["Number"] = $row["Number"];
+			$stringa["DeckLabel"] = $row["Label"];
 			array_push($res["content"], $stringa);
 		}
 	} else {
@@ -124,6 +125,117 @@ function get_decklist_by_id($mysqli, $id) {
 		$res["content"] = $stringa;
 	} else {
 		$res["msg"] = "No data to view with id $id.";
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
+ * Funzione per capire se un deck ha una decklist e quindi può essere visibile agli utenti.
+ */
+function check_if_deck_have_card_list($mysqli, $id) {
+	$res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+        $res["error"] = "server_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_ERR;
+	}
+	if(isset($mysqli) && $mysqli->connect_error) {
+        $res["error"] = "server_conn_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_CONN_ERR;
+		return $res;
+	}
+
+	// Effettuo finalmente il caricamento della decklist in base all'id.
+	$query = "SELECT q.Decklist, q.Decktype, q.Somma
+				from decklists d
+				left join (SELECT Decklist, Decktype, sum(Quantity) as 'Somma'
+							from card_quantities
+							where Decklist = ?
+							group by Decktype) q on d.Id = q.Decklist
+				where q.Decktype in (0, 2, 4)
+				group by q.Decklist, q.Decktype
+				order by q.Decktype, q.Decklist";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i", $id_param);
+	$id_param = $mysqli->real_escape_string($id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["message"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			if($row["Decktype"] == 0 && ($row["Somma"] < 40 || $row["Somma"] > 60)) {
+				return $res["result"] = false;
+			}
+		}
+	} else {
+		$res["message"] = "No data to view with id $id.";
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
+ * Mi permette di ottenere tutti i deck che sono storicizzati nel database, con visibilità in base ai permessi.
+ */
+function get_all_decks($mysqli, $visibility){
+	$res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["msg"] = "Problemi di connessione al server, contact the support.";
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
+		return $res;
+	} 
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, e.Name as Event, d.Position, c.Name as Ruler, d.Visibility
+				from decklists d 
+				left join decktypes dt on d.Type = dt.Id
+				left join playstyles p on dt.Style = p.Id
+				left join `events` e on d.Event = e.Id
+				left join cards c on d.Ruler = c.Id";
+
+	$query .= $visibility ? " where d.Visibility = 1" : "";
+	$query .= " order by Event, Position";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["msg"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Id"] = $row["Id"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Player"] = $row["Player"];
+			$stringa["GachaCode"] = $row["GachaCode"];
+			$stringa["Type"] = $row["Type"];
+			$stringa["Style"] = $row["Style"];
+			$stringa["Event"] = $row["Event"];
+			$stringa["Position"] = $row["Position"];
+			$stringa["Ruler"] = $row["Ruler"];
+			$stringa["Visibility"] = $row["Visibility"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+		$res["msg"] = "No data to view.";
 		return $res;
 	}
 
@@ -219,10 +331,14 @@ function save_base_decklist_data($mysqli, $id, $name, $player, $event, $type, $p
 	$position_param = $mysqli->real_escape_string($position);
 	$gacha_code_param = $mysqli->real_escape_string($gacha_code);
 	$visibility_param = $mysqli->real_escape_string($visibility);
+	if(check_if_deck_have_decklist($mysqli, $id)) {
+        $res["error"] = "no_decklist";
+        $res["message"] = "This decklist haven't a card list uploaded.";
+	}
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
-        $res["data"] = $data_param;
+        $res["data"] = $name_param;
     } else {
         $res["error"] = "query";
         $res["number"] = $mysqli->errno;
@@ -266,8 +382,8 @@ function save_decklist($mysqli, $id, $decks) {
 					  WHERE c.Name = ?), 0, ?)";
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = intval($mysqli->real_escape_string($value["count"]));
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore.
         		$res["error"] = "query";

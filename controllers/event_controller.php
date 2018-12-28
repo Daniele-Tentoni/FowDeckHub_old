@@ -101,64 +101,6 @@ function get_all_admin_events($mysqli, $id, $year){
 }
 
 /*
- * Ritorna l'ultimo evento disputato che sia visibile.
- */
-function get_latest_event($mysqli) {
-	$res = array();
-	$res["result"] = false;
-    
-	// Controllo che la connessione sia impostata.
-	if(!isset($mysqli)) {
-        $res["error"] = "server_err";
-        $res["number"] = $mysqli->errno;
-        $res["message"] = SERVER_ERR;
-		return $res;
-	}
-	if(isset($mysqli) && $mysqli->connect_error) {
-        $res["error"] = "server_conn_err";
-        $res["number"] = $mysqli->errno;
-        $res["message"] = SERVER_CONN_ERR;
-		return $res;
-	} 
-
-	// Effettuo finalmente il caricamento della decklist.
-	// Carico tutte le decklists.
-	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
-			FROM events e
-			JOIN nations n on e.Nation = n.Id
-			WHERE e.Visibility = 1
-            ORDER BY e.Date DESC
-            LIMIT 1";
-
-	$stmt = $mysqli->prepare($query);
-	$stmt->execute();
-	$result = $stmt->get_result();
-	if($result->num_rows > 0) {
-		$res["content"] = array();
-		$res["message"] = "There's some data to view";
-		while($row = $result->fetch_assoc()) {
-			$stringa["Id"] = $row["Id"];
-			$stringa["Name"] = $row["Name"];
-			$stringa["Nation"] = $row["Nation"];
-			$stringa["Year"] = $row["Year"];
-			$stringa["Attendance"] = $row["Attendance"];
-			$stringa["Date"] = $row["Date"];
-			$stringa["CommunityReports"] = $row["CommunityReports"];
-			$stringa["OtherLinks"] = $row["OtherLinks"];
-			array_push($res["content"], $stringa);
-		}
-	} else {
-        $res["error"] = "query";
-        $res["number"] = $mysqli->errno;
-        $res["message"] = "No data to view. " . $mysqli->error;
-		return $res;
-	}
-
-	$res["result"] = true;
-	return $res;
-}
-
-/*
  * Ritorna i dati relativi ad un evento dato il suo id.
  */
 function get_event_by_id($mysqli, $id) {
@@ -295,7 +237,7 @@ function get_event_map($mysqli) {
         $msg["content"] = SERVER_CONN_ERR;
 		$msg["error"] = "server_conn_err";
         return $msg;
-    } 
+    }
 
     // Effettuo finalmente il caricamento della decklist.
     // Carico tutte le decklists.
@@ -443,7 +385,6 @@ function get_event_widget_details($mysqli, $year) {
     $msg = array();
     $msg["result"] = false;
     $msg["error"] = "nothing";
-    $msg["content"] = array();
     
     // Controllo che la connessione sia impostata.
     if(!isset($mysqli)) {
@@ -478,7 +419,7 @@ function get_event_widget_details($mysqli, $year) {
     $stmt->execute();
     $result = $stmt->get_result();
     if($result->num_rows > 0) {
-        $msg["content"] = array();
+		$msg["content"] = array();
         $msg["error"] = "There's some data to view";
         while($row = $result->fetch_assoc()) {
             $stringa["Id"] = $row["Id"];
@@ -499,51 +440,120 @@ function get_event_widget_details($mysqli, $year) {
 }
 
 /*
- * Fill an array of chart data from a decklists array.
+ * Ritorna l'ultimo evento disputato che sia visibile.
  */
-function get_chart_data_by_top8_decks($decklists) {
-    $data = array();
-    foreach($decklists as $deck){
-        if(isset($data) && isset($data[$deck["Ruler"]])) {
-            $data[$deck["Ruler"]]++;
-        } else {
-            $data[$deck["Ruler"]] = 1;
-        }
-    }
+function get_latest_event($mysqli) {
+	$res = array();
+	$res["result"] = false;
     
-    $chart = array();
-    foreach($data as $key => $value){
-        $row = array();
-		$pieces = explode("/", $key);
-        $row["label"] = $pieces[0];
-        $row["label"] = $key;
-        $row["value"] = $value;
-        array_push($chart, $row);
-    }
-    
-    return json_encode($chart);
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+        $res["error"] = "server_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_ERR;
+		return $res;
+	}
+	if(isset($mysqli) && $mysqli->connect_error) {
+        $res["error"] = "server_conn_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_CONN_ERR;
+		return $res;
+	} 
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
+			FROM events e
+			JOIN nations n on e.Nation = n.Id
+			WHERE e.Visibility = 1
+            ORDER BY e.Date DESC
+            LIMIT 1";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["message"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Id"] = $row["Id"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Nation"] = $row["Nation"];
+			$stringa["Year"] = $row["Year"];
+			$stringa["Attendance"] = $row["Attendance"];
+			$stringa["Date"] = $row["Date"];
+			$stringa["CommunityReports"] = $row["CommunityReports"];
+			$stringa["OtherLinks"] = $row["OtherLinks"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+        $res["error"] = "query";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = "No data to view. " . $mysqli->error;
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
 }
 
 /*
- * Fill an array of chart data from a breakdown array.
+ * Ottiene tutte le carte più giocate di un tipo di deck per un evento.
  */
-function get_chart_data_by_breakdown($breakdown) {
-	$data = array();
-    foreach($breakdown as $key => $value){
-		$data[$value["Name"]] = $value["Quantity"];
-    }
+function get_most_used_cards_by_event_and_deck_type($mysqli, $event, $deck_type) {
+	$msg = array();
+    $msg["result"] = false;
+    $msg["error"] = "nothing";
     
-    $chart = array();
-    foreach($data as $key => $value){
-        $row = array();
-		$pieces = explode("/", $key);
-        $row["label"] = $pieces[0];
-        $row["value"] = $value;
-        array_push($chart, $row);
+    // Controllo che la connessione sia impostata.
+    if(!isset($mysqli)) {
+		$msg["content"] = SERVER_ERR;
+        $msg["error"] = "server_err";
+        return $msg;
     }
-    
-    return json_encode($chart);
+
+    if(isset($mysqli) && $mysqli->connect_error) {
+        $msg["content"] = SERVER_CONN_ERR;
+		$msg["error"] = "server_conn_err";
+        return $msg;
+    }
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "select c.Name, sum(cq.Quantity) as Somma
+			  from decklists d
+			  join card_quantities cq on d.Id = cq.Decklist
+			  join cards c on c.Id = cq.Card
+			  where d.Visibility = 1
+				and cq.Decktype = ?
+				and c.Event = ?
+			  group by c.Name
+			  order by Somma desc";
+
+	$stmt = $mysqli->prepare($query);
+    $stmt->bind_param("ii", $decktype_sql, $event_sql);
+    $decktype_sql = $deck_type;
+    $event_sql = $event;
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["msg"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Name"] = $row["Name"];
+			$stringa["Somma"] = $row["Somma"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+		$res["msg"] = "No data to view.";
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
 }
+
+#region Setter
 
 /*
  * Crea un nuovo evento e ne ritorna l'id, oppure ritorna l'errore.
@@ -790,6 +800,8 @@ function save_ruler_breakdown($mysqli, $id, $breakdown) {
     
 	return $res;
 }
+
+#endregion
 
 function test_controller($mysqli) {
 	$stringa = "Hai richiesto correttamente il controller.";

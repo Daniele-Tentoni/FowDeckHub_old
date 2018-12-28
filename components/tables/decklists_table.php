@@ -10,6 +10,7 @@
             echo !isset($show_event) || $show_event ? "<th width=\"130\">Event</th>" : "";
             echo !isset($show_position) || $show_position ? "<th width=\"70\">Position</th>" : "";
             echo !isset($show_visibility) || $show_visibility ? "<th width=\"70\">Vis.</th>" : "";
+            echo !isset($show_deck_up) || $show_deck_up ? "<th width=\"70\">Deck Up.</th>" : "";
 			echo !isset($show_actions) || $show_actions ? "<th width=\"130\">Actions</th>" : "";
 			?>
         </tr>
@@ -42,6 +43,7 @@
                 }
                 echo !isset($show_position) || $show_position ? "    <td><span class=\"label label-" . $classToAdd . "\">" . $value["Position"] . "</span></td>" : "";
                 echo !isset($show_visibility) || $show_visibility ? "    <td>" . $value["Visibility"] . "</td>" : "";
+                echo !isset($show_deck_up) || $show_deck_up ? "    <td>" . $value["DeckUp"] . "</td>" : "";
                 echo !isset($show_actions) || $show_actions ? "    <td>" : "";
                 echo !isset($show_actions) || $show_actions ? "        <a href=\"decklists.php?edit_decklist=" . $value["Id"] . "\" class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></a>" : "";
                 echo !isset($show_actions) || $show_actions ? "        <button class=\"btn btn-danger btn-rounded btn-sm\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span></button>" : "";

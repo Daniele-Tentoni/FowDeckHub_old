@@ -10,3 +10,19 @@ INSERT INTO `my_fowdeckhub`.`cards` (`Id`, `Name`, `Set`, `Number`, `Cost`, `Vis
 ('3438', 'Iron Cauldron Witch', 'NDR', '46', '4UU', '1', '1'),
 ('3360', 'Sealing Scroll', 'SDV4', '16', '0', '1', '3'), 
 ('3361', 'Shadow Step', 'SDV4', '17', '1G', '1', '1');
+
+-- 26-12-2028
+INSERT INTO `my_fowdeckhub`.`site_params` (`Id`, `Codice`, `Valore`, `DesVal`, `Note`) VALUES 
+(NULL, 'MIN_MAIN_DECK', '40', 'Minimo di carte di cui deve essere composto il deck del main.', ''), 
+(NULL, 'MAX_MAIN_DECK', '60', 'Massimo di carte di cui deve essere composto il deck del main.', ''), 
+(NULL, 'MIN_RULER_DECK', '1', 'Minimo di carte di cui deve essere composto il deck del ruler.', ''), 
+(NULL, 'MAX_RULER_DECK', '3', 'Massimo di carte di cui deve essere composto il deck del Ruler.', ''), 
+(NULL, 'MIN_SIDE_DECK', '0', 'Minimo di carte di cui deve essere composto il deck del Side.', ''), 
+(NULL, 'MAX_SIDE_DECK', '15', 'Massimo di carte di cui deve essere composto il deck del Side.', ''), 
+(NULL, 'MIN_STONE_DECK', '10', 'Minimo di carte di cui deve essere composto il deck delle Stone.', ''), 
+(NULL, 'MAX_STONE_DECK', '20', 'Massimo di carte di cui deve essere composto il deck delle Stone.', ''), 
+(NULL, 'MIN_RUNE_DECK', '0', 'Minimo di carte di cui deve essere composto il deck delle Rune.', ''), 
+(NULL, 'MAX_RUNE_DECK', '5', 'Massimo di carte di cui deve essere composto il deck delle Rune.', '');
+
+-- 28-12-2018
+ALTER TABLE `deck_types` ADD `Label` VARCHAR(15) NULL DEFAULT NULL ;

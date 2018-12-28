@@ -174,7 +174,7 @@
                                             <input type="checkbox" id="Visibility" class="form-control add_item" 
                                             <?php 
                                             if(isset($elem["Visibility"])) {
-                                            	echo "checked=\"" . ($elem["Visibility"] == 1 ? "true" : "false") . "\"";
+                                            	echo $elem["Visibility"] == 1 ? "checked" : "";
                                         	} else {
                                                 var_dump($elem);
                                             }
