@@ -1,4 +1,9 @@
 <?php
+/*
+ * Richiedo le funzioni di base.
+ */
+require_once "base_controller.php";
+
 #region Lettura e operazioni sulle decklist
 
 /*
@@ -170,6 +175,8 @@ function get_all_decks($mysqli, $visibility){
 		$res["msg"] = "There's some data to view";
 		while($row = $result->fetch_assoc()) {
 			$stringa["Id"] = $row["Id"];
+			$checking = check_if_deck_have_card_list($mysqli, $row["Id"]);
+			$stringa["DeckUp"] = $checking["result"] ? $checking["content"] : $checking["message"];
 			$stringa["Name"] = $row["Name"];
 			$stringa["Player"] = $row["Player"];
 			$stringa["GachaCode"] = $row["GachaCode"];

@@ -51,23 +51,31 @@ function get_chart_data_by_breakdown($breakdown) {
  */
 function get_chart_data_by_card_list($card_list, $deck_name, $deck_color) {
     $data = array();
+    $last_player = "";
+    $last_color = hexdec("000000");
+    $elem = array();
 
     foreach($card_list as $value){
+        if($value["Player"] != $last_player) {
+            if($last_player != "") {
+                array_push($data, $elem);
+            }
+            $last_player = $value["Player"];
+            $elem = array();
+            $elem["key"] = $value["Player"];
+            $elem["color"] = "#" . sprintf("%06d", $last_color);
+            $last_color = $last_color + hexdec("1000");
+            $elem["values"] = array();
+        }
+
         $row = array();
         $row["label"] = $value["Name"];
-        $row["value"] = $value["Somma"];
-        array_push($data, $row);
+        $row["value"] = $value["Quantity"];
+        array_push($elem["values"], $row);
     }
+    // Devo aggiungere l'ultimo elemento.
+    array_push($data, $elem);
     
-    //$results = array();
-    
-    $chart = array();
-    $chart["key"] = $deck_name;
-    $chart["color"] = $deck_color;
-    $chart["values"] = $data;
-    //array_push($results, $chart);
-    
-    return $chart;
-    return json_encode($chart);
+    return json_encode($data);
 }
 ?>

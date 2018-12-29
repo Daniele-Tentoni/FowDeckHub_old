@@ -528,16 +528,14 @@ function get_most_used_cards_by_event_and_deck_type($mysqli, $event, $deck_type)
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "select cq.Decktype, c.Name, sum(cq.Quantity) as Somma
-			  from decklists d
-			  join card_quantities cq on d.Id = cq.Decklist
-			  join cards c on c.Id = cq.Card
-			  where d.Visibility = 1
-				and cq.Decktype = ?
-				and d.Event = ?
-				-- and cq.Decktype in (1, 2, 3, 4)
-			  group by c.Name
-			  order by Somma desc";
+	$query = "select d.Player, cq.Decktype, c.Name, cq.Quantity
+				from decklists d
+				join card_quantities cq on d.Id = cq.Decklist
+				join cards c on c.Id = cq.Card
+				where d.Visibility = 1
+				  and cq.Decktype = ?
+				  and d.Event = ?
+				order by d.Player desc";
 
 	$stmt = $mysqli->prepare($query);
     $stmt->bind_param("ii", $decktype_sql, $event_sql);
@@ -549,11 +547,12 @@ function get_most_used_cards_by_event_and_deck_type($mysqli, $event, $deck_type)
 		$res["content"] = array();
 		$res["msg"] = "There's some data to view";
 		while($row = $result->fetch_assoc()) {
-			$stringa = array();
-			$stringa["Name"] = $row["Name"];
-			$stringa["Somma"] = $row["Somma"];
-			$stringa["Decktype"] = $row["Decktype"];
-			array_push($res["content"], $stringa);
+			$elem = array();
+			$elem["Player"] = $row["Player"];
+			$elem["Decktype"] = $row["Decktype"];
+			$elem["Name"] = $row["Name"];
+			$elem["Quantity"] = $row["Quantity"];
+			array_push($res["content"], $elem);
 		}
 	} else {
 		$res["msg"] = "No data to view.";

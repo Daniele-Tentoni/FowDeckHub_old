@@ -22,7 +22,7 @@
 						<div class="panel-heading">
 							<h3 class="panel-title">Decklists</h3>
                             <!-- event -->
-                            <div class="col-md-3 col-xs-9 pull-right">
+                            <!--<div class="col-md-3 col-xs-9 pull-right">
                                 <select class="form-control select add-item" id="event">
                                     <option value="0">-- Filter by event --</option>
                                     <?php
@@ -43,7 +43,7 @@
                                     }
                                     ?>
                                 </select>
-                            </div>
+                            </div>-->
 							<a href="decklists.php?newDecklist" class="btn btn-primary btn-rounded pull-right"><i class="fa fa-plus"></i>New List</a>
 						</div>
 

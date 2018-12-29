@@ -3,14 +3,14 @@
         <tr>
 			<?php
 			echo !isset($show_name) || $show_name ? "<th>Decklist Name</th>" : "";
-			echo !isset($show_ruler) || $show_ruler ? "<th width=\"130\">Ruler</th>" : "";
-			echo !isset($show_player) || $show_player ? "<th width=\"150\">Player</th>" : "";
+			echo !isset($show_ruler) || $show_ruler ? "<th width=\"115\">Ruler</th>" : "";
+			echo !isset($show_player) || $show_player ? "<th width=\"145\">Player</th>" : "";
 			echo !isset($show_type) || $show_type ? "<th width=\"130\">Type</th>" : "";
             echo !isset($show_style) || $show_style ? "<th width=\"70\">Style</th>" : "";
             echo !isset($show_event) || $show_event ? "<th width=\"130\">Event</th>" : "";
             echo !isset($show_position) || $show_position ? "<th width=\"70\">Position</th>" : "";
             echo !isset($show_visibility) || $show_visibility ? "<th width=\"70\">Vis.</th>" : "";
-            echo !isset($show_deck_up) || $show_deck_up ? "<th width=\"70\">Deck Up.</th>" : "";
+            echo !isset($show_deck_up) || $show_deck_up ? "<th width=\"70\">Deck</th>" : "";
 			echo !isset($show_actions) || $show_actions ? "<th width=\"115\">Actions</th>" : "";
 			?>
         </tr>
@@ -45,10 +45,10 @@
                 echo !isset($show_visibility) || $show_visibility ? "    <td>" . $value["Visibility"] . "</td>" : "";
                 if(!isset($show_deck_up) || $show_deck_up) {
                     echo "<td>";
-                    if($value["DeckUp"] == true) {
-                        echo "<span class=\"label label-success\" ><i class=\"fa fa-arrow-up\" aria-hidden=\"true\"></i> Deck Up</span>";
-                    } else if($value["DeckUp"] == false) {
-                        echo "<span class=\"label label-danger\" ><i class=\"fa fa-times\" aria-hidden=\"true\"></i> Deck Down</span>";
+                    if($value["DeckUp"] == 1) {
+                        echo "<span class=\"label label-success\" ><i class=\"fa fa-arrow-up\" aria-hidden=\"true\"></i> Up</span>";
+                    } else if($value["DeckUp"] == 0) {
+                        echo "<span class=\"label label-danger\" ><i class=\"fa fa-times\" aria-hidden=\"true\"></i> Dw</span>";
                     } else {
                         echo "<span class=\"label label-warning\" > " . $value["DeckUp"] . "</span>";
                     }

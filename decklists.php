@@ -48,7 +48,7 @@ else if($log_result && $check_level == 0 && isset($_GET["edit_decklist"]) && $_G
 	$page = "/pages/decklist/decklist_edit.php";
 } else {
 	$title = "Decklists - Fow Deck Hub";
-	$decklists = get_decks($mysqli, $check_level);
+	$decklists = get_all_decks($mysqli, $check_level);
 	$page = "/pages/decklist/decklists_partial.php";
 }
 

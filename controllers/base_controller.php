@@ -56,7 +56,13 @@ function check_if_deck_have_card_list($mysqli, $id) {
         $res["content"] = true;
 		$res["message"] = "There's some data to view";
 		while($row = $result->fetch_assoc()) {
-			if($row["Decktype"] == 0 && ($row["Somma"] < 40 || $row["Somma"] > 60)) {
+			if($row["Decktype"] == 0 && ($row["Somma"] < 1 || $row["Somma"] > 3)) {
+				$res["content"] = false;
+			}
+			if($row["Decktype"] == 2 && ($row["Somma"] < 40 || $row["Somma"] > 60)) {
+				$res["content"] = false;
+			}
+			if($row["Decktype"] == 4 && ($row["Somma"] < 10 || $row["Somma"] > 20)) {
 				$res["content"] = false;
 			}
 		}

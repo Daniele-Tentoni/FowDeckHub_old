@@ -69,24 +69,8 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
     $chart_side_most_used = get_chart_data_by_card_list($side_most_used["content"], "Side Deck", "#666666");
     $stone_most_used = get_most_used_cards_by_event_and_deck_type($mysqli, $event_id, 4);
     $chart_stone_most_used = get_chart_data_by_card_list($stone_most_used["content"], "Stone Deck", "#999999");
-    $result_arr = array();
-    var_dump($result_arr);
-    echo "<br>";
-    array_push($result_arr, $chart_rune_most_used);
-    var_dump($result_arr);
-    echo "<br>";
-    array_push($result_arr, $chart_main_most_used);
-    var_dump($result_arr);
-    echo "<br>";
-    array_push($result_arr, $chart_side_most_used);
-    var_dump($result_arr);
-    echo "<br>";
-    array_push($result_arr, $chart_stone_most_used);
-    var_dump($result_arr);
-    echo "<br>";
-    $result_chart = json_encode($result_arr);
-    var_dump($result_chart);
-    echo "<br>";
+    /*var_dump($chart_rune_most_used);
+    echo "<br>";*/
     $show_event = false;
     $simple_table = true;
 } 

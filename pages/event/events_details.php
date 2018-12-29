@@ -6,9 +6,6 @@
 </ul>
 <!-- END BREADCRUMB -->
 
-<script type="text-javascript">
-						console.log("Sono qui");
-						</script>
 <!-- PAGE TITLE -->
 <div class="page-title">                    
 	<h2 onclick="history.back();"><span class="fa fa-arrow-circle-o-left"></span> Event Details</h2>
@@ -81,53 +78,53 @@
 										<!-- END STACKED CHART -->
 									</div><!--
 									Card percentage in top8
-									--><div class="col-md-6">
+									--><div class="col-md-12">
 										<!-- START STACKED CHART -->
 										<div class="panel panel-default">
 											<div class="panel-heading">
 												<h3 class="panel-title">Card copies in main decks in top 8</h3>
 											</div>
 											<div class="panel-body">
-												<div id="main_most_used_cards" style="height: 300px;"><svg></svg></div>
+												<div id="main_most_used_cards" style="height: 500px;"><svg></svg></div>
 											</div>
 										</div>
 										<!-- END STACKED CHART -->
 									</div><!--
 									Rune Deck percentage in top8
-									--><div class="col-md-6">
+									--><div class="col-md-12">
 										<!-- START STACKED CHART -->
 										<div class="panel panel-default">
 											<div class="panel-heading">
 												<h3 class="panel-title">Card copies in rune decks in top 8</h3>
 											</div>
 											<div class="panel-body">
-												<div id="rune_most_used_cards" style="height: 300px;"><svg></svg></div>
+												<div id="rune_most_used_cards" style="height: 400px;"><svg></svg></div>
 											</div>
 										</div>
 										<!-- END STACKED CHART -->
 									</div><!--
 									Side Deck percentage in top8
-									--><div class="col-md-6">
+									--><div class="col-md-12">
 										<!-- START STACKED CHART -->
 										<div class="panel panel-default">
 											<div class="panel-heading">
 												<h3 class="panel-title">Card copies in side decks in top 8</h3>
 											</div>
 											<div class="panel-body">
-												<div id="side_most_used_cards" style="height: 300px;"><svg></svg></div>
+												<div id="side_most_used_cards" style="height: 400px;"><svg></svg></div>
 											</div>
 										</div>
 										<!-- END STACKED CHART -->
 									</div><!--
 									Stone Deck percentage in top8
-									--><div class="col-md-6">
+									--><div class="col-md-12">
 										<!-- START STACKED CHART -->
 										<div class="panel panel-default">
 											<div class="panel-heading">
 												<h3 class="panel-title">Card copies in stone decks in top 8</h3>
 											</div>
 											<div class="panel-body">
-												<div id="stone_most_used_cards" style="height: 300px;"><svg></svg></div>
+												<div id="stone_most_used_cards" style="height: 400px;"><svg></svg></div>
 											</div>
 										</div>
 										<!-- END STACKED CHART -->
@@ -186,20 +183,19 @@
 <script type="text/javascript" src="js/plugins/nvd3/lib/d3.v3.js"></script>        
 <script type="text/javascript" src="js/plugins/nvd3/nv.d3.min.js"></script>
 <script type="text/javascript">
-	$(function() {
-		/*
-		 * Da reinserire quando troverò come sistemare il bug.
-        */
-         var toc = $("#tocify").tocify({
-			context: ".tocify-content", 
-			showEffect: "fadeIn",
-			extendPage:false,
-			selectors: "h2" 
-		});
-        
+	/*
+	* Da reinserire quando troverò come sistemare il bug.
+	*/
+	var tocify_page = $("#tocify").tocify({
+		context: ".tocify-content", 
+		showEffect: "fadeIn",
+		extendPage:false,
+		selectors: "h2" 
 	});
 
 	var startChart = function() {
+
+		// Grafici a torta
 		nv.addGraph(function() {
 			var chart = nv.models.pieChart().x(function(d) {
 				return d.label;
@@ -232,6 +228,7 @@
 			return chart;
 		});
 
+		// Grafici a barre.
 		nv.addGraph(function() {
 			var chart = nv.models.multiBarHorizontalChart().x(function(d) {
 				return d.label;
@@ -256,7 +253,7 @@
 
 			return chart;
 		});
-/*
+
 		nv.addGraph(function() {
 			var chart = nv.models.multiBarHorizontalChart().x(function(d) {
 				return d.label;
@@ -270,7 +267,7 @@
 			}).showValues(true)//Show bar value next to each bar.
 			.tooltips(true)//Show tooltips on hover.
 			.transitionDuration(350)
-							.showControls(true);
+							.showControls(false);
 			//Allow user to switch between "Grouped" and "Stacked" mode.
 
 			chart.yAxis.tickFormat(d3.format(',.2f'));
@@ -330,7 +327,7 @@
 			nv.utils.windowResize(chart.update);
 
 			return chart;
-		}); */
+		});
 
 		/*
 		 * Pie chart top8_ruler_breakdown data. Note how there is only a single array of key-value pairs.
@@ -350,7 +347,7 @@
 		 * MultiBarHorizontal chart most_used_cards data. Note how there is only a single array of key-value pairs.
 		 */
 		function main_most_used() {
-			return <?php echo $result_chart; ?>;
+			return <?php echo $chart_main_most_used; ?>;
 		}
 
 		/*
@@ -373,8 +370,10 @@
 		function stone_most_used() {
 			return <?php echo $chart_stone_most_used; ?>;
 		}
+
 	};
 	
 	startChart();
+    tocify_page();
 </script>
 <!-- END THIS PAGE PLUGINS-->  
