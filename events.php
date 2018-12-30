@@ -80,7 +80,7 @@ else if($log_result && $check_level == 0 && isset($_GET["event_edit"]) && $_GET[
     $title = "Event Edit - Administrator - Fow Deck Hub";
     $page = "/pages/event/event_edit.php";
     $event_id = $_GET["event_edit"];
-    $event = get_event_by_id($mysqli, $event_id)["content"];
+    $elem = get_event_by_id($mysqli, $event_id)["content"];
     // Ho già controllato che l'utente fosse un utente con i privilegi necessari.
     $decklists = get_event_decks($mysqli, $event_id, true);
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
