@@ -57,7 +57,7 @@
                 }
                 echo $deckstring;
                 echo !isset($show_attributes) || $show_attributes ? "<td><span class=\"label label-success\">" . $value["Attribute"] . "</span></td>" : "";
-                echo !isset($show_actions) || $show_actions ? "<td><button class=\"btn btn-default btn-rounded btn-sm\"><span class=\"fa fa-pencil\"></span></button> <button class=\"btn btn-danger btn-rounded btn-sm\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span> </button></td>" : "";
+                echo !isset($show_actions) || $show_actions ? "<td><button class=\"btn btn-default btn-rounded btn-xs\"><span class=\"fa fa-pencil\"></span></button> <button class=\"btn btn-danger btn-rounded btn-xs\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span> </button></td>" : "";
                 echo "</tr>";
            }
         } else {

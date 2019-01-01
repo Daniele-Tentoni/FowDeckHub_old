@@ -70,7 +70,7 @@ function check_if_deck_have_card_list($mysqli, $id) {
 		$res["message"] = "No data to view with id $id.";
 		return $res;
 	}
-
+	
 	$res["result"] = true;
 	return $res;
 }

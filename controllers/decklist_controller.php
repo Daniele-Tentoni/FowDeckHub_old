@@ -285,7 +285,7 @@ function save_base_decklist_data($mysqli, $id, $name, $player, $event, $type, $p
 	$position_param = $mysqli->real_escape_string($position);
 	$gacha_code_param = $mysqli->real_escape_string($gacha_code);
 	$visibility_param = $mysqli->real_escape_string($visibility);
-	if(check_if_deck_have_decklist($mysqli, $id)) {
+	if(check_if_deck_have_card_list($mysqli, $id)) {
         $res["error"] = "no_decklist";
         $res["message"] = "This decklist haven't a card list uploaded.";
 	}

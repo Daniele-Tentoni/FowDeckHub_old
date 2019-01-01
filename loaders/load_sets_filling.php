@@ -19,8 +19,7 @@ if($mysqli->connect_error){
 					select se.Code, se.NumCards, COUNT(*) as Count
 					from card_sets se
 					join cards c on se.Code = c.Set
-					group by se.Code
-                    having Count < se.NumCards) as ca on s.Code = ca.Code";
+					group by se.Code) as ca on s.Code = ca.Code";
 	if($filtro_anno != "") {
 		$query .= " where Year = $filtro_anno";
 	}
