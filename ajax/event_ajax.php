@@ -31,16 +31,7 @@ else if(isset($_GET["event_map_details"])) {
     $event_map_details = get_event_map_details($mysqli, $region);
     echo json_encode($event_map_details);
 } 
-else if(isset($_GET["events_widget"]) && isset($_POST["year"]) && $_POST["year"] > 0) {
-    // Controllo il livello senza tracciarlo, altrimenti qui sarebbe un morire.
-    $check_level = check_level($mysqli, 2, false);
-    if($check_level != 0) {
-        // Comunico che non ho capito quale operazione mi è richiesta.
-        $result["error"] = "You dosen't have permissions and privileges to use this function. Contact a system administrator or report the bug with the link at the bottom of this page.";
-        echo json_encode($result);
-        return;
-    }
-
+else if($log_result && $check_level == 0 && isset($_GET["events_widget"]) && isset($_POST["year"]) && $_POST["year"] > 0) {
     $region = $_POST["year"];
     $event_map_details = get_event_widget_details($mysqli, $region);
     echo json_encode($event_map_details);

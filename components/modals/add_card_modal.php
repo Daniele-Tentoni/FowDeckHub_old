@@ -35,7 +35,15 @@
 									echo "<option value=\"0\">-- Connection Error --</option>";
 								} else {
 									$query = "SELECT s.Code, s.Name
-											FROM card_sets s";
+									FROM card_sets s
+									LEFT JOIN (
+										SELECT se.Code, se.NumCards, COUNT(*) AS Count
+										FROM card_sets se
+										JOIN (SELECT DISTINCT ca.Number, ca.Set
+												FROM cards ca) c ON se.Code = c.Set
+										GROUP BY se.Code) ca ON s.Code = ca.Code
+										WHERE Count < s.NumCards
+										   OR Count IS NULL";
 									$stmt = $conn->prepare($query);
 									$stmt->execute();
 									$result = $stmt->get_result();

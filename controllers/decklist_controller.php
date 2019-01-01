@@ -312,11 +312,13 @@ function save_decklist($mysqli, $id, $decks) {
 
 	// Controllo che la connessione sia impostata.
 	if(!isset($mysqli)) {
+		$res["error"] = "server_err";
 		$res["message"] = SERVER_ERR;
 		return $res;
 	}
 
 	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["error"] = "server_conn_err";
 		$res["message"] = SERVER_CONN_ERR;
 		return $res;
 	}
@@ -350,18 +352,18 @@ function save_decklist($mysqli, $id, $decks) {
         }
 		
         foreach ($decks["rune"]["deck"] as $key => $value) {
-			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
+			$query = 'INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
 					  FROM cards c
-					  WHERE c.Name = ?),1,?)";
+					  WHERE c.Name = ?),1,?)';
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = $mysqli->real_escape_string($value["count"]);
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore, provo subito a cercare la carta.
         		$res["error"] = "query";
         		$res["number"] = $mysqli->errno;
-				if(check_if_card_exists($mysqli, $id)) {
+				if(!check_if_card_exists($mysqli, $id)) {
 					$res["message"] .= " The rune " . $value["name"] . " dosen't exists in database. Add it or call the system administrator.";
 				} else {
 					$res["message"] .= " There were problems during the insert of the rune " . $value["name"] . " of count " . $value["count"];
@@ -376,13 +378,13 @@ function save_decklist($mysqli, $id, $decks) {
 					  WHERE c.Name = ?),2,?)";
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = $mysqli->real_escape_string($value["count"]);
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore, provo subito a cercare la carta.
         		$res["error"] = "query";
         		$res["number"] = $mysqli->errno;
-				if(check_if_card_exists($mysqli, $id)) {
+				if(!check_if_card_exists($mysqli, $id)) {
 					$res["message"] .= " The main " . $card_param . " dosen't exists in database. Add it or call the system administrator.";
 				} else {
 					$res["message"] .= " There were problems during the insert of main " . $card_param . " of count " . $quantity_param;
@@ -397,13 +399,13 @@ function save_decklist($mysqli, $id, $decks) {
 					  WHERE c.Name = ?),3,?)";
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = $mysqli->real_escape_string($value["count"]);
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore.
 				$res["error"] = "query";
         		$res["number"] = $mysqli->errno;
-				if(check_if_card_exists($mysqli, $id)) {
+				if(!check_if_card_exists($mysqli, $id)) {
 					$res["message"] .= " The side " . $card_param . " dosen't exists in database. Add it or call the system administrator.";
 				} else {
 					$res["message"] .= " There were problems during the insert of side " . $card_param . " of count " . $quantity_param;
@@ -418,8 +420,8 @@ function save_decklist($mysqli, $id, $decks) {
 					  WHERE c.Name = ?),4,?)";
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = $mysqli->real_escape_string($value["count"]);
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore.
         		$res["error"] = "query";

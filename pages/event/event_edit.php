@@ -47,8 +47,8 @@
                                     <div class="col-md-9">
                                         <input id="Name" name="Name" type="text" class="form-control add_item" placeholder="Name"
                                                <?php
-                                                if(isset($event["Name"])) {
-                                                    echo "value=\"" . $event["Name"] . "\"";
+                                                if(isset($elem["Name"])) {
+                                                    echo "value=\"" . $elem["Name"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -62,8 +62,8 @@
                                     <div class="col-md-9">
                                         <input id="Year" type="number" class="form-control add_item" placeholder="Year"
                                                <?php
-                                                if(isset($event["Year"])) {
-                                                    echo "value=\"" . $event["Year"] . "\"";
+                                                if(isset($elem["Year"])) {
+                                                    echo "value=\"" . $elem["Year"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -78,8 +78,8 @@
                                         <div class="input-group">
                                             <input id="Date" class="form-control datepicker add_item" data-date-format="dd-mm-yyyy" data-date-viewmode="years" type="text" placeholder="Date"
                                                <?php
-                                                if(isset($event["Date"])) {
-                                                    echo "value=\"" . $event["Date"] . "\"";
+                                                if(isset($elem["Date"])) {
+                                                    echo "value=\"" . $elem["Date"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -108,7 +108,7 @@
                                                 if($result->num_rows > 0) {
                                                     while($row = $result->fetch_assoc()) {
                                                         echo "<option value=\"" . $row["Id"] . "\" ";
-                                                        echo isset($event["Nation"]) && $event["Nation"] == $row["Name"] ? "selected" : " ";
+                                                        echo isset($elem["Nation"]) && $elem["Nation"] == $row["Name"] ? "selected" : " ";
                                                         echo ">" . $row["Name"];
                                                         echo "</option>";
                                                     }
@@ -128,8 +128,8 @@
                                     <div class="col-md-9">
                                         <input id="Attendance" type="number" class="form-control add_item" placeholder="Attendance"
                                                <?php
-                                                if(isset($event["Attendance"])) {
-                                                    echo "value=\"" . $event["Attendance"] . "\"";
+                                                if(isset($elem["Attendance"])) {
+                                                    echo "value=\"" . $elem["Attendance"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -144,8 +144,8 @@
                                        <label class="switch switch-small">
                                             <input type="checkbox" id="Visibility" class="form-control add_item" 
                                             <?php 
-                                            if(isset($event["Visibility"])) {
-                                            	echo "checked=\"" . $event["Visibility"] == 1 ? "true" : "false" . "\"";
+                                            if(isset($elem["Visibility"])) {
+                                            	echo "checked=\"" . $elem["Visibility"] == 1 ? "true" : "false" . "\"";
                                         	}
                                        		?> />
                                             <span></span>

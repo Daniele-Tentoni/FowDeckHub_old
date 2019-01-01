@@ -410,16 +410,14 @@ function get_event_widget_details($mysqli, $year) {
     // Effettuo finalmente il caricamento della decklist.
     // Carico tutte le decklists.
     $query = "SELECT e.Id, e.Name, n.Name as Nation, e.Date, Cont 
-				FROM events e 
-				JOIN nations n on e.Nation = n.Id 
-				LEFT JOIN (
-				    SELECT d.Event, COUNT(*) as Cont 
-				    FROM decklists d 
-				    JOIN events e1 ON d.Event = e1.Id 
-				    WHERE e1.Year = ?
-				    GROUP BY d.Event) AS de ON de.Event = e.Id 
-				WHERE e.Year = ?
-				  AND Cont < 8";
+	FROM events e 
+	JOIN nations n on e.Nation = n.Id 
+	LEFT JOIN (
+		SELECT d.Event, COUNT(*) as Cont 
+		FROM decklists d 
+		JOIN events e1 ON d.Event = e1.Id
+		GROUP BY d.Event) de ON de.Event = e.Id 
+	WHERE Cont < 8";
 
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("ii", $year_sql, $year_sql);

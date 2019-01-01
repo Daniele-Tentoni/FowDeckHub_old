@@ -23,19 +23,19 @@ $check_level = check_level($mysqli, 2, false);
 
 // Qui controllo quale operazione devo eseguire arrivato dalla chiamata ajax.
 if($log_result && $check_level == 0 && isset($_GET["save_decklist_base_data"]) && isset($_POST["Id"]) && isset($_POST["Name"]) && isset($_POST["Player"]) && isset($_POST["Event"]) && isset($_POST["Type"]) && isset($_POST["Position"]) && isset($_POST["GachaCode"]) && isset($_POST["Visibility"])) {
-    $id = $mysqli->real_escape_string($_POST["Id"]);
-    $name = $mysqli->real_escape_string($_POST["Name"]);
-    $player = $mysqli->real_escape_string($_POST["Player"]);
-    $event = $mysqli->real_escape_string($_POST["Event"]);
-    $type = $mysqli->real_escape_string($_POST["Type"]);
-    $position = $mysqli->real_escape_string($_POST["Position"]);
-    $gacha_code = $mysqli->real_escape_string($_POST["GachaCode"]);
-    $visibility = $mysqli->real_escape_string($_POST["Visibility"]);
+    $id = $_POST["Id"];
+    $name = $_POST["Name"];
+    $player = $_POST["Player"];
+    $event = $_POST["Event"];
+    $type = $_POST["Type"];
+    $position = $_POST["Position"];
+    $gacha_code = $_POST["GachaCode"];
+    $visibility = $_POST["Visibility"];
     $res = save_base_decklist_data($mysqli, $id, $name, $player, $event, $type, $position, $gacha_code, $visibility);
     echo json_encode($res);
 } 
 else if($log_result && $check_level == 0 && isset($_GET["save_decklist"]) && isset($_POST["Id"]) && isset($_POST["Deck"])) {
-    $id = $mysqli->real_escape_string($_POST["Id"]);
+    $id = $_POST["Id"];
     $decks = json_decode($_POST["Deck"], true);
     $res = save_decklist($mysqli, $id, $decks);
     echo json_encode($res);
