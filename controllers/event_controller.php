@@ -4,6 +4,7 @@
  */
 require_once "base_controller.php";
 
+#region Getter
 /*
  * Get the lists of all events.
  */
@@ -23,12 +24,12 @@ function get_all_events($mysqli, $id, $year){
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, f.Name as `Format`, e.Year, e.Date, e.Attendance
 			FROM events e
-			join nations n on e.Nation = n.Id
-			where e.Visibility = 1";
-	
-	$query .= " order by e.Date";
+			JOIN nations n ON e.Nation = n.Id
+			JOIN formats f ON e.`Format` = f.Id
+			WHERE e.Visibility = 1
+			ORDER BY e.Date";
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->execute();
@@ -40,6 +41,7 @@ function get_all_events($mysqli, $id, $year){
 			$stringa["Id"] = $row["Id"];
 			$stringa["Name"] = $row["Name"];
 			$stringa["Nation"] = $row["Nation"];
+			$stringa["Format"] = $row["Format"];
 			$stringa["Year"] = $row["Year"];
 			$stringa["Attendance"] = $row["Attendance"];
 			$stringa["Date"] = $row["Date"];
@@ -73,12 +75,11 @@ function get_all_admin_events($mysqli, $id, $year){
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.Visibility
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, f.Name as `Format`, e.Year, e.Date, e.Attendance, e.Visibility
 			FROM events e
-			join nations n on e.Nation = n.Id
-			where 1 = 1";
-	
-	$query .= " order by e.Date";
+			JOIN nations n ON e.Nation = n.Id
+			JOIN formats f ON e.`Format` = f.Id
+			ORDER BY e.Date";
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->execute();
@@ -90,6 +91,7 @@ function get_all_admin_events($mysqli, $id, $year){
 			$stringa["Id"] = $row["Id"];
 			$stringa["Name"] = $row["Name"];
 			$stringa["Nation"] = $row["Nation"];
+			$stringa["Format"] = $row["Format"];
 			$stringa["Year"] = $row["Year"];
 			$stringa["Attendance"] = $row["Attendance"];
 			$stringa["Date"] = $row["Date"];
@@ -130,10 +132,12 @@ function get_event_by_id($mysqli, $id) {
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, f.Name as `Format`, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
 			FROM events e
-			left join nations n on e.Nation = n.Id
-			where e.Id = ? order by e.Date";
+			LEFT JOIN nations n ON e.Nation = n.Id
+			LEFT JOIN formats f ON e.`Format` = f.Id
+			WHERE e.Id = ?
+			ORDER BY e.Date";
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $id_param);
@@ -147,6 +151,7 @@ function get_event_by_id($mysqli, $id) {
 		$stringa["Id"] = $row["Id"];
 		$stringa["Name"] = $row["Name"];
 		$stringa["Nation"] = $row["Nation"];
+		$stringa["Format"] = $row["Format"];
 		$stringa["Year"] = $row["Year"];
 		$stringa["Attendance"] = $row["Attendance"];
 		$stringa["Date"] = $row["Date"];
@@ -299,9 +304,10 @@ function get_event_map_details($mysqli, $region) {
 
     // Effettuo finalmente il caricamento della decklist.
     // Carico tutte le decklists.
-    $query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, Cont
+    $query = "SELECT e.Id, e.Name, n.Name as Nation, f.Name as `Format`, e.Year, e.Date, e.Attendance, Cont
                 FROM events e
-                JOIN nations n on e.Nation = n.Id
+                JOIN nations n ON e.Nation = n.Id
+				JOIN formats f ON e.`Format` = f.Id
                 LEFT JOIN (SELECT d.Event, COUNT(*) as Cont
 			                 FROM decklists d
                              WHERE d.Visibility = 1
@@ -321,6 +327,7 @@ function get_event_map_details($mysqli, $region) {
 			$stringa["Id"] = $row["Id"];
 			$stringa["Name"] = $row["Name"];
 			$stringa["Nation"] = $row["Nation"];
+			$stringa["Format"] = $row["Format"];
 			$stringa["Year"] = $row["Year"];
 			$stringa["Date"] = $row["Date"];
 			$stringa["Attendance"] = $row["Attendance"];
@@ -409,15 +416,16 @@ function get_event_widget_details($mysqli, $year) {
 
     // Effettuo finalmente il caricamento della decklist.
     // Carico tutte le decklists.
-    $query = "SELECT e.Id, e.Name, n.Name as Nation, e.Date, Cont 
-	FROM events e 
-	JOIN nations n on e.Nation = n.Id 
-	LEFT JOIN (
-		SELECT d.Event, COUNT(*) as Cont 
-		FROM decklists d 
-		JOIN events e1 ON d.Event = e1.Id
-		GROUP BY d.Event) de ON de.Event = e.Id 
-	WHERE Cont < 8";
+    $query = "SELECT e.Id, e.Name, n.Name as Nation, f.Name as `Format`, e.Date, Cont 
+				FROM events e 
+				JOIN nations n on e.Nation = n.Id
+				JOIN formats f on e.Format = f.Id
+				LEFT JOIN (
+					SELECT d.Event, COUNT(*) as Cont 
+					FROM decklists d 
+					JOIN events e1 ON d.Event = e1.Id
+					GROUP BY d.Event) de ON de.Event = e.Id 
+				WHERE Cont < 8";
 
     $stmt = $mysqli->prepare($query);
     $stmt->bind_param("ii", $year_sql, $year_sql);
@@ -431,6 +439,7 @@ function get_event_widget_details($mysqli, $year) {
             $stringa["Id"] = $row["Id"];
             $stringa["Name"] = $row["Name"];
             $stringa["Nation"] = $row["Nation"];
+            $stringa["Format"] = $row["Format"];
             $stringa["Date"] = $row["Date"];
             $stringa["Cont"] = $row["Cont"] != null ? $row["Cont"] : 0;
             array_push($msg["content"], $stringa);
@@ -468,9 +477,10 @@ function get_latest_event($mysqli) {
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "SELECT e.Id, e.Name, n.Name as Nation, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, f.Name as `Format`, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
 			FROM events e
 			JOIN nations n on e.Nation = n.Id
+			JOIN formats f on e.`Format` = f.Id
 			WHERE e.Visibility = 1
             ORDER BY e.Date DESC
             LIMIT 1";
@@ -485,6 +495,7 @@ function get_latest_event($mysqli) {
 			$stringa["Id"] = $row["Id"];
 			$stringa["Name"] = $row["Name"];
 			$stringa["Nation"] = $row["Nation"];
+			$stringa["Format"] = $row["Format"];
 			$stringa["Year"] = $row["Year"];
 			$stringa["Attendance"] = $row["Attendance"];
 			$stringa["Date"] = $row["Date"];
@@ -560,6 +571,7 @@ function get_most_used_cards_by_event_and_deck_type($mysqli, $event, $deck_type)
 	$res["result"] = true;
 	return $res;
 }
+#endregion
 
 #region Setter
 
@@ -602,7 +614,7 @@ function create_new_event($mysqli){
 /*
  * Mi salvo i dati base dell'evento.
  */
-function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance, $visibility) {
+function save_base_data($mysqli, $id, $name, $year, $data, $nation, $format, $attendance, $visibility) {
     $res = array();
 	$res["result"] = false;
 
@@ -618,19 +630,20 @@ function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance,
 	}
 
 	// Effettuo update della sezione dei dati base e converto la data in timestamp se necessario.
-	$query = "UPDATE events SET Name = ?, Nation = ?, Year = ?, Attendance = ?, `Date` = ?, Visibility = ? WHERE Id = ?";
+	$query = "UPDATE events SET `Name` = ?, Nation = ?, `Format` = ?, `Year` = ?, Attendance = ?, `Date` = ?, Visibility = ? WHERE Id = ?";
     $pieces = explode(" ", $data);
     if(!isset($pieces[1])) {
         $data . " 00:00:00";
     }
     
 	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("siiisii", $name_param, $nation_param, $year_param, $attendance_param, $data_param, $visibility_param, $id_param);
+	$stmt->bind_param("siiisii", $name_param, $nation_param, $format_param, $year_param, $attendance_param, $data_param, $visibility_param, $id_param);
 	$id_param = $mysqli->real_escape_string($id);
 	$name_param = $mysqli->real_escape_string($name);
 	$year_param = $mysqli->real_escape_string($year);
     $data_param = date("Y-m-d H:i:s", strtotime($data));
 	$nation_param = $mysqli->real_escape_string($nation);
+	$format_param = $mysqli->real_escape_string($format);
 	$attendance_param = $mysqli->real_escape_string($attendance);
 	$visibility_param = $mysqli->real_escape_string($visibility);
 	if($stmt->execute()){
@@ -642,7 +655,7 @@ function save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance,
         $res["number"] = $mysqli->errno;
         $res["message"] = $mysqli->error;
         $res["data"] = $data_param;
-        $res["data"] = $id_param . "/" . $name_param . "/" . $year_param . "/" . $data_param . "/" . $nation_param . "/" . $attendance_param . "/" . $visibility_param . "/";
+        $res["data"] = $id_param . "/" . $name_param . "/" . $year_param . "/" . $data_param . "/" . $nation_param . "/" . $format_param . "/" . $attendance_param . "/" . $visibility_param . "/";
     }
     
 	return $res;

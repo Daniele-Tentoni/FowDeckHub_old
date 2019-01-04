@@ -121,6 +121,39 @@
                                     </div>
                                 </div>
                             </div><!--
+                                Format
+                            --><div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="Format" class="col-md-3 control-label">Format</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control add_item" id="Format" name="Format" placeholder="Format">
+                                            <?php
+                                            // Essendo la prima query apro la connessione.
+                                            if($mysqli->connect_error){
+                                                echo "<option value=\"0\">-- Connection Error --</option>";
+                                            } else {
+                                                $query = "SELECT s.Id, s.Name
+                                                        FROM formats s
+                                                        ORDER BY s.Name";
+                                                $stmt = $mysqli->prepare($query);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+                                                if($result->num_rows > 0) {
+                                                    while($row = $result->fetch_assoc()) {
+                                                        echo "<option value=\"" . $row["Id"] . "\" ";
+                                                        echo isset($elem["Format"]) && $elem["Format"] == $row["Format"] ? "selected" : " ";
+                                                        echo ">" . $row["Format"];
+                                                        echo "</option>";
+                                                    }
+                                                } else {
+                                                    echo "<option value=\"0\">-- No Result --</option>";
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div><!--
                                 Attendance
                             --><div class="col-md-12">
                                 <div class="form-group">
