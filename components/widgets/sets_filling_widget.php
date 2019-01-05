@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" id="set_filling_widget_panel">
 	<div class="panel-heading">
 		<div class="panel-title-box">
 			<h3>Sets Filling</h3>
@@ -60,6 +60,9 @@
 
 				function load_sets(year) {
 					$("#sets-filling-table-body").html("");
+					var panel = $("#set_filling_widget_panel");
+        			panel_refresh(panel);
+					set_filling_widget_panel
 					var ajax_data = "";
 					if(year != null) {
 						ajax_data = "year="+year;
@@ -84,12 +87,16 @@
 								console.log("Fallimento");
 								$("#sets-filling-table-body").append(result["Errore"]);
 							}
-							resize_widget();
+							//resize_widget();
 						},
 						error:function(result){
 							console.log(result);
 							$(result).appendTo($("#sets-filling-table-body"));
-							resize_widget();
+							//resize_widget();
+						},
+						complete:function(result) {
+							console.log(result);
+							panel_refresh(panel);
 						}
 					});
 				}

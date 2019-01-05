@@ -141,7 +141,7 @@
                                                 if($result->num_rows > 0) {
                                                     while($row = $result->fetch_assoc()) {
                                                         echo "<option value=\"" . $row["Code"] . "\" ";
-                                                        echo isset($elem["Format"]) && $elem["Format"] == $row["Code"] ? "selected" : " ";
+                                                        echo ($elem["Format"] == $row["Name"]) ? "selected" : "";
                                                         echo ">" . $row["Name"];
                                                         echo "</option>";
                                                     }
@@ -178,8 +178,8 @@
                                             <input type="checkbox" id="Visibility" class="form-control add_item" 
                                             <?php 
                                             if(isset($elem["Visibility"])) {
-                                            	echo $elem["Visibility"] == 1 ? "checked" : "";
-                                        	}
+                                                echo $elem["Visibility"] == 1 ? " checked" : "not_checked";
+                                            }
                                        		?> />
                                             <span></span>
                                         </label>

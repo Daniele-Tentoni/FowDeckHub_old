@@ -52,7 +52,7 @@
 				</thead>
 				<tbody id="events-filling-table-body">
                 <?php
-                if(isset($events) && $events["result"] == true) {
+                /*if(isset($events) && $events["result"] == true) {
                     foreach ($events["content"] as $value) {
                         echo "<tr id=\"trow_" . $value["Id"] . "\">";
                         echo "	<td><a href=\"events.php?event_id=" . $value["Id"] . "\"><strong>" . $value["Name"] . "</strong></a></td>";
@@ -77,7 +77,7 @@
                     }
                 } else {
                     echo isset($events["content"]) && count($events["content"]) > 0 ? $events["content"] : "No events to show";
-                }
+                }*/
                 ?>
                     
 				</tbody>
@@ -137,6 +137,7 @@
 						$("#date_event_filling_widget").change(function () {
 							load_events($("#date_event_filling_widget").val());
 						});
+						load_events(2018);
 					});
 				</script>
 			</table>

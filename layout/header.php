@@ -55,7 +55,7 @@
                     <li class="xn-openable <?php if(isset($active_page) && $active_page >= 10 && $active_page < 20) { echo "active"; } ?>">
                         <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Administration</span></a>
                         <ul>
-                            <li class="<?php if(isset($active_page) && $active_page == 10) { echo "active"; } ?>"><a href="users.php"><i class="fa fa-image" aria-hidden="true"></i> Users</a></li>
+                            <!--<li class="<?php if(isset($active_page) && $active_page == 10) { echo "active"; } ?>"><a href="users.php"><i class="fa fa-image" aria-hidden="true"></i> Users</a></li>-->
                             <li class="<?php if(isset($active_page) && $active_page == 11) { echo "active"; } ?>"><a href="cards.php"><i class="fa fa-user" aria-hidden="true"></i> Cards</a></li>
                             <li class="<?php if(isset($active_page) && $active_page == 12) { echo "active"; } ?>"><a href="decklists.php"><i class="fa fa-comments" aria-hidden="true"></i> Decklists</a></li>
                             <li class="<?php if(isset($active_page) && $active_page == 13) { echo "active"; } ?>"><a href="events.php"><i class="fa fa-users" aria-hidden="true"></i> Events</a></li>

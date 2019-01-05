@@ -7,7 +7,7 @@
 			echo !isset($show_name) || $show_name ? "<th>Name</th>" : "";
 			echo !isset($show_code) || $show_code ? "<th width=\"110\">Code</th>" : "";
 			echo !isset($show_type) || $show_type ? "<th width=\"100\">Type</th>" : "";
-            echo !isset($show_cost) || $show_cost ? "<th width=\"120\">Cost</th>" : "";
+            echo !isset($show_cost) || $show_cost ? "<th width=\"135\">Cost</th>" : "";
             echo !isset($show_attributes) || $show_attributes ? "<th width=\"100\">Attributes</th>" : "";
 			echo !isset($show_deck) || $show_deck ? "<th width=\"100\">Deck</th>" : "";
             echo !isset($show_actions) || $show_actions ? "<th width=\"110\">Actions</th>" : "";

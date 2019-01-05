@@ -7,7 +7,7 @@
 			echo !isset($show_player) || $show_player ? "<th width=\"145\">Player</th>" : "";
 			echo !isset($show_type) || $show_type ? "<th width=\"130\">Type</th>" : "";
             echo !isset($show_style) || $show_style ? "<th width=\"70\">Style</th>" : "";
-            echo !isset($show_event) || $show_event ? "<th width=\"130\">Event</th>" : "";
+            echo !isset($show_event) || $show_event ? "<th width=\"230\">Event</th>" : "";
             echo !isset($show_position) || $show_position ? "<th width=\"70\">Position</th>" : "";
             echo !isset($show_visibility) || $show_visibility ? "<th width=\"70\">Vis.</th>" : "";
             echo !isset($show_deck_up) || $show_deck_up ? "<th width=\"70\">Deck</th>" : "";

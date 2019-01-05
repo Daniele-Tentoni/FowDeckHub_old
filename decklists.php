@@ -28,6 +28,7 @@ if($log_result && $check_level == 0 && isset($_GET["newDecklist"])) {
 	$elem = $decklist["content"];
 	$title = "New Decklists - Administrator - Fow Deck Hub";
 	$page = "/pages/decklist/decklist_edit.php";
+	$header = "/layout/header.php";
 } 
 else if($log_result && $check_level == 0 && isset($_GET["edit_decklist"]) && $_GET["edit_decklist"] > 0) {
 	$decklist = get_decklist_by_id($mysqli, $_GET["edit_decklist"]);
@@ -47,16 +48,26 @@ else if($log_result && $check_level == 0 && isset($_GET["edit_decklist"]) && $_G
 	$simple_card_table = true;
 	$title = "Edit Decklists - Administrator - Fow Deck Hub";
 	$page = "/pages/decklist/decklist_edit.php";
+	$header = "/layout/header.php";
 } else {
 	$title = "Decklists - Fow Deck Hub";
 	$decklists = get_all_decks($mysqli, $check_level);
+	$show_ruler = false;
 	$page = "/pages/decklist/decklists_partial.php";
+	if($log_result && $check_level == 0) {
+		$header = "/layout/header.php";
+	} else {
+		$header = "/layout/user_header.php";
+		$show_visibility = false;
+		$show_deck_up = false;
+		$show_actions = false;
+	}
 }
 
 /*
 * Assemblo la pagina.
 */
-require_once ROOT_PATH . '/layout/header.php';
+require_once ROOT_PATH . $header;
 require_once ROOT_PATH . $page;
 require_once ROOT_PATH . '/layout/footer.php';
 ?>

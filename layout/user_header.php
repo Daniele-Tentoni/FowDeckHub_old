@@ -41,6 +41,9 @@
                         <a href="events.php"><i class="fa fa-users" aria-hidden="true"></i> Events</a>
                     </li>
                     <li>
+                        <a href="decklists.php"><i class="fa fa-align-justify" aria-hidden="true"></i> Decklists</a>
+                    </li>
+                    <li>
                         <a href="faq.php"><i class="fa fa-question-circle"></i> F.A.Q.</a>
                     </li>
                     <!--<li class="xn-openable">

@@ -116,17 +116,19 @@ function get_all_admin_events($mysqli, $id, $year){
 function get_event_by_id($mysqli, $id) {
 	$res = array();
 	$res["result"] = false;
+    
+    // Controllo che la connessione sia impostata.
+    if(!isset($mysqli)) {
+		$msg["content"] = SERVER_ERR;
+        $msg["error"] = "server_err";
+        return $msg;
+    }
 
-	// Controllo che la connessione sia impostata.
-	if(!isset($mysqli)) {
-		$res["msg"] = "Problemi di connessione al server, contact the support.";
-		return $res;
-	}
-
-	if(isset($mysqli) && $mysqli->connect_error) {
-		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
-		return $res;
-	} 
+    if(isset($mysqli) && $mysqli->connect_error) {
+        $msg["content"] = SERVER_CONN_ERR;
+		$msg["error"] = "server_conn_err";
+        return $msg;
+    }
 	
 	if(!isset($id)) {
 		$res["msg"] = "Necessario indicate id";
@@ -135,7 +137,7 @@ function get_event_by_id($mysqli, $id) {
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "SELECT e.Id, e.Name, n.Name as Nation, f.Name as `Format`, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks
+	$query = "SELECT e.Id, e.Name, n.Name as Nation, f.Name as `Format`, e.Year, e.Date, e.Attendance, e.CommunityReports, e.OtherLinks, e.Visibility
 			FROM events e
 			LEFT JOIN nations n ON e.Nation = n.Id
 			LEFT JOIN formats f ON e.`Format` = f.Code
@@ -160,6 +162,7 @@ function get_event_by_id($mysqli, $id) {
 		$stringa["Date"] = $row["Date"];
 		$stringa["CommunityReports"] = $row["CommunityReports"];
 		$stringa["OtherLinks"] = $row["OtherLinks"];
+		$stringa["Visibility"] = $row["Visibility"];
 		$res["content"] = $stringa;
 	} else {
 		$res["msg"] = "No data to view.";
@@ -640,18 +643,18 @@ function save_base_data($mysqli, $id, $name, $year, $data, $nation, $format, $at
     }
     
 	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("siiiisii", $name_param, $nation_param, $format_param, $year_param, $attendance_param, $data_param, $visibility_param, $id_param);
-	$id_param = $mysqli->real_escape_string($id);
-	$name_param = $mysqli->real_escape_string($name);
-	$year_param = $mysqli->real_escape_string($year);
+	$stmt->bind_param("sisiisii", $name_param, $nation_param, $format_param, $year_param, $attendance_param, $data_param, $visibility_param, $id_param);
+	$id_param = $id;
+	$name_param = $name;
+	$year_param = $year;
     $data_param = date("Y-m-d H:i:s", strtotime($data));
-	$nation_param = $mysqli->real_escape_string($nation);
-	$format_param = $mysqli->real_escape_string($format);
-	$attendance_param = $mysqli->real_escape_string($attendance);
-	$visibility_param = $mysqli->real_escape_string($visibility);
+	$nation_param = $nation;
+	$format_param = $format;
+	$attendance_param = $attendance;
+	$visibility_param = $visibility;
 	if($stmt->execute()){
         $res["result"] = true;
-        $res["message"] = "Update correctly completed.";
+        $res["message"] = "Update correctly completed. " . $format;
         $res["data"] = $data_param;
     } else {
         $res["error"] = "query";

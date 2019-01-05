@@ -157,12 +157,11 @@ function get_all_decks($mysqli, $visibility){
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
-	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, e.Name as Event, d.Position, c.Name as Ruler, d.Visibility
+	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, e.Name as Event, d.Position, d.Visibility
 				from decklists d 
 				left join decktypes dt on d.Type = dt.Id
 				left join playstyles p on dt.Style = p.Id
-				left join `events` e on d.Event = e.Id
-				left join cards c on d.Ruler = c.Id";
+				left join `events` e on d.Event = e.Id";
 
 	$query .= $visibility ? " where d.Visibility = 1" : "";
 	$query .= " order by Event, Position";
@@ -184,7 +183,6 @@ function get_all_decks($mysqli, $visibility){
 			$stringa["Style"] = $row["Style"];
 			$stringa["Event"] = $row["Event"];
 			$stringa["Position"] = $row["Position"];
-			$stringa["Ruler"] = $row["Ruler"];
 			$stringa["Visibility"] = $row["Visibility"];
 			array_push($res["content"], $stringa);
 		}

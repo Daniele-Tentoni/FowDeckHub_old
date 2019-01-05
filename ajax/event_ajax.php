@@ -45,14 +45,14 @@ else if(isset($_GET["event_save_base_data"])
     && isset($_POST["Format"])
     && isset($_POST["Attendance"]) 
     && isset($_POST["Visibility"])) {
-    $id = $mysqli->real_escape_string($_POST["Id"]);
-    $name = $mysqli->real_escape_string($_POST["Name"]);
-    $year = $mysqli->real_escape_string($_POST["Year"]);
-    $data = $mysqli->real_escape_string($_POST["Date"]);
-    $nation = $mysqli->real_escape_string($_POST["Nation"]);
-    $format = $mysqli->real_escape_string($_POST["Format"]);
-    $attendance = $mysqli->real_escape_string($_POST["Attendance"]);
-    $visibility = $mysqli->real_escape_string($_POST["Visibility"]);
+    $id = $_POST["Id"];
+    $name = $_POST["Name"];
+    $year = $_POST["Year"];
+    $data = $_POST["Date"];
+    $nation = $_POST["Nation"];
+    $format = $_POST["Format"];
+    $attendance = $_POST["Attendance"];
+    $visibility = $_POST["Visibility"];
 	
     $result = save_base_data($mysqli, $id, $name, $year, $data, $nation, $format, $attendance, $visibility);
     echo json_encode($result);
