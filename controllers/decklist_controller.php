@@ -1,5 +1,73 @@
 <?php
 /*
+ * Richiedo le funzioni di base.
+ */
+require_once "base_controller.php";
+
+#region Lettura e operazioni sulle decklist
+
+/*
+ * Legge tutte le carte di una singola decklist.
+ */
+function get_card_list_by_decklist_id($mysqli, $id) {
+	$res = array();
+	$res["result"] = false;
+    
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+        $res["error"] = "server_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_ERR;
+		return $res;
+	}
+	if(isset($mysqli) && $mysqli->connect_error) {
+        $res["error"] = "server_conn_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_CONN_ERR;
+		return $res;
+	} 
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "SELECT `Card`, t.`Name` as Decktype, `Quantity`, c.`Id`, c.`Name`, c.`Set`, c.`Number`, t.`Label`
+	FROM `card_quantities` q 
+	INNER JOIN `cards` c on q.`Card` = c.`Id` 
+	INNER JOIN `deck_types` t on q.`Decktype` = t.`Id` 
+	WHERE `Decklist` = ?
+	ORDER BY t.`Id`, c.`Name`, c.`Set`, c.`Number`";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i", $id_param);
+	$id_param = $mysqli->real_escape_string($id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["result"] = true;
+		$res["message"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Id"] = $row["Id"];
+			$stringa["Card"] = $row["Card"];
+			$stringa["Decktype"] = $row["Decktype"];
+			$stringa["Quantity"] = $row["Quantity"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Set"] = $row["Set"];
+			$stringa["Number"] = $row["Number"];
+			$stringa["DeckLabel"] = $row["Label"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+        $res["error"] = "query";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = "No data to view. " . $mysqli->error;
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+/*
  * Legge una singola decklist.
  */ 
 function get_decklist_by_id($mysqli, $id) {
@@ -8,12 +76,14 @@ function get_decklist_by_id($mysqli, $id) {
 
 	// Controllo che la connessione sia impostata.
 	if(!isset($mysqli)) {
-		$res["error"] = SERVER_ERR;
-		return $res;
+        $res["error"] = "server_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_ERR;
 	}
-
 	if(isset($mysqli) && $mysqli->connect_error) {
-		$res["error"] = SERVER_CONN_ERR;
+        $res["error"] = "server_conn_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_CONN_ERR;
 		return $res;
 	}
 
@@ -38,7 +108,6 @@ function get_decklist_by_id($mysqli, $id) {
 
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $id_param);
-	$stmt->execute();
 	$id_param = $mysqli->real_escape_string($id);
 	$stmt->execute();
 	$result = $stmt->get_result();
@@ -67,6 +136,70 @@ function get_decklist_by_id($mysqli, $id) {
 	$res["result"] = true;
 	return $res;
 }
+
+/*
+ * Mi permette di ottenere tutti i deck che sono storicizzati nel database, con visibilità in base ai permessi.
+ */
+function get_all_decks($mysqli, $visibility){
+	$res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+		$res["msg"] = "Problemi di connessione al server, contact the support.";
+		return $res;
+	}
+
+	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
+		return $res;
+	} 
+
+	// Effettuo finalmente il caricamento della decklist.
+	// Carico tutte le decklists.
+	$query = "select d.Id, d.Name, d.Player, d.GachaCode, dt.Name as Type, p.Name as Style, e.Name as Event, d.Position, c.Name as Ruler, d.Visibility
+				from decklists d 
+				left join decktypes dt on d.Type = dt.Id
+				left join playstyles p on dt.Style = p.Id
+				left join `events` e on d.Event = e.Id
+				left join cards c on d.Ruler = c.Id";
+
+	$query .= $visibility ? " where d.Visibility = 1" : "";
+	$query .= " order by Event, Position";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+		$res["content"] = array();
+		$res["msg"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$stringa["Id"] = $row["Id"];
+			$checking = check_if_deck_have_card_list($mysqli, $row["Id"]);
+			$stringa["DeckUp"] = $checking["result"] ? $checking["content"] : $checking["message"];
+			$stringa["Name"] = $row["Name"];
+			$stringa["Player"] = $row["Player"];
+			$stringa["GachaCode"] = $row["GachaCode"];
+			$stringa["Type"] = $row["Type"];
+			$stringa["Style"] = $row["Style"];
+			$stringa["Event"] = $row["Event"];
+			$stringa["Position"] = $row["Position"];
+			$stringa["Ruler"] = $row["Ruler"];
+			$stringa["Visibility"] = $row["Visibility"];
+			array_push($res["content"], $stringa);
+		}
+	} else {
+		$res["msg"] = "No data to view.";
+		return $res;
+	}
+
+	$res["result"] = true;
+	return $res;
+}
+
+#endregion
+
+#region Creazione e modifica delle decklist.
 
 /*
  * Creazione di una nuova decklist.
@@ -152,10 +285,14 @@ function save_base_decklist_data($mysqli, $id, $name, $player, $event, $type, $p
 	$position_param = $mysqli->real_escape_string($position);
 	$gacha_code_param = $mysqli->real_escape_string($gacha_code);
 	$visibility_param = $mysqli->real_escape_string($visibility);
+	if(check_if_deck_have_card_list($mysqli, $id)) {
+        $res["error"] = "no_decklist";
+        $res["message"] = "This decklist haven't a card list uploaded.";
+	}
 	if($stmt->execute()){
         $res["result"] = true;
         $res["message"] = "Update correctly completed.";
-        $res["data"] = $data_param;
+        $res["data"] = $name_param;
     } else {
         $res["error"] = "query";
         $res["number"] = $mysqli->errno;
@@ -175,11 +312,13 @@ function save_decklist($mysqli, $id, $decks) {
 
 	// Controllo che la connessione sia impostata.
 	if(!isset($mysqli)) {
+		$res["error"] = "server_err";
 		$res["message"] = SERVER_ERR;
 		return $res;
 	}
 
 	if(isset($mysqli) && $mysqli->connect_error) {
+		$res["error"] = "server_conn_err";
 		$res["message"] = SERVER_CONN_ERR;
 		return $res;
 	}
@@ -194,39 +333,41 @@ function save_decklist($mysqli, $id, $decks) {
 	if($stmt->execute()){
         // Divido i mazzetti da aggiungere.
         foreach ($decks["ruler"]["deck"] as $key => $value) {
-			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
+			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?, (SELECT c.Id
 					  FROM cards c
-					  WHERE c.Name = ?),0,?)";
+					  WHERE c.Name = ?), 0, ?)";
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = $mysqli->real_escape_string($id["count"]);
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore.
         		$res["error"] = "query";
 				$res["query"] = $query;
         		$res["number"] = $mysqli->errno;
         		$res["message"] .= $mysqli->error . var_dump($value);
-				$res["message"] .= " There were problems during the insert of the ruler " . $value["name"] . " di quantita " . $value["count"];
+				$res["message"] .= " There were problems during the insert of the ruler " . $card_param . " di quantita " . $quantity_param;
 				return $res;
 			}
         }
 		
         foreach ($decks["rune"]["deck"] as $key => $value) {
-			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
+			$query = 'INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?,(SELECT c.Id
 					  FROM cards c
-					  WHERE c.Name = ?),1,?)";
+					  WHERE c.Name = ?),1,?)';
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = $mysqli->real_escape_string($id["count"]);
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
-				// Interrompo solamente se c'è un errore.
+				// Interrompo solamente se c'è un errore, provo subito a cercare la carta.
         		$res["error"] = "query";
-				$res["query"] = $query;
         		$res["number"] = $mysqli->errno;
-        		$res["message"] .= $mysqli->error . var_dump($value);
-				$res["message"] .= " There were problems during the insert of the rune " . $value["name"] . " di quantita " . $value["count"];
+				if(!check_if_card_exists($mysqli, $id)) {
+					$res["message"] .= " The rune " . $value["name"] . " dosen't exists in database. Add it or call the system administrator.";
+				} else {
+					$res["message"] .= " There were problems during the insert of the rune " . $value["name"] . " of count " . $value["count"];
+				}
 				return $res;
 			}
         }
@@ -237,15 +378,17 @@ function save_decklist($mysqli, $id, $decks) {
 					  WHERE c.Name = ?),2,?)";
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = $mysqli->real_escape_string($id["count"]);
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
-				// Interrompo solamente se c'è un errore.
+				// Interrompo solamente se c'è un errore, provo subito a cercare la carta.
         		$res["error"] = "query";
-				$res["query"] = $query;
         		$res["number"] = $mysqli->errno;
-        		$res["message"] .= $mysqli->error . var_dump($value);
-				$res["message"] .= " There were problems during the insert of the main " . $value["name"] . " di quantita " . $value["count"];
+				if(!check_if_card_exists($mysqli, $id)) {
+					$res["message"] .= " The main " . $card_param . " dosen't exists in database. Add it or call the system administrator.";
+				} else {
+					$res["message"] .= " There were problems during the insert of main " . $card_param . " of count " . $quantity_param;
+				}
 				return $res;
 			}
         }
@@ -256,15 +399,17 @@ function save_decklist($mysqli, $id, $decks) {
 					  WHERE c.Name = ?),3,?)";
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = $mysqli->real_escape_string($id["count"]);
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore.
-        		$res["error"] = "query";
-				$res["query"] = $query;
+				$res["error"] = "query";
         		$res["number"] = $mysqli->errno;
-        		$res["message"] .= $mysqli->error . var_dump($value);
-				$res["message"] .= " There were problems during the insert of the side " . $value["name"] . " di quantita " . $value["count"];
+				if(!check_if_card_exists($mysqli, $id)) {
+					$res["message"] .= " The side " . $card_param . " dosen't exists in database. Add it or call the system administrator.";
+				} else {
+					$res["message"] .= " There were problems during the insert of side " . $card_param . " of count " . $quantity_param;
+				}
 				return $res;
 			}
         }
@@ -275,8 +420,8 @@ function save_decklist($mysqli, $id, $decks) {
 					  WHERE c.Name = ?),4,?)";
 			$stmt = $mysqli->prepare($query);
 			$stmt->bind_param("isi", $deck_param, $card_param, $quantity_param);
-			$card_param = $mysqli->real_escape_string($value["name"]);
-			$quantity_param = $mysqli->real_escape_string($id["count"]);
+			$card_param = $value["name"];
+			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
 				// Interrompo solamente se c'è un errore.
         		$res["error"] = "query";
@@ -286,13 +431,31 @@ function save_decklist($mysqli, $id, $decks) {
 				$res["message"] .= " There were problems during the insert of the stone " . $value["name"] . " di quantita " . $value["count"];
 				return $res;
 			}
-        }
+		}
+		
+		// Restituisco il messaggio affermativo.
+		$res["result"] = true;
+		$res["message"] = "Decklist correctly imported.";
     } else {
         $res["error"] = "query";
         $res["number"] = $mysqli->errno;
         $res["message"] = $mysqli->error;
     }
-    
 	return $res;
 }
+
+/*
+ * Controlla se una carta esiste nel database.
+ */
+function check_if_card_exists($mysqli, $card_param) {
+	$query = "SELECT c.Id FROM cards c WHERE c.Name = ?";
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("s", $card_param);
+	if(!$stmt->execute()) {
+		return false;
+	}
+	return true;
+}
+
+#endregion
 ?>

@@ -17,7 +17,7 @@
     <div class="col-md-3">
         <?php require_once ROOT_PATH . '/components/widgets/bug_reports_widget.php'; ?>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
         <script>
             google_color_border = "#003399";
             google_color_bg = "#FFFFFF";

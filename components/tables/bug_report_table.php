@@ -28,7 +28,7 @@
                     foreach($states["content"] as $state) {
 						echo "<button ";
 						echo "id=\"state_" . $value["Id"] . "_" . $state["Id"] . "\" ";
-						echo "class=\"btn btn-default btn-rounded btn-sm state " . $state["Color"] . "\" ";
+						echo "class=\"btn btn-default btn-rounded btn-xs state " . $state["Color"] . "\" ";
 						echo "onClick=\"change_state(" . $value["Id"] . ", " . $state["Id"] . ");\" ";
 						if($value["State"] == $state["Name"]) {
 							echo "style=\"display:none;\" ";

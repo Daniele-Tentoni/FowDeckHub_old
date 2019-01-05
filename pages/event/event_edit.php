@@ -22,7 +22,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<p style="margin: 1rem 0">Edit the event with id: <?php echo $event["Id"]; ?>. But, pay Attenction! This is the core of the site, so it's ever under maintance, all contents can change without any advice during the Alpha tests.</p>
+						<p style="margin: 1rem 0">Edit the event with id: <?php echo $elem["Id"]; ?>. But, pay Attenction! This is the core of the site, so it's ever under maintance, all contents can change without any advice during the Alpha tests.</p>
 						<p style="margin: 1rem 0">Note that September, October, November and Dicember of an year after the WGP are under the new season beginning, so select the year when the season is started (put the year of the newest cluster. Es: WGP 2018 in Tokyo was played when NDR was already release, so put 2018) .</p>
 						<p style="margin: 1rem 0">Change the visibility state permit to all users to see the event details</p>
 					</div>
@@ -36,7 +36,7 @@
                 <form autocomplete="false" class="save_base_data_panel" method="post" action="ajax/event_ajax.php?event_save_base_data">
                     <div class="panel-heading">
                         <h3 class="panel-title">Base Data</h3>
-                        <button onClick="save_base_data('.save_base_data_panel', <?php echo $event_id; ?>)" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button onClick="save_base_data('.save_base_data_panel', <?php echo $elem["Id"]; ?>)" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -47,8 +47,8 @@
                                     <div class="col-md-9">
                                         <input id="Name" name="Name" type="text" class="form-control add_item" placeholder="Name"
                                                <?php
-                                                if(isset($event["Name"])) {
-                                                    echo "value=\"" . $event["Name"] . "\"";
+                                                if(isset($elem["Name"])) {
+                                                    echo "value=\"" . $elem["Name"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -62,8 +62,8 @@
                                     <div class="col-md-9">
                                         <input id="Year" type="number" class="form-control add_item" placeholder="Year"
                                                <?php
-                                                if(isset($event["Year"])) {
-                                                    echo "value=\"" . $event["Year"] . "\"";
+                                                if(isset($elem["Year"])) {
+                                                    echo "value=\"" . $elem["Year"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -78,8 +78,8 @@
                                         <div class="input-group">
                                             <input id="Date" class="form-control datepicker add_item" data-date-format="dd-mm-yyyy" data-date-viewmode="years" type="text" placeholder="Date"
                                                <?php
-                                                if(isset($event["Date"])) {
-                                                    echo "value=\"" . $event["Date"] . "\"";
+                                                if(isset($elem["Date"])) {
+                                                    echo "value=\"" . $elem["Date"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -108,8 +108,41 @@
                                                 if($result->num_rows > 0) {
                                                     while($row = $result->fetch_assoc()) {
                                                         echo "<option value=\"" . $row["Id"] . "\" ";
-                                                        echo isset($event["Nation"]) && $event["Nation"] == $row["Name"] ? "selected" : " ";
+                                                        echo isset($elem["Nation"]) && $elem["Nation"] == $row["Name"] ? "selected" : " ";
                                                         echo ">" . $row["Name"];
+                                                        echo "</option>";
+                                                    }
+                                                } else {
+                                                    echo "<option value=\"0\">-- No Result --</option>";
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div><!--
+                                Format
+                            --><div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="Format" class="col-md-3 control-label">Format</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control add_item" id="Format" name="Format" placeholder="Format">
+                                            <?php
+                                            // Essendo la prima query apro la connessione.
+                                            if($mysqli->connect_error){
+                                                echo "<option value=\"0\">-- Connection Error --</option>";
+                                            } else {
+                                                $query = "SELECT s.Id, s.Name
+                                                        FROM formats s
+                                                        ORDER BY s.Name";
+                                                $stmt = $mysqli->prepare($query);
+                                                $stmt->execute();
+                                                $result = $stmt->get_result();
+                                                if($result->num_rows > 0) {
+                                                    while($row = $result->fetch_assoc()) {
+                                                        echo "<option value=\"" . $row["Id"] . "\" ";
+                                                        echo isset($elem["Format"]) && $elem["Format"] == $row["Format"] ? "selected" : " ";
+                                                        echo ">" . $row["Format"];
                                                         echo "</option>";
                                                     }
                                                 } else {
@@ -128,8 +161,8 @@
                                     <div class="col-md-9">
                                         <input id="Attendance" type="number" class="form-control add_item" placeholder="Attendance"
                                                <?php
-                                                if(isset($event["Attendance"])) {
-                                                    echo "value=\"" . $event["Attendance"] . "\"";
+                                                if(isset($elem["Attendance"])) {
+                                                    echo "value=\"" . $elem["Attendance"] . "\"";
                                                 }
                                                ?>
                                                />
@@ -144,8 +177,8 @@
                                        <label class="switch switch-small">
                                             <input type="checkbox" id="Visibility" class="form-control add_item" 
                                             <?php 
-                                            if(isset($event["Visibility"])) {
-                                            	echo "checked=\"" . $event["Visibility"] == 1 ? "true" : "false" . "\"";
+                                            if(isset($elem["Visibility"])) {
+                                            	echo "checked=\"" . $elem["Visibility"] == 1 ? "true" : "false" . "\"";
                                         	}
                                        		?> />
                                             <span></span>
@@ -162,7 +195,7 @@
                             </div>
                         </div>
                         <button type="reset" class="btn btn-default btn-rounded pull-right" ><i class="fa fa-trash-o" aria-hidden="true"></i> Reset</button>
-                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_base_data('.save_base_data_panel', <?php echo $event["Id"]; ?>);"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_base_data('.save_base_data_panel', <?php echo $elem['Id']; ?>);"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                 </form>
             </div>
@@ -172,7 +205,7 @@
                 <form autocomplete="false" class="save_ruler_breakdown_panel" method="post" action="ajax/event_ajax.php?event_save_ruler_breakdown">
                     <div class="panel-heading">
                         <h3 class="panel-title">Ruler Breakdown</h3>
-                        <button onclick="save_ruler_breakdown('.save_ruler_breakdown_panel', <?php echo $event_id; ?>);" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button onclick="save_ruler_breakdown('.save_ruler_breakdown_panel', <?php echo $elem['Id']; ?>);" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -230,7 +263,7 @@
                             </div>
                         </div>
                         <button class="btn btn-default btn-rounded pull-right"  onclick="reset_base_data();"><i class="fa fa-trash-o" aria-hidden="true"></i> Reset</button>
-                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_ruler_breakdown('.save_ruler_breakdown_panel', <?php echo $event_id; ?>);"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_ruler_breakdown('.save_ruler_breakdown_panel', <?php echo $elem['Id']; ?>);"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                 </form>
             </div>
@@ -240,7 +273,7 @@
                 <form autocomplete="false" class="save_community_reports_panel" method="post" action="ajax/event_ajax.php?event_save_community_reports">
                     <div class="panel-heading">
                         <h3 class="panel-title">Community Reports</h3>
-                        <button onClick="save_base_data('.save_community_reports_panel', <?php echo $event["Id"]; ?>)" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button onClick="save_base_data('.save_community_reports_panel', <?php echo $elem["Id"]; ?>)" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -267,7 +300,7 @@
                             </div>
                         </div>
                         <button class="btn btn-default btn-rounded pull-right"  onclick="reset_base_data();"><i class="fa fa-trash-o" aria-hidden="true"></i> Reset</button>
-                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_base_data('.save_community_reports_panel', <?php echo $event["Id"]; ?>)"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_base_data('.save_community_reports_panel', <?php echo $elem['Id']; ?>)"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                 </form>
             </div>
@@ -277,7 +310,7 @@
                 <form autocomplete="false" class="save_other_links_panel" method="post" action="ajax/event_ajax.php?event_save_other_links">
                     <div class="panel-heading">
                         <h3 class="panel-title">OtherLinks</h3>
-                        <button onClick="save_base_data('.save_other_links_panel', <?php echo $event["Id"]; ?>);" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button onClick="save_base_data('.save_other_links_panel', <?php echo $elem["Id"]; ?>);" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -304,7 +337,7 @@
                             </div>
                         </div>
                         <button class="btn btn-default btn-rounded pull-right"  onclick="reset_base_data();"><i class="fa fa-trash-o" aria-hidden="true"></i> Reset</button>
-                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_base_data('.save_other_links_panel', <?php echo $event["Id"]; ?>);"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                        <button class="btn btn-primary btn-rounded pull-right" onclick="save_base_data('.save_other_links_panel', <?php echo $elem['Id']; ?>);"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
                     </div>
                 </form>
             </div>

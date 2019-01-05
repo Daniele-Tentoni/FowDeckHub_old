@@ -31,30 +31,30 @@ else if(isset($_GET["event_map_details"])) {
     $event_map_details = get_event_map_details($mysqli, $region);
     echo json_encode($event_map_details);
 } 
-else if(isset($_GET["events_widget"]) && isset($_POST["year"]) && $_POST["year"] > 0) {
-    // Controllo il livello senza tracciarlo, altrimenti qui sarebbe un morire.
-    $check_level = check_level($mysqli, 2, false);
-    if($check_level != 0) {
-        // Comunico che non ho capito quale operazione mi è richiesta.
-        $result["error"] = "You dosen't have permissions and privileges to use this function. Contact a system administrator or report the bug with the link at the bottom of this page.";
-        echo json_encode($result);
-        return;
-    }
-
+else if($log_result && $check_level == 0 && isset($_GET["events_widget"]) && isset($_POST["year"]) && $_POST["year"] > 0) {
     $region = $_POST["year"];
     $event_map_details = get_event_widget_details($mysqli, $region);
     echo json_encode($event_map_details);
 }
-else if(isset($_GET["event_save_base_data"]) && isset($_POST["Id"]) && isset($_POST["Name"]) && isset($_POST["Year"]) && isset($_POST["Date"]) && isset($_POST["Nation"]) && isset($_POST["Attendance"]) && isset($_POST["Visibility"])) {
+else if(isset($_GET["event_save_base_data"]) 
+    && isset($_POST["Id"]) 
+    && isset($_POST["Name"]) 
+    && isset($_POST["Year"]) 
+    && isset($_POST["Date"]) 
+    && isset($_POST["Nation"])
+    && isset($_POST["Format"])
+    && isset($_POST["Attendance"]) 
+    && isset($_POST["Visibility"])) {
     $id = $mysqli->real_escape_string($_POST["Id"]);
     $name = $mysqli->real_escape_string($_POST["Name"]);
     $year = $mysqli->real_escape_string($_POST["Year"]);
     $data = $mysqli->real_escape_string($_POST["Date"]);
     $nation = $mysqli->real_escape_string($_POST["Nation"]);
+    $format = $mysqli->real_escape_string($_POST["Format"]);
     $attendance = $mysqli->real_escape_string($_POST["Attendance"]);
     $visibility = $mysqli->real_escape_string($_POST["Visibility"]);
 	
-    $result = save_base_data($mysqli, $id, $name, $year, $data, $nation, $attendance, $visibility);
+    $result = save_base_data($mysqli, $id, $name, $year, $data, $nation, $format, $attendance, $visibility);
     echo json_encode($result);
 }
 else if(isset($_GET["event_save_ruler_breakdown"]) && isset($_POST["Id"]) && count($_POST) > 1) {

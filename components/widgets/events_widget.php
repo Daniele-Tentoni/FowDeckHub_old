@@ -76,7 +76,7 @@
                         echo "</tr>";
                     }
                 } else {
-                    echo $events["msg"];
+                    echo isset($events["content"]) && count($events["content"]) > 0 ? $events["content"] : "No events to show";
                 }
                 ?>
                     
