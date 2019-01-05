@@ -331,6 +331,7 @@ function save_decklist($mysqli, $id, $decks) {
 	$deck_param = $mysqli->real_escape_string($id);
 	//$res["message"] .= var_dump($decks) . " ||| ";
 	if($stmt->execute()){
+		$correct = true;
         // Divido i mazzetti da aggiungere.
         foreach ($decks["ruler"]["deck"] as $key => $value) {
 			$query = "INSERT INTO `card_quantities`(`Decklist`, `Card`, `Decktype`, `Quantity`) VALUES (?, (SELECT c.Id
@@ -347,7 +348,6 @@ function save_decklist($mysqli, $id, $decks) {
         		$res["number"] = $mysqli->errno;
         		$res["message"] .= $mysqli->error . var_dump($value);
 				$res["message"] .= " There were problems during the insert of the ruler " . $card_param . " di quantita " . $quantity_param;
-				return $res;
 			}
         }
 		
@@ -368,7 +368,6 @@ function save_decklist($mysqli, $id, $decks) {
 				} else {
 					$res["message"] .= " There were problems during the insert of the rune " . $value["name"] . " of count " . $value["count"];
 				}
-				return $res;
 			}
         }
 		
@@ -389,7 +388,6 @@ function save_decklist($mysqli, $id, $decks) {
 				} else {
 					$res["message"] .= " There were problems during the insert of main " . $card_param . " of count " . $quantity_param;
 				}
-				return $res;
 			}
         }
 		
@@ -410,7 +408,6 @@ function save_decklist($mysqli, $id, $decks) {
 				} else {
 					$res["message"] .= " There were problems during the insert of side " . $card_param . " of count " . $quantity_param;
 				}
-				return $res;
 			}
         }
 		
@@ -427,15 +424,19 @@ function save_decklist($mysqli, $id, $decks) {
         		$res["error"] = "query";
 				$res["query"] = $query;
         		$res["number"] = $mysqli->errno;
-        		$res["message"] .= $mysqli->error . var_dump($value);
-				$res["message"] .= " There were problems during the insert of the stone " . $value["name"] . " di quantita " . $value["count"];
-				return $res;
+				if(!check_if_card_exists($mysqli, $id)) {
+					$res["message"] .= " The stone " . $card_param . " dosen't exists in database. Add it or call the system administrator.";
+				} else {
+					$res["message"] .= " There were problems during the insert of stone " . $card_param . " of count " . $quantity_param;
+				}
 			}
 		}
 		
 		// Restituisco il messaggio affermativo.
-		$res["result"] = true;
-		$res["message"] = "Decklist correctly imported.";
+		if($correct) {
+			$res["result"] = true;
+			$res["message"] = "Decklist correctly imported.";
+		}
     } else {
         $res["error"] = "query";
         $res["number"] = $mysqli->errno;
@@ -452,7 +453,8 @@ function check_if_card_exists($mysqli, $card_param) {
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("s", $card_param);
 	if(!$stmt->execute()) {
-		return false;
+		$result = $stmt->get_result();
+		return $result->num_rows > 0;
 	}
 	return true;
 }

@@ -34,7 +34,6 @@ var save_base_data = function(panel, id) {
         dataType: "json",
         data: string_data,
         success: function(msg) {
-            debugger;
             $(panel + " .e-panel").show();
             if (msg["result"] === true) {
                 $(panel + " .e-body").html("<span class=\"alert alert-success\">" + msg["message"] + "</span>");

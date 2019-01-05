@@ -132,7 +132,7 @@
                                             if($mysqli->connect_error){
                                                 echo "<option value=\"0\">-- Connection Error --</option>";
                                             } else {
-                                                $query = "SELECT s.Id, s.Name
+                                                $query = "SELECT s.Code, s.Name
                                                         FROM formats s
                                                         ORDER BY s.Name";
                                                 $stmt = $mysqli->prepare($query);
@@ -140,9 +140,9 @@
                                                 $result = $stmt->get_result();
                                                 if($result->num_rows > 0) {
                                                     while($row = $result->fetch_assoc()) {
-                                                        echo "<option value=\"" . $row["Id"] . "\" ";
-                                                        echo isset($elem["Format"]) && $elem["Format"] == $row["Format"] ? "selected" : " ";
-                                                        echo ">" . $row["Format"];
+                                                        echo "<option value=\"" . $row["Code"] . "\" ";
+                                                        echo isset($elem["Format"]) && $elem["Format"] == $row["Code"] ? "selected" : " ";
+                                                        echo ">" . $row["Name"];
                                                         echo "</option>";
                                                     }
                                                 } else {
@@ -178,7 +178,7 @@
                                             <input type="checkbox" id="Visibility" class="form-control add_item" 
                                             <?php 
                                             if(isset($elem["Visibility"])) {
-                                            	echo "checked=\"" . $elem["Visibility"] == 1 ? "true" : "false" . "\"";
+                                            	echo $elem["Visibility"] == 1 ? "checked" : "";
                                         	}
                                        		?> />
                                             <span></span>

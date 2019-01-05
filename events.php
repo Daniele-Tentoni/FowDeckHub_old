@@ -57,10 +57,14 @@ else if(isset($_GET["event_id"]) && $_GET["event_id"] > 0) {
     } else {
         $event = $event["content"];
     }
+    // Ottengo le liste delle carte.
     $decklists = get_event_decks($mysqli, $event_id, $check_level == 0);
-    $chart_top8 = get_chart_data_by_top8_decks($decklists["content"]);
+    // Ottengo il breakdown.
 	$breakdown = get_event_rulers_breakdowns_by_id($mysqli, $event_id)["content"];
-    $chart_event = get_chart_data_by_breakdown($breakdown);
+    $chart_ruler_breakdown = get_chart_data_by_breakdown($breakdown);
+    // Ottengo gli altri 5 grafici.
+    $ruler_most_used = get_most_used_cards_by_event_and_deck_type($mysqli, $event_id, 0);
+    $chart_ruler_breakdown_top8 = get_chart_data_by_top8_decks($ruler_most_used["content"]);
     $rune_most_used = get_most_used_cards_by_event_and_deck_type($mysqli, $event_id, 1);
     $chart_rune_most_used = get_chart_data_by_card_list($rune_most_used["content"], "Rune Deck", "#000000");
     $main_most_used = get_most_used_cards_by_event_and_deck_type($mysqli, $event_id, 2);

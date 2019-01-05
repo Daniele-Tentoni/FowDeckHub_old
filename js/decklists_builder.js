@@ -26,7 +26,6 @@ $(document).ready(function() {
             var imp = import_ajax_caller(panel, container, res, deck_id);
             if (imp != false) {
                 console.log("Saved");
-                $(container).append("Decklist correctly imported.");
             }
         }
     });
@@ -135,7 +134,6 @@ var validate_deck = function(name, num, min, max) {
      * Implementare meglio la qualità dell'import delle carte come i dodici kimono.
      */
     if (num < min || num > max) {
-        $(container).append(part[0] + " non valido : " + part[2] + " carte <br />");
         return true;
     } else {
         return false;
@@ -178,6 +176,7 @@ var decklist_import = function(container, text) {
                 $(container).append("Stone deck contains: " + deck.stone.n + " cards <br />");
                 break;
             case "Side Board":
+            case "Sideboard":
             case "Side Deck":
                 not_valid = validate_deck(part[0], part[2], 0, 15);
                 deck.side.n = part[2];
@@ -226,7 +225,7 @@ var decklist_import = function(container, text) {
         console.log("Non valido");
         return false;
     } else {
-        console.log("Non valido");
+        console.log("Valido!");
         return deck;
     }
 };
@@ -247,9 +246,9 @@ var import_ajax_caller = function(panel, container, decks, deck_id) {
         data: string_data,
         success: function(msg) {
             if (msg["result"] === true) {
-                $(container).html("<span class=\"alert alert-success\">" + msg["message"] + "</span>");
+                $(container).append("<span class=\"alert alert-success\">" + msg["message"] + "</span>");
             } else {
-                $(container).html("<span class=\"alert alert-warning\">" + msg["message"] + "</span>");
+                $(container).append("<span class=\"alert alert-warning\">" + msg["message"] + "</span>");
                 console.log(msg.error);
                 console.log(msg.number);
                 console.log(msg.content);
@@ -260,7 +259,7 @@ var import_ajax_caller = function(panel, container, decks, deck_id) {
             console.log(msg);
             console.log("error");
             $(container).show();
-            $(container).html("<span class=\"alert alert-danger\">" + JSON.stringify(msg.responseText) + "</span>");
+            $(container).append("<span class=\"alert alert-danger\">" + JSON.stringify(msg.responseText) + "</span>");
             return false;
         }
     });

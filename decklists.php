@@ -42,6 +42,7 @@ else if($log_result && $check_level == 0 && isset($_GET["edit_decklist"]) && $_G
 	$show_type = false;
 	$show_cost = false;
 	$show_attributes = false;
+	$show_deck_up = false;
 	$show_actions = false;
 	$simple_card_table = true;
 	$title = "Edit Decklists - Administrator - Fow Deck Hub";

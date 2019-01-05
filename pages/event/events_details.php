@@ -146,9 +146,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3" style="position: relative;">
-                <div id="tocify"></div>
-            </div>
         </div>
 
     <!-- END PAGE CONTENT WRAPPER -->                                    
@@ -183,15 +180,6 @@
 <script type="text/javascript" src="js/plugins/nvd3/lib/d3.v3.js"></script>        
 <script type="text/javascript" src="js/plugins/nvd3/nv.d3.min.js"></script>
 <script type="text/javascript">
-	/*
-	* Da reinserire quando troverò come sistemare il bug.
-	*/
-	var tocify_page = $("#tocify").tocify({
-		context: ".tocify-content", 
-		showEffect: "fadeIn",
-		extendPage:false,
-		selectors: "h2" 
-	});
 
 	var startChart = function() {
 
@@ -333,14 +321,14 @@
 		 * Pie chart top8_ruler_breakdown data. Note how there is only a single array of key-value pairs.
 		 */
 		function top8_ruler_breakdown_data() {
-			return <?php echo $chart_top8; ?>;
+			return <?php echo $chart_ruler_breakdown_top8; ?>;
 		}
 
 		/*
 		 * Pie chart event_ruler_breakdown data. Note how there is only a single array of key-value pairs.
 		 */
 		function event_ruler_breakdown_data() {
-			return <?php echo $chart_event; ?>;
+			return <?php echo $chart_ruler_breakdown; ?>;
 		}
 
 		/*
@@ -374,6 +362,5 @@
 	};
 	
 	startChart();
-    tocify_page();
 </script>
 <!-- END THIS PAGE PLUGINS-->  

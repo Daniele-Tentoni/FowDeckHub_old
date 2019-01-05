@@ -2,26 +2,28 @@
 /*
  * Fill an array of chart data from a decklists array.
  */
-function get_chart_data_by_top8_decks($decklists) {
+function get_chart_data_by_top8_decks($ruler_card_list) {
     $data = array();
-    foreach($decklists as $deck){
-        if(isset($data) && isset($data[$deck["Ruler"]])) {
-            $data[$deck["Ruler"]]++;
+    foreach($ruler_card_list as $deck){
+        $data[$deck["Player"]] = $deck["Name"];
+    }
+    
+    $rulers = array();
+    foreach($data as $key => $value) {
+        if(isset($rulers[$value])) {
+            $rulers[$value]++;
         } else {
-            $data[$deck["Ruler"]] = 1;
+            $rulers[$value] = 1;
         }
     }
     
     $chart = array();
-    foreach($data as $key => $value){
+    foreach($rulers as $key => $value){
         $row = array();
-		$pieces = explode("/", $key);
-        $row["label"] = $pieces[0];
         $row["label"] = $key;
         $row["value"] = $value;
         array_push($chart, $row);
     }
-    
     return json_encode($chart);
 }
 
@@ -29,17 +31,11 @@ function get_chart_data_by_top8_decks($decklists) {
  * Fill an array of chart data from a breakdown array.
  */
 function get_chart_data_by_breakdown($breakdown) {
-	$data = array();
-    foreach($breakdown as $key => $value){
-		$data[$value["Name"]] = $value["Quantity"];
-    }
-    
     $chart = array();
-    foreach($data as $key => $value){
+    foreach($breakdown as $value){
         $row = array();
-		$pieces = explode("/", $key);
-        $row["label"] = $pieces[0];
-        $row["value"] = $value;
+        $row["label"] = $value["Name"];
+        $row["value"] = $value["Quantity"];
         array_push($chart, $row);
     }
     
