@@ -17,11 +17,23 @@
     </div>
 
     <div class="col-md-12">
-        <h3>Last 3 events uploaded.</h3>
-        <p>Here there's a collection of the last 3 events uploaded. What the latest news only on FowDeckHub!</p>
-		<div class="table-responsive">
-            <?php require_once ROOT_PATH . '/components/decklists_table.php'; ?>
+        <!-- START RESPONSIVE TABLES -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Last 3 events uploaded</h3>
+                    </div>
+                    <div class="panel-body"> 
+                        <p>Here there's a collection of the last 3 events uploaded. What the latest news only on FowDeckHub!</p>
+                        <div class="table-responsive"> 
+                            <?php require_once ROOT_PATH . '/components/tables/events_table.php'; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        <!-- END RESPONSIVE TABLES -->
     </div>
     
 	<div class="col-md-12">

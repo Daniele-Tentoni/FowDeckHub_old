@@ -17,7 +17,7 @@
 				<div class="col-md-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h3 class="panel-title">Events questo</h3>
+							<h3 class="panel-title">Events</h3>
 							<a href="events.php?new_event" class="btn btn-primary btn-rounded pull-right" ><i class="fa fa-plus"></i>New</a>
 						</div>
                         <div class="panel-body"> 

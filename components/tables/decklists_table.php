@@ -3,7 +3,7 @@
         <tr>
 			<?php
 			echo !isset($show_name) || $show_name ? "<th>Decklist Name</th>" : "";
-			echo !isset($show_ruler) || $show_ruler ? "<th width=\"115\">Ruler</th>" : "";
+			echo !isset($show_ruler) || $show_ruler ? "<th width=\"125\">Ruler</th>" : "";
 			echo !isset($show_player) || $show_player ? "<th width=\"145\">Player</th>" : "";
 			echo !isset($show_type) || $show_type ? "<th width=\"130\">Type</th>" : "";
             echo !isset($show_style) || $show_style ? "<th width=\"70\">Style</th>" : "";
