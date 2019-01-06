@@ -74,5 +74,53 @@ function check_if_deck_have_card_list($mysqli, $id) {
 	$res["result"] = true;
 	return $res;
 }
+
+/*
+ * Funzione per capire se un deck ha una decklist e quindi può essere visibile agli utenti.
+ */
+function get_ruler_by_decklist($mysqli, $id) {
+	$res = array();
+	$res["result"] = false;
+
+	// Controllo che la connessione sia impostata.
+	if(!isset($mysqli)) {
+        $res["error"] = "server_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_ERR;
+	}
+	if(isset($mysqli) && $mysqli->connect_error) {
+        $res["error"] = "server_conn_err";
+        $res["number"] = $mysqli->errno;
+        $res["message"] = SERVER_CONN_ERR;
+		return $res;
+	}
+
+	// Effettuo finalmente il caricamento della decklist in base all'id.
+	$query = "SELECT c.`Name`
+	FROM `card_quantities` q 
+	INNER JOIN `cards` c on q.`Card` = c.`Id`
+	WHERE `Decklist` = ?
+      AND `Decktype` = 0
+	ORDER BY c.`Id`desc
+    LIMIT 1";
+
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i", $id);
+	$stmt->execute();
+	$result = $stmt->get_result();
+	if($result->num_rows > 0) {
+        $res["content"] = "";
+		$res["message"] = "There's some data to view";
+		while($row = $result->fetch_assoc()) {
+			$res["content"] = $row["Name"];
+		}
+	} else {
+		$res["message"] = "No data to view with id $id.";
+		return $res;
+	}
+	
+	$res["result"] = true;
+	return $res;
+}
 #endregion
 ?>

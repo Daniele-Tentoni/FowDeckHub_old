@@ -8,7 +8,7 @@
 
 <!-- PAGE TITLE -->
 <div class="page-title">                    
-	<h2 onclick="history.back();"><span class="fa fa-arrow-circle-o-left"></span> Event Details</h2>
+	<h2><a onclick="history.back();" class="link"><span class="fa fa-arrow-circle-o-left"></span></a> Event Details</h2>
 	<span class="right-align"></span>
 </div>
 <!-- END PAGE TITLE -->

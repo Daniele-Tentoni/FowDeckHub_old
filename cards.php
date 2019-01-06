@@ -12,8 +12,9 @@ if($log_result && $check_level == 0) {
 	$login_checked = true;
 	$active_page = 11;
     $title = "Cards - Administrator - Fow Deck Hub";
-	require_once ROOT_PATH . '/loaders/load_cards.php';
+	require_once ROOT_PATH . '/controllers/card_controller.php';
 	$cards = get_cards($mysqli, 0);
+	$show_type = false;
 	$show_attributes = false;
 	$show_quantity = false;
 	$show_deck = false;

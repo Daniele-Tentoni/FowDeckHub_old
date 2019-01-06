@@ -96,14 +96,12 @@ function get_decklist_by_id($mysqli, $id) {
 					 p.Name as Style, 
 					 e.Id as EventId, 
 					 e.Name as Event, 
-					 d.Position, 
-					 c.Name as Ruler,
+					 d.Position,
 					 d.Visibility
 			  from decklists d
 			  left join decktypes dt on d.Type = dt.Id
 			  left join playstyles p on dt.Style = p.Id
 			  left join `events` e on d.Event = e.Id
-			  left join cards c on d.Ruler = c.Id
 			  where d.Id = ?";
 
 	$stmt = $mysqli->prepare($query);
@@ -125,7 +123,6 @@ function get_decklist_by_id($mysqli, $id) {
 		$stringa["EventId"] = $row["EventId"];
 		$stringa["Event"] = $row["Event"];
 		$stringa["Position"] = $row["Position"];
-		$stringa["Ruler"] = $row["Ruler"];
 		$stringa["Visibility"] = $row["Visibility"];
 		$res["content"] = $stringa;
 	} else {
@@ -340,6 +337,7 @@ function save_decklist($mysqli, $id, $decks) {
 			$card_param = $value["name"];
 			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
+				$correct = false;
 				// Interrompo solamente se c'è un errore.
         		$res["error"] = "query";
 				$res["query"] = $query;
@@ -358,6 +356,7 @@ function save_decklist($mysqli, $id, $decks) {
 			$card_param = $value["name"];
 			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
+				$correct = false;
 				// Interrompo solamente se c'è un errore, provo subito a cercare la carta.
         		$res["error"] = "query";
         		$res["number"] = $mysqli->errno;
@@ -378,6 +377,7 @@ function save_decklist($mysqli, $id, $decks) {
 			$card_param = $value["name"];
 			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
+				$correct = false;
 				// Interrompo solamente se c'è un errore, provo subito a cercare la carta.
         		$res["error"] = "query";
         		$res["number"] = $mysqli->errno;
@@ -398,6 +398,7 @@ function save_decklist($mysqli, $id, $decks) {
 			$card_param = $value["name"];
 			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
+				$correct = false;
 				// Interrompo solamente se c'è un errore.
 				$res["error"] = "query";
         		$res["number"] = $mysqli->errno;
@@ -418,6 +419,7 @@ function save_decklist($mysqli, $id, $decks) {
 			$card_param = $value["name"];
 			$quantity_param = intval($value["count"]);
 			if(!$stmt->execute()) {
+				$correct = false;
 				// Interrompo solamente se c'è un errore.
         		$res["error"] = "query";
 				$res["query"] = $query;
@@ -433,7 +435,7 @@ function save_decklist($mysqli, $id, $decks) {
 		// Restituisco il messaggio affermativo.
 		if($correct) {
 			$res["result"] = true;
-			$res["message"] = "Decklist correctly imported.";
+			$res["message"] .= "Decklist correctly imported.";
 		}
     } else {
         $res["error"] = "query";
@@ -450,11 +452,11 @@ function check_if_card_exists($mysqli, $card_param) {
 	$query = "SELECT c.Id FROM cards c WHERE c.Name = ?";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("s", $card_param);
-	if(!$stmt->execute()) {
+	if($stmt->execute()) {
 		$result = $stmt->get_result();
 		return $result->num_rows > 0;
 	}
-	return true;
+	return false;
 }
 
 #endregion

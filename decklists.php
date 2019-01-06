@@ -52,7 +52,6 @@ else if($log_result && $check_level == 0 && isset($_GET["edit_decklist"]) && $_G
 } else {
 	$title = "Decklists - Fow Deck Hub";
 	$decklists = get_all_decks($mysqli, $check_level);
-	$show_ruler = false;
 	$page = "/pages/decklist/decklists_partial.php";
 	if($log_result && $check_level == 0) {
 		$header = "/layout/header.php";

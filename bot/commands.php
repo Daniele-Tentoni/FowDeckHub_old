@@ -9,7 +9,7 @@ if($TGBot->text == '/all_info') {
 	 * Ovviamente so se un utente è amministratore grazie al chat_id.
 	 */
     $test = test_controller($mysqli);
-    $event = get_latest_event($mysqli);
+    $event = get_n_latest_events($mysqli, 1);
     if(!$event["result"]) {
 		$message = "There was a problem, please contact the system administrator and notify the following informations:\n" . json_encode($event);
     } else {
@@ -21,12 +21,12 @@ if($TGBot->text == '/all_info') {
 	        $message .= "</b>, done in " . $value["Nation"];
 	        $message .= ", at " . $value["Date"];
 	        $message .= ", with " . $value["Attendance"] . " partecipating players!\n";
-	        $message .= "\nAll community reports: " . $value["CommunityReports"] . "\n";
-	        $message .= "\nAll other links: " . $value["OtherLinks"] . "\n";
+	        $message .= "\nCommunity reports: " . $value["CommunityReports"] . "\n";
+	        $message .= "\nOther links: " . $value["OtherLinks"] . "\n";
 
 			$res = get_event_rulers_breakdowns_by_id($mysqli, $value["Id"]);
 			$breakdown = $res["content"];
-			$message .= "\nThis is the event ruler breakdown (total " . $res["Total"] . "):\n";
+			$message .= "\nEvent ruler breakdown (total " . $res["Total"] . "):\n";
 			foreach ($breakdown as $elem) {
 				$perc = round($elem["Quantity"] / $res["Total"] * 100, 2);
 		    	$message .= $elem["Name"] . ":\t\t\t" . $elem["Quantity"] . " (<code>" . $perc . "%</code>)\n";
@@ -41,7 +41,9 @@ if($TGBot->text == '/all_info') {
 		    foreach ($decklists["content"] as $elem) {
 		    	//$message .= json_encode($elem);
 		    	$message .= $elem["Position"] . "°:\t<a href=\"https://www.gachalog.com/list/" . $elem["GachaCode"] . "\">" . $elem["Name"] . "</a>\n";
-		    }
+			}
+			
+			$message .= "\nCheck all details at <a href=\"https://www.fowdeckhub.altervista.org/events.php?event_id=" . $value["Id"] . "\">Fow Deck Hub!</a>";
         }
     }
 

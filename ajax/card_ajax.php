@@ -23,7 +23,7 @@ if($log_result && $check_level == 0 && isset($_GET["add_card"])) {
     $number = $_POST["Number"];
     $cost = $_POST["Cost"];
     $rarity = $_POST["Rarity"];
-    $res = create_new_card($mysqli, $id, $name, $set, $number, $cost, $rarity);
+    $res = create_or_update_card($mysqli, $id, $name, $set, $number, $cost, $rarity);
     echo json_encode($res);
 }
 else {

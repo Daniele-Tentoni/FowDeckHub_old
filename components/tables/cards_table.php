@@ -19,11 +19,11 @@
         if(isset($cards) && $cards["result"] == true) {
             foreach ($cards["content"] as $value) {
                 echo "<tr id=\"trow_" . $value["Id"] . "\">";
-				echo !isset($show_id) || $show_id ? "<td>" . $value["Id"] . "</td>" : "";
-                echo !isset($show_quantity) || $show_quantity ? "<td>" . $value["Quantity"] . "</td>" : "";
-                echo !isset($show_name) || $show_name ? "<td><span onclick=\"modal_filler(" . $value["Id"] . ")\" data-toggle=\"modal\" data-target=\"#single_card_modal\" ><i class=\"fa fa-search\"> </i> </span> " . $value["Name"] . "</td>" : "";
-                echo !isset($show_code) || $show_code ? "<td>" . $value["Set"] . "-" . sprintf("%03s\n",   $value["Number"]) . " " . $value["Rarity"] . "</td>" : "";
-                echo !isset($show_type) || $show_type ? "<td><span class=\"label label-warning\">" . $value["Type"] . "</td>" : "";
+				echo !isset($show_id) || $show_id ? "<td><span class=\"elem\"  data-elem=\"Id\" data-value=\"" . $value["Id"] . "\"></span>" . $value["Id"] . "</td>" : "";
+                echo !isset($show_quantity) || $show_quantity ? "<td><span class=\"elem\"  data-elem=\"Quantity\" data-value=\"" . $value["Quantity"] . "\"></span>" . $value["Quantity"] . "</td>" : "";
+                echo !isset($show_name) || $show_name ? "<td><span onclick=\"modal_filler(" . $value["Id"] . ")\" data-toggle=\"modal\" data-target=\"#single_card_modal\" ><i class=\"fa fa-search\"> </i> </span> <span class=\"elem\"  data-elem=\"cardname\" data-value=\"" . $value["Name"] . "\"></span>" . $value["Name"] . "</td>" : "";
+                echo !isset($show_code) || $show_code ? "<td><span class=\"elem\"  data-elem=\"Set\" data-value=\"" . $value["Set"] . "\"></span>" . $value["Set"] . "-<span class=\"elem\"  data-elem=\"Number\" data-value=\"" . $value["Number"] . "\"></span>" . sprintf("%03s\n",   $value["Number"]) . " <span class=\"elem\"  data-elem=\"Rarity\" data-value=\"" . $value["Rarity_Id"] . "\"></span>" . $value["Rarity"] . "</td>" : "";
+                echo !isset($show_type) || $show_type ? "<td><span class=\"label label-warning\"><span class=\"elem\"  data-elem=\"Type\" data-value=\"" . $value["Type"] . "\"></span>" . $value["Type"] . "</td>" : "";
                 if(!isset($show_cost) || $show_cost) {
                     $cost = "";
                     $chars = str_split($value["Cost"]);
@@ -50,14 +50,17 @@
                         }
                     }
                 }
-                echo !isset($show_cost) || $show_cost ? "<td>" . $cost . "</td>" : "";
+                echo !isset($show_cost) || $show_cost ? "<td><span class=\"elem\"  data-elem=\"Cost\" data-value=\"" . $value["Cost"] . "\"></span>" . $cost . "</td>" : "";
                 $deckstring = "";
                 if((!isset($show_deck) || $show_deck) && isset($value["DeckLabel"])) {
                     $deckstring = "<td><span class=\"label " . $value["DeckLabel"] . "\"> " . $value["Decktype"] . "</span></td>";
                 }
                 echo $deckstring;
-                echo !isset($show_attributes) || $show_attributes ? "<td><span class=\"label label-success\">" . $value["Attribute"] . "</span></td>" : "";
-                echo !isset($show_actions) || $show_actions ? "<td><button class=\"btn btn-default btn-rounded btn-xs\"><span class=\"fa fa-pencil\"></span></button> <button class=\"btn btn-danger btn-rounded btn-xs\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span> </button></td>" : "";
+                echo !isset($show_attributes) || $show_attributes ? "<td><span class=\"label label-success\"><span class=\"elem\"  data-elem=\"Attribute\" data-value=\"" . $value["Attribute"] . "\"></span>" . $value["Attribute"] . "</span></td>" : "";
+                echo !isset($show_actions) || $show_actions ? "<td>" : "";
+                echo !isset($show_actions) || $show_actions ? "<button class=\"btn btn-default btn-rounded btn-xs\" onclick=\"edit_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-pencil\"></span></button>" : "";
+                //echo !isset($show_actions) || $show_actions ? "<button class=\"btn btn-danger btn-rounded btn-xs\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span> </button>" : "";
+                echo !isset($show_actions) || $show_actions ? "</td>" : "";
                 echo "</tr>";
            }
         } else {

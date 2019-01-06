@@ -233,7 +233,6 @@ var decklist_import = function(container, text) {
 var import_ajax_caller = function(panel, container, decks, deck_id) {
     var deck_string = JSON.stringify(decks);
     var string_data = "Id=" + deck_id + "&Deck=" + deck_string;
-    console.log(string_data);
 
     var form = $(panel);
     var action = form.attr("action");
@@ -245,10 +244,11 @@ var import_ajax_caller = function(panel, container, decks, deck_id) {
         dataType: "json",
         data: string_data,
         success: function(msg) {
+            console.log(msg);
             if (msg["result"] === true) {
-                $(container).append("<span class=\"alert alert-success\">" + msg["message"] + "</span>");
+                $(container).append("<span class=\"alert alert-success\">" + msg.message + "</span>");
             } else {
-                $(container).append("<span class=\"alert alert-warning\">" + msg["message"] + "</span>");
+                $(container).append("<span class=\"alert alert-warning\">" + msg.message + "</span>");
                 console.log(msg.error);
                 console.log(msg.number);
                 console.log(msg.content);

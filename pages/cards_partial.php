@@ -1,13 +1,13 @@
 <!-- START BREADCRUMB -->
 <ul class="breadcrumb">
-	<li><a href="#">Home</a></li>
+	<li><a href="index.php">Home</a></li>
 	<li><a href="#">Cards</a></li>
 </ul>
 <!-- END BREADCRUMB -->
 
 <!-- PAGE TITLE -->
 <div class="page-title">                    
-	<h2><span class="fa fa-arrow-circle-o-left"></span> Card List</h2>
+	<h2><a onclick="history.back()" class="link"><span class="fa fa-arrow-circle-o-left"></span></a> Card List</h2>
 </div>
 <!-- END PAGE TITLE -->
 
@@ -18,21 +18,39 @@
 		<div class="col-md-12">
 			<!-- START RESPONSIVE TABLES -->
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-9">
 					<div class="panel panel-default">
-
 						<div class="panel-heading">
 							<h3 class="panel-title">Cards</h3>
-							<button type="button" class="btn btn-primary btn-rounded pull-right" data-toggle="modal" data-target="#add_card_modal"><i class="fa fa-plus"></i>New</button>
 						</div>
-
 						<div class="panel-body">
 							<div class="table-responsive">
 								<?php require_once ROOT_PATH . '/components/tables/cards_table.php'; ?>
 							</div>
 						</div>
 					</div>
-
+				</div>
+				<div class="col-md-3">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Cards</h3>
+							<button class="btn btn-primary btn-rounded pull-right" onclick="new_row('true')"><i class="fa fa-plus" aria-hidden="true"></i> New</button>
+						</div>
+						<div class="panel-body">
+							<!-- START ADD CARD MODAL -->
+							<?php require_once ROOT_PATH . '/components/modals/add_card_modal.php'; ?>
+							<!-- END ADD CARD MODAL -->
+						</div>
+						<div class="panel-footer">
+							<!-- Pannello degli errori non visibile -->
+							<div class="e-panel panel" style="display:none">
+								<div class="e-body panel-body">
+								</div>
+							</div>
+					
+							<button class="btn btn-primary btn-rounded pull-right" onclick="new_row('true')"><i class="fa fa-floppy-o" aria-hidden="true"></i> Modify</button>
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- END RESPONSIVE TABLES -->
@@ -63,10 +81,6 @@
 	</div>
 </div>
 <!-- END MESSAGE BOX-->
-
-<!-- START ADD CARD MODAL -->
-<?php require_once ROOT_PATH . '/components/modals/add_card_modal.php'; ?>
-<!-- END ADD CARD MODAL -->
 
 <!-- START SINGLE CARD MODAL -->
 <?php require_once ROOT_PATH . '/components/modals/single_card_modal.php'; ?>

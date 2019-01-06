@@ -179,17 +179,19 @@ function get_event_by_id($mysqli, $id) {
 function get_event_decks($mysqli, $event, $admin) {
 	$res = array();
 	$res["result"] = false;
+    
+    // Controllo che la connessione sia impostata.
+    if(!isset($mysqli)) {
+		$msg["content"] = SERVER_ERR;
+        $msg["error"] = "server_err";
+        return $msg;
+    }
 
-	// Controllo che la connessione sia impostata.
-	if(!isset($mysqli)) {
-		$res["msg"] = "Problemi di connessione al server, contact the support.";
-		return $res;
-	}
-
-	if(isset($mysqli) && $mysqli->connect_error) {
-		$res["msg"] = "Problema di connessione instaurata al server, contact the support.";
-		return $res;
-	} 
+    if(isset($mysqli) && $mysqli->connect_error) {
+        $msg["content"] = SERVER_CONN_ERR;
+		$msg["error"] = "server_conn_err";
+        return $msg;
+    }
 
 	// Effettuo finalmente il caricamento della decklist.
 	// Carico tutte le decklists.
@@ -214,13 +216,16 @@ function get_event_decks($mysqli, $event, $admin) {
 			$stringa["Id"] = $row["Id"];
 			$checking = check_if_deck_have_card_list($mysqli, $row["Id"]);
 			$stringa["DeckUp"] = $checking["result"] ? $checking["content"] : $checking["message"];
+			if($checking["content"]) {
+				$ruler = get_ruler_by_decklist($mysqli, $stringa["Id"]);
+				$stringa["Ruler"] = $ruler["result"] ? $ruler["content"] : $ruler["message"];
+			}
 			$stringa["Name"] = $row["Name"];
 			$stringa["Player"] = $row["Player"];
 			$stringa["GachaCode"] = $row["GachaCode"];
 			$stringa["Type"] = $row["Type"];
 			$stringa["Style"] = $row["Style"];
 			$stringa["Position"] = $row["Position"];
-			$stringa["Ruler"] = $row["Ruler"];
 			$stringa["Visibility"] = $row["Visibility"];
 			array_push($res["content"], $stringa);
 		}
@@ -369,11 +374,12 @@ function get_event_rulers_breakdowns_by_id($mysqli, $event_id) {
     }
 
     // Effettuo finalmente il caricamento dei breakdown.
-	$query = "select b.Ruler, c.Name, b.Quantity
-				from event_rulers_breakdown b
-				join cards c on b.Ruler = c.Id
-				where b.Event = ?
-				  and b.Quantity > 0";
+	$query = "SELECT b.Ruler, c.Name, b.Quantity
+				FROM event_rulers_breakdown b
+				JOIN cards c ON b.Ruler = c.Id
+				WHERE b.Event = ?
+				  AND b.Quantity > 0
+				ORDER BY b.Quantity";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i", $event_id_param);
 	$event_id_param = $event_id;
@@ -461,7 +467,7 @@ function get_event_widget_details($mysqli, $year) {
 /*
  * Ritorna l'ultimo evento disputato che sia visibile.
  */
-function get_latest_event($mysqli) {
+function get_n_latest_events($mysqli, $n) {
 	$res = array();
 	$res["result"] = false;
     
@@ -487,9 +493,10 @@ function get_latest_event($mysqli) {
 			JOIN formats f on e.`Format` = f.Code
 			WHERE e.Visibility = 1
             ORDER BY e.Date DESC
-            LIMIT 1";
+            LIMIT ?";
 
 	$stmt = $mysqli->prepare($query);
+    $stmt->bind_param("i", $n);
 	$stmt->execute();
 	$result = $stmt->get_result();
 	if($result->num_rows > 0) {

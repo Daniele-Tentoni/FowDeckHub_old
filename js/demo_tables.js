@@ -1,135 +1,135 @@
 function delete_row(row) {
-	var box = $("#mb-remove-row");
-	box.addClass("open");
+    var box = $("#mb-remove-row");
+    box.addClass("open");
 
-	box.find(".mb-control-yes").on("click",function(){
-		box.removeClass("open");
-		$("#"+row).hide("slow",function(){
-			$(this).remove();
-		});
-	});
+    box.find(".mb-control-yes").on("click", function() {
+        box.removeClass("open");
+        $("#" + row).hide("slow", function() {
+            $(this).remove();
+        });
+    });
+}
+
+function edit_row(row) {
+    var trow = $("#" + row);
+    trow.find('.elem').each(function() {
+        var elem = $(this).data("elem");
+        var value = $(this).data("value");
+        $("#new_item").find(".add-item[name=" + elem + "]").val(value);
+    });
 }
 
 function new_row(clear) {
-	// Recupero i valori dal form.
-	$(".e-panel").hide();
-	$(".e-body").html("");
-	var entities = [];
-	var values = [];
-	$(".add-item").each(function(e) {
+    // Recupero i valori dal form.
+    $(".e-panel").hide();
+    $(".e-body").html("");
+    var entities = [];
+    var values = [];
+    $(".add-item").each(function(e) {
         var val = 0;
-        if($(this).attr("type") == "checkbox") {
+        if ($(this).attr("type") == "checkbox") {
             val = $(this).prop("checked") == true ? 1 : 0;
         } else {
             val = $(this).val();
         }
-		values.push(val);
-		entities.push($(this).attr('id'));
-	});
+        values.push(val);
+        entities.push($(this).attr('id'));
+    });
 
-	var form = $("#new-item");
-	var action = form.attr("action");
-	var method = form.attr("method");
-	var ret = form.attr("data-return");
-	var func = form.attr("data-function");
-    if(!clear) {
-	   console.log(action);
-	   console.log(method);
+    var form = $("#new_item");
+    var action = form.attr("action");
+    var method = form.attr("method");
+
+    var string_data = "";
+    for (var i = 0; i < entities.length; i++) {
+        string_data += "&" + entities[i] + "=" + values[i];
     }
-	
-	var string_data = "";
-	for(var i = 0; i < entities.length; i++) {
-		string_data += "&" + entities[i] + "=" + values[i];
-	}
-	
-	$.ajax({
-		type: method,
-		url: action,
-		dataType: "json",
-		data: string_data,
-		success:function(msg) {
-			$(".e-panel").show();
-			if(msg["result"] === true) {
-				$(".e-body").html("<span class=\"alert alert-success\">" + msg["content"] + "</span>");
-				if(ret != null) {
-					window.location = ret + "?" + func + "=" + msg["id"];
-				}
-			} else {
-				$(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
-                console.log(msg["data"]);
-			}
-		},
-		error:function(msg) {
-			console.log(msg);
-			console.log("error");
-			$(".e-panel").show();
-			$(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
-		}
-	});
 
-	if(clear == true) {
-		$(".add-item").val("");
-	}
+    $.ajax({
+        type: method,
+        url: action,
+        dataType: "json",
+        data: string_data,
+        success: function(msg) {
+            $(".e-panel").show();
+            if (msg.result === true) {
+                $(".e-body").html("<span class=\"alert alert-success\">" + msg.content + "</span>");
+            } else {
+                $(".e-body").html("<span class=\"alert alert-danger\">" + msg.content + "</span>");
+                console.log(msg);
+            }
+        },
+        error: function(msg) {
+            console.log(msg);
+            console.log("error");
+            $(".e-panel").show();
+            $(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
+        }
+    });
+
+    if (clear == true) {
+        $(".add-item").val("");
+    }
 }
 
 function base_new_row(clear, success, error) {
     // Recupero i valori dal form.
-	$(".e-panel").hide();
-	$(".e-body").html("");
-	var entities = [];
-	var values = [];
-	$(".add-item").each(function(e) {
+    $(".e-panel").hide();
+    $(".e-body").html("");
+    var entities = [];
+    var values = [];
+    $(".add-item").each(function(e) {
         var val = 0;
-        if($(this).attr("type") == "checkbox") {
+        if ($(this).attr("type") == "checkbox") {
             val = $(this).prop("checked") == true ? 1 : 0;
         } else {
             val = $(this).val();
         }
-		values.push(val);
-		entities.push($(this).attr('id'));
-	});
+        values.push(val);
+        entities.push($(this).attr('id'));
+    });
 
-	var form = $("#new-item");
-	var action = form.attr("action");
-	var method = form.attr("method");
-	var ret = form.attr("data-return");
-	var func = form.attr("data-function");
-    if(!clear) {
-	   console.log(action);
-	   console.log(method);
+    var form = $("#new-item");
+    var action = form.attr("action");
+    var method = form.attr("method");
+    var ret = form.attr("data-return");
+    var func = form.attr("data-function");
+    if (!clear) {
+        console.log(action);
+        console.log(method);
     }
-	
-	var string_data = "";
-	for(var i = 0; i < entities.length; i++) {
-		string_data += "&" + entities[i] + "=" + values[i];
-	}
-	
-	$.ajax({
-		type: method,
-		url: action,
-		dataType: "json",
-		data: string_data,
-		success:function(msg) {
-			$(".e-panel").show();
-			if(msg["result"] === true) {
-				$(".e-body").html("<span class=\"alert alert-success\">" + msg["content"] + "</span>");
-				if(ret != null) {
-					window.location = ret + "?" + func + "=" + msg["id"];
-				}
-			} else {
-				$(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
-                console.log(msg["data"]);
-			}
-		},
-		error:function(msg) {
-			console.log(msg);
-			console.log("error");
-			$(".e-panel").show();
-			$(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
-		}
-	});
 
-	if(clear == true) {
-		$(".add-item").val("");
-	}
+    var string_data = "";
+    for (var i = 0; i < entities.length; i++) {
+        string_data += "&" + entities[i] + "=" + values[i];
+    }
+
+    $.ajax({
+        type: method,
+        url: action,
+        dataType: "json",
+        data: string_data,
+        success: function(msg) {
+            $(".e-panel").show();
+            if (msg["result"] === true) {
+                $(".e-body").html("<span class=\"alert alert-success\">" + msg["content"] + "</span>");
+                if (ret != null) {
+                    window.location = ret + "?" + func + "=" + msg["id"];
+                }
+            } else {
+                $(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
+                console.log(msg["data"]);
+            }
+        },
+        error: function(msg) {
+            console.log(msg);
+            console.log("error");
+            $(".e-panel").show();
+            $(".e-body").html("<span class=\"alert alert-danger\">" + msg["content"] + "</span>");
+        }
+    });
+
+    if (clear == true) {
+        $(".add-item").val("");
+    }
 }
