@@ -55,8 +55,8 @@
                     echo "</td>";
                 }
                 echo !isset($show_actions) || $show_actions ? "    <td>" : "";
-                echo !isset($show_actions) || $show_actions ? "        <a href=\"decklists.php?edit_decklist=" . $value["Id"] . "\" class=\"btn btn-default btn-rounded btn-xs\"><span class=\"fa fa-pencil\"></span></a>" : "";
-                //echo !isset($show_actions) || $show_actions ? "        <button class=\"btn btn-danger btn-rounded btn-xs\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span></button>" : "";
+                echo !isset($show_actions) || $show_actions ? "        <a href=\"decklists.php?edit_decklist=" . $value["Id"] . "\" class=\"btn btn-xs btn-default btn-rounded\"><span class=\"fa fa-pencil\"></span></a>" : "";
+                //echo !isset($show_actions) || $show_actions ? "        <button class=\"btn btn-xs btn-danger btn-rounded\" onClick=\"delete_row('trow_" . $value["Id"] . "');\"><span class=\"fa fa-times\"></span></button>" : "";
                 echo !isset($show_actions) || $show_actions ? "    </td>" : "";
                 echo "</tr>";
             }

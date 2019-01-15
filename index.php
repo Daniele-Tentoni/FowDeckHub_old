@@ -20,6 +20,8 @@ if($log_result && $check_level == 0) {
     $login_checked = false;
     $title = "Decklists from the world - Fow Deck Hub";
     $events = get_n_latest_events($mysqli, 3);
+    $show_visibility = false;
+    $show_actions = false;
     $active_page = 0;
     require_once ROOT_PATH . '/layout/user_header.php';
     require_once ROOT_PATH . '/pages/user_index_partial.php';

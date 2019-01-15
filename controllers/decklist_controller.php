@@ -173,6 +173,10 @@ function get_all_decks($mysqli, $visibility){
 			$stringa["Id"] = $row["Id"];
 			$checking = check_if_deck_have_card_list($mysqli, $row["Id"]);
 			$stringa["DeckUp"] = $checking["result"] ? $checking["content"] : $checking["message"];
+			if($checking["content"]) {
+				$ruler = get_ruler_by_decklist($mysqli, $stringa["Id"]);
+				$stringa["Ruler"] = $ruler["result"] ? $ruler["content"] : $ruler["message"];
+			}
 			$stringa["Name"] = $row["Name"];
 			$stringa["Player"] = $row["Player"];
 			$stringa["GachaCode"] = $row["GachaCode"];
